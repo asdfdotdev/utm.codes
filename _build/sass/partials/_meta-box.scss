@@ -1,0 +1,50 @@
+#utmdc_link_meta_box {
+	margin-top: -20px;
+
+	h2.hndle,
+	button.handlediv {
+		display: none;
+	}
+
+	label {
+		span {
+			display: none;
+		}
+	}
+
+	input:not([type=checkbox]) {
+		width: 250px;
+		min-width: 25%;
+		max-width: 100%;
+
+		&#utmdclink_url {
+			width: 400px;
+			min-width: 50%;
+			max-width: 100%;
+		}
+	}
+
+	&.batch-active {
+
+		.utmdclink {
+
+			&_source,
+			&_medium {
+
+				input {
+					display: none;
+				}
+
+				span {
+					display: block;
+					padding: 10px 0;
+					font-weight: 700;
+				}
+
+			}
+
+		}
+
+	}
+
+}

@@ -1,0 +1,38 @@
+.utmdclinks {
+
+	&-settings {
+
+		&-social {
+			display: flex;
+			flex-direction: row;
+			flex-grow: 1;
+			align-content: flex-start;
+			justify-content: flex-start;
+			flex-wrap: wrap;
+
+			label {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				width: 75px;
+				padding: 0 0.5rem;
+				font-size: 1rem;
+				line-height: 1.25rem;
+				text-align: center;
+				margin-bottom: 1rem;
+
+				i {
+					font-size: 3rem;
+				}
+
+				input {
+					margin: 0.5rem;
+				}
+
+			}
+
+		}
+
+	}
+
+}
