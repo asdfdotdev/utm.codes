@@ -244,11 +244,14 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 				'post_type'			=> UtmDotCodes::POST_TYPE,
 				'author'			=> $user_id,
 				'post_status'		=> 'publish',
-				'suppress_filters'	=> true
+				'suppress_filters'	=> true,
+				'orderby'			=> 'date',
+				'order'				=> 'DESC'
 			]
 		);
 
-		array_map( function($test_post) use($test_posts, $test_networks) {
+		$x = 0;
+		array_map( function($test_post) use($test_posts, $test_networks, $x) {
 			$this->assertEquals( $test_post->post_type, UtmDotCodes::POST_TYPE );
 			$this->assertEquals(
 				filter_var( $test_post->post_content, FILTER_VALIDATE_URL ),
@@ -258,13 +261,27 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			$this->assertEquals( $test_post->post_status, 'publish' );
 
 			$test_meta = get_post_meta( $test_post->ID );
-			$this->assertEquals( $test_meta['utmdclink_url'][0], $_POST[UtmDotCodes::POST_TYPE . '_url'] );
-			$this->assertTrue( in_array($test_meta['utmdclink_source'][0], $test_networks) );
-			$this->assertEquals( $test_meta['utmdclink_medium'][0], 'social' );
-			$this->assertEquals( $test_meta['utmdclink_campaign'][0], $_POST[UtmDotCodes::POST_TYPE . '_campaign'] );
-			$this->assertEquals( $test_meta['utmdclink_term'][0], $_POST[UtmDotCodes::POST_TYPE . '_term'] );
-			$this->assertEquals( $test_meta['utmdclink_content'][0], $_POST[UtmDotCodes::POST_TYPE . '_content'] );
-			$this->assertFalse( isset($test_meta['utmdclink_shorturl'][0]) );
+			$this->assertEquals( $test_meta['utmdclink_url'][$x], $_POST[UtmDotCodes::POST_TYPE . '_url'] );
+			$this->assertTrue( in_array($test_meta['utmdclink_source'][$x], $test_networks) );
+			$this->assertEquals( $test_meta['utmdclink_medium'][$x], 'social' );
+			$this->assertEquals( $test_meta['utmdclink_campaign'][$x], $_POST[UtmDotCodes::POST_TYPE . '_campaign'] );
+			$this->assertEquals( $test_meta['utmdclink_term'][$x], $_POST[UtmDotCodes::POST_TYPE . '_term'] );
+			$this->assertEquals( $test_meta['utmdclink_content'][$x], $_POST[UtmDotCodes::POST_TYPE . '_content'] );
+			$this->assertFalse( isset($test_meta['utmdclink_shorturl'][$x]) );
+			$this->assertEquals(
+				$test_post->post_content,
+				sprintf(
+					'%s?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s&utm_content=%s&utm_gen=utmdc',
+					$test_meta['utmdclink_url'][$x],
+					$test_meta['utmdclink_source'][$x],
+					'social',
+					$test_meta['utmdclink_campaign'][$x],
+					$test_meta['utmdclink_term'][$x],
+					$test_meta['utmdclink_content'][$x]
+				)
+			);
+
+			++$x;
 		}, $test_posts );
 	}
 
@@ -322,11 +339,14 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 				'post_type'			=> UtmDotCodes::POST_TYPE,
 				'author'			=> $user_id,
 				'post_status'		=> 'publish',
-				'suppress_filters'	=> true
+				'suppress_filters'	=> true,
+				'orderby'			=> 'date',
+				'order'				=> 'DESC'
 			]
 		);
 
-		array_map( function($test_post) use($test_posts, $test_networks) {
+		$x = 0;
+		array_map( function($test_post) use($test_posts, $test_networks, $x) {
 			$this->assertEquals( $test_post->post_type, UtmDotCodes::POST_TYPE );
 			$this->assertEquals(
 				filter_var( $test_post->post_content, FILTER_VALIDATE_URL ),
@@ -336,13 +356,27 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			$this->assertEquals( $test_post->post_status, 'publish' );
 
 			$test_meta = get_post_meta( $test_post->ID );
-			$this->assertEquals( $test_meta['utmdclink_url'][0], $_POST[UtmDotCodes::POST_TYPE . '_url'] );
-			$this->assertTrue( in_array($test_meta['utmdclink_source'][0], $test_networks) );
-			$this->assertEquals( $test_meta['utmdclink_medium'][0], 'social' );
-			$this->assertEquals( $test_meta['utmdclink_campaign'][0], $_POST[UtmDotCodes::POST_TYPE . '_campaign'] );
-			$this->assertEquals( $test_meta['utmdclink_term'][0], $_POST[UtmDotCodes::POST_TYPE . '_term'] );
-			$this->assertEquals( $test_meta['utmdclink_content'][0], $_POST[UtmDotCodes::POST_TYPE . '_content'] );
-			$this->assertTrue( strpos($test_meta['utmdclink_shorturl'][0], 'https://goo.gl/') !== false );
+			$this->assertEquals( $test_meta['utmdclink_url'][$x], $_POST[UtmDotCodes::POST_TYPE . '_url'] );
+			$this->assertTrue( in_array($test_meta['utmdclink_source'][$x], $test_networks) );
+			$this->assertEquals( $test_meta['utmdclink_medium'][$x], 'social' );
+			$this->assertEquals( $test_meta['utmdclink_campaign'][$x], $_POST[UtmDotCodes::POST_TYPE . '_campaign'] );
+			$this->assertEquals( $test_meta['utmdclink_term'][$x], $_POST[UtmDotCodes::POST_TYPE . '_term'] );
+			$this->assertEquals( $test_meta['utmdclink_content'][$x], $_POST[UtmDotCodes::POST_TYPE . '_content'] );
+			$this->assertTrue( strpos($test_meta['utmdclink_shorturl'][$x], 'https://goo.gl/') !== false );
+			$this->assertEquals(
+				$test_post->post_content,
+				sprintf(
+					'%s?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s&utm_content=%s&utm_gen=utmdc',
+					$test_meta['utmdclink_url'][$x],
+					$test_meta['utmdclink_source'][$x],
+					'social',
+					$test_meta['utmdclink_campaign'][$x],
+					$test_meta['utmdclink_term'][$x],
+					$test_meta['utmdclink_content'][$x]
+				)
+			);
+
+			++$x;
 		}, $test_posts );
 	}
 

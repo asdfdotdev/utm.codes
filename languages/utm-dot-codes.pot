@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the utm.codes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: utm.codes 1.0\n"
+"Project-Id-Version: utm.codes 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/source\n"
-"POT-Creation-Date: 2018-02-15 05:04:46+00:00\n"
+"POT-Creation-Date: 2018-02-19 01:14:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Campaign Source"
 msgstr ""
 
-#: classes/utmdotcodes.php:73 classes/utmdotcodes.php:636
+#: classes/utmdotcodes.php:73 classes/utmdotcodes.php:642
 msgid "Source"
 msgstr ""
 
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Campaign Medium"
 msgstr ""
 
-#: classes/utmdotcodes.php:80 classes/utmdotcodes.php:637
+#: classes/utmdotcodes.php:80 classes/utmdotcodes.php:643
 msgid "Medium"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Campaign Term"
 msgstr ""
 
-#: classes/utmdotcodes.php:93 classes/utmdotcodes.php:639
+#: classes/utmdotcodes.php:93 classes/utmdotcodes.php:645
 msgid "Term"
 msgstr ""
 
@@ -56,7 +56,7 @@ msgstr ""
 msgid "Campaign Content"
 msgstr ""
 
-#: classes/utmdotcodes.php:99 classes/utmdotcodes.php:640
+#: classes/utmdotcodes.php:99 classes/utmdotcodes.php:646
 msgid "Content"
 msgstr ""
 
@@ -153,7 +153,7 @@ msgstr ""
 msgid "utm.codes Plugin Settings"
 msgstr ""
 
-#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.0)  #-#-#-#-#
+#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.0.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: classes/utmdotcodes.php:282
 msgid "utm.codes"
@@ -164,7 +164,7 @@ msgctxt "Settings Page Title"
 msgid "utm.codes Settings"
 msgstr ""
 
-#: classes/utmdotcodes.php:325 classes/utmdotcodes.php:864
+#: classes/utmdotcodes.php:325 classes/utmdotcodes.php:870
 msgid "Social"
 msgstr ""
 
@@ -205,48 +205,48 @@ msgstr ""
 msgid "social"
 msgstr ""
 
-#: classes/utmdotcodes.php:635
+#: classes/utmdotcodes.php:641
 msgid "Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:638
+#: classes/utmdotcodes.php:644
 msgid "Campaign"
 msgstr ""
 
-#: classes/utmdotcodes.php:641
+#: classes/utmdotcodes.php:647
 msgid "Copy Links"
-msgstr ""
-
-#: classes/utmdotcodes.php:681
-msgctxt "Post list copy link input label"
-msgid "Full:"
 msgstr ""
 
 #: classes/utmdotcodes.php:687
 msgctxt "Post list copy link input label"
+msgid "Full:"
+msgstr ""
+
+#: classes/utmdotcodes.php:693
+msgctxt "Post list copy link input label"
 msgid "Short:"
 msgstr ""
 
-#: classes/utmdotcodes.php:765
+#: classes/utmdotcodes.php:771
 msgid "Any"
 msgstr ""
 
-#: classes/utmdotcodes.php:851
+#: classes/utmdotcodes.php:857
 msgctxt ""
 "Batch link creation notice, links to settings page with number of active "
 "networks"
 msgid "Individual links will be created with unique source for"
 msgstr ""
 
-#: classes/utmdotcodes.php:854
+#: classes/utmdotcodes.php:860
 msgid "active"
 msgstr ""
 
-#: classes/utmdotcodes.php:856
+#: classes/utmdotcodes.php:862
 msgid "network"
 msgstr ""
 
-#: classes/utmdotcodes.php:857
+#: classes/utmdotcodes.php:863
 msgid "networks"
 msgstr ""
 
@@ -259,7 +259,7 @@ msgid "https://utm.codes"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Create and manage your marketing campaign links with WordPress."
+msgid "Create and manage your marketing campaign links in WordPress."
 msgstr ""
 
 #. Author of the plugin/theme

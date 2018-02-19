@@ -1,6 +1,6 @@
 {
   "name": "utm.codes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create and manage your marketing links with WordPress.",
   "main": "index.js",
   "scripts": {

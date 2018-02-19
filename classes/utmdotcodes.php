@@ -516,7 +516,7 @@ class UtmDotCodes {
 	 * Update post title and content to include complete link when inserting new link posts
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.0.1
 	 *
 	 * @param $data					Array of slashed post data
 	 * @param $postarr				Array of sanitized, but otherwise unmodified post data
@@ -530,6 +530,12 @@ class UtmDotCodes {
 				$data['post_content'] = $data['post_title'] . $this->generate_query_string( $postarr['meta_input'], $data['post_title'] );
 			}
 			else if ( isset( $postarr[self::POST_TYPE . '_url'] ) ) {
+				if ( isset($postarr[self::POST_TYPE . '_batch']) && $postarr[self::POST_TYPE . '_batch'] == 'on' ) {
+					$networks = array_keys( get_option(self::POST_TYPE . '_social') );
+					$postarr[self::POST_TYPE . '_source'] = $networks[0];
+					$postarr[self::POST_TYPE . '_medium'] = 'social';
+				}
+
 				$data['post_title'] = $this->validate_url( $postarr[self::POST_TYPE . '_url'] );
 				$data['post_content'] = $data['post_title'] . sanitize_text_field( $this->generate_query_string( $postarr, $data['post_title'] ) );
 			}
@@ -592,7 +598,7 @@ class UtmDotCodes {
 		}
 
 		if ( $api_key != '' ) {
-			$long_url = $this->sanitize_url( $data[self::POST_TYPE . '_url'] . $this->generate_query_string( $data, $url ) );
+			$long_url = $data[self::POST_TYPE . '_url'] . $this->generate_query_string( $data, $url );
 
 			$response = wp_remote_post(
 				self::API_URL . '?key=' . $api_key,
