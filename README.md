@@ -1,5 +1,7 @@
 # utm.codes Developer Repository
 
+[![Build Status](https://travis-ci.org/christopherldotcom/utm.codes.svg?branch=master)](https://travis-ci.org/christopherldotcom/utm.codes)
+
 This is the developer repo for utm.codes, a WordPress plugin.
 
 For more information about this plugin [visit utm.codes](https://utm.codes).
