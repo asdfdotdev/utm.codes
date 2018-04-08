@@ -1,3 +1,9 @@
+#utm-dot-codes-logo {
+	width: 250px;
+	margin: auto;
+	display: block;
+}
+
 .utmdclinks {
 
 	&-settings {
@@ -33,6 +39,9 @@
 
 		}
 
+		&-toggle {
+			@include css-toggle();
+		}
 	}
 
 }

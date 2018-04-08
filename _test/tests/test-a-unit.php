@@ -99,7 +99,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$this->assertFalse( $post_object->show_in_nav_menus );
 		$this->assertTrue( $post_object->show_in_admin_bar );
 		$this->assertEquals( $post_object->menu_position, null );
-		$this->assertEquals( $post_object->menu_icon, 'dashicons-admin-links' );
+		$this->assertEquals( $post_object->menu_icon, 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0yMi4yMjIyMjIyMjIyMjIyMjUgLTIyLjIyMjIyMjIyMjIyMjIyNSAxNDQuNDQ0NDQ0NDQ0NDQ0NDYgMTU1LjU1NTU1NTU1NTU1NTU3IiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTYuNjY2NjY2NjY2NjY2NjY0IC0xMS4xMTExMTExMTExMTExMSkgc2NhbGUoNS41NTU1NTU1NTU1NTU1NTUpIj48ZyBmaWxsPSIjMDAwMDAwIj48cGF0aCBkPSJNMTUgMmMtMS42IDAtMy4xLjctNC4yIDEuNy44LjIgMS41LjUgMi4xLjkuNi0uNCAxLjMtLjYgMi4xLS42IDIuMiAwIDQgMS44IDQgNHY1YzAgMi4yLTEuOCA0LTQgNHMtNC0xLjgtNC00VjkuNWMtLjUtLjYtMS4yLTEtMi0xVjEzYzAgMy4zIDIuNyA2IDYgNnM2LTIuNyA2LTZWOGMwLTMuMy0yLjctNi02LTZ6Ij48L3BhdGg+PHBhdGggZD0iTTkgMjJjMS42IDAgMy4xLS43IDQuMi0xLjctLjgtLjItMS41LS41LTIuMS0uOS0uNi40LTEuMy42LTIuMS42LTIuMiAwLTQtMS44LTQtNHYtNWMwLTIuMiAxLjgtNCA0LTRzNCAxLjggNCA0djMuNWMuNS42IDEuMiAxIDIgMVYxMWMwLTMuMy0yLjctNi02LTZzLTYgMi43LTYgNnY1YzAgMy4zIDIuNyA2IDYgNnoiPjwvcGF0aD48L2c+PC9nPjwvc3ZnPg==' );
 		$this->assertEquals( $post_object->capability_type, 'post' );
 		$this->assertTrue( $post_object->map_meta_cap );
 		$this->assertEquals( count($post_object->taxonomies), 0 );
@@ -132,6 +132,60 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$this->assertTrue( $plugin->batch_alt('source') !== '' );
 		$this->assertTrue( $plugin->batch_alt('medium') !== '' );
 		$this->assertTrue( $plugin->batch_alt('nothing') == '' );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_alphanumeric_elements() {
+		$plugin = new UtmDotCodes();
+
+		update_option( UtmDotCodes::POST_TYPE . '_alphanumeric', '' );
+		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
+		$setting_off = $plugin->filter_link_element( $unformatted );
+
+		$this->assertTrue( $unformatted == $setting_off );
+
+		update_option( UtmDotCodes::POST_TYPE . '_alphanumeric', 'on' );
+		$setting_on = $plugin->filter_link_element( $unformatted );
+
+		$this->assertTrue( $setting_on == 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 -' );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_nospaces_elements() {
+		$plugin = new UtmDotCodes();
+
+		update_option( UtmDotCodes::POST_TYPE . '_nospaces', '' );
+		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
+		$setting_off = $plugin->filter_link_element( $unformatted );
+
+		$this->assertTrue( $unformatted == $setting_off );
+
+		update_option( UtmDotCodes::POST_TYPE . '_nospaces', 'on' );
+		$setting_on = $plugin->filter_link_element( $unformatted );
+
+		$this->assertTrue( $setting_on == 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz-1234567890`~!@#$%^&*-()_+-=-?,./:";\'' );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_lowercase_elements() {
+		$plugin = new UtmDotCodes();
+
+		update_option( UtmDotCodes::POST_TYPE . '_lowercase', '' );
+		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
+		$setting_off = $plugin->filter_link_element( $unformatted );
+
+		$this->assertTrue( $unformatted == $setting_off );
+
+		update_option( UtmDotCodes::POST_TYPE . '_lowercase', 'on' );
+		$setting_on = $plugin->filter_link_element( $unformatted );
+
+		$this->assertTrue( $setting_on == 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'' );
 	}
 
 }

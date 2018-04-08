@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the utm.codes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: utm.codes 1.0.1\n"
+"Project-Id-Version: utm.codes 1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/source\n"
-"POT-Creation-Date: 2018-02-19 01:14:01+00:00\n"
+"POT-Creation-Date: 2018-04-08 23:28:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Campaign Source"
 msgstr ""
 
-#: classes/utmdotcodes.php:73 classes/utmdotcodes.php:642
+#: classes/utmdotcodes.php:73 classes/utmdotcodes.php:708
 msgid "Source"
 msgstr ""
 
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Campaign Medium"
 msgstr ""
 
-#: classes/utmdotcodes.php:80 classes/utmdotcodes.php:643
+#: classes/utmdotcodes.php:80 classes/utmdotcodes.php:709
 msgid "Medium"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Campaign Term"
 msgstr ""
 
-#: classes/utmdotcodes.php:93 classes/utmdotcodes.php:645
+#: classes/utmdotcodes.php:93 classes/utmdotcodes.php:711
 msgid "Term"
 msgstr ""
 
@@ -56,7 +56,7 @@ msgstr ""
 msgid "Campaign Content"
 msgstr ""
 
-#: classes/utmdotcodes.php:99 classes/utmdotcodes.php:646
+#: classes/utmdotcodes.php:99 classes/utmdotcodes.php:712
 msgid "Content"
 msgstr ""
 
@@ -153,101 +153,118 @@ msgstr ""
 msgid "utm.codes Plugin Settings"
 msgstr ""
 
-#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.0.1)  #-#-#-#-#
+#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: classes/utmdotcodes.php:282
 msgid "utm.codes"
 msgstr ""
 
-#: classes/utmdotcodes.php:322
-msgctxt "Settings Page Title"
-msgid "utm.codes Settings"
+#: classes/utmdotcodes.php:331
+msgid "Formating Options"
 msgstr ""
 
-#: classes/utmdotcodes.php:325 classes/utmdotcodes.php:870
-msgid "Social"
+#: classes/utmdotcodes.php:336
+msgctxt "Settings toggle for forcing lowercase."
+msgid "Force Lowercase:"
 msgstr ""
 
-#: classes/utmdotcodes.php:328
-msgid "Select the sites to include when batch creating social links."
+#: classes/utmdotcodes.php:344 classes/utmdotcodes.php:360
+#: classes/utmdotcodes.php:376
+msgid "On"
 msgstr ""
 
-#: classes/utmdotcodes.php:349
-msgid "URL Shortener"
+#: classes/utmdotcodes.php:345 classes/utmdotcodes.php:361
+#: classes/utmdotcodes.php:377
+msgid "Off"
 msgstr ""
 
 #: classes/utmdotcodes.php:352
+msgctxt "Settings toggle for alphanumeric only."
+msgid "Alphanumeric Only:"
+msgstr ""
+
+#: classes/utmdotcodes.php:368
+msgctxt "Settings toggle for spaces removal."
+msgid "Remove Spaces:"
+msgstr ""
+
+#: classes/utmdotcodes.php:384
+msgid "Social Sources"
+msgstr ""
+
+#: classes/utmdotcodes.php:387
+msgid "Select sites to include when batch creating social links."
+msgstr ""
+
+#: classes/utmdotcodes.php:408
+msgid "URL Shortener"
+msgstr ""
+
+#: classes/utmdotcodes.php:411
 msgid "Setup Goo.gl api access to enable link shortening."
 msgstr ""
 
-#: classes/utmdotcodes.php:357
+#: classes/utmdotcodes.php:416
 msgctxt "Settings input label for API key input."
 msgid "Goo.gl API Key:"
 msgstr ""
 
-#: classes/utmdotcodes.php:369
+#: classes/utmdotcodes.php:428
 msgid "Need an API key?"
 msgstr ""
 
-#: classes/utmdotcodes.php:370
+#: classes/utmdotcodes.php:429
 msgid "Click here to get one."
 msgstr ""
 
-#: classes/utmdotcodes.php:410
+#: classes/utmdotcodes.php:472
 msgid "Settings"
 msgstr ""
 
-#: classes/utmdotcodes.php:414
+#: classes/utmdotcodes.php:476
 msgid "Code"
 msgstr ""
 
-#: classes/utmdotcodes.php:457 classes/utmdotcodes.php:476
+#: classes/utmdotcodes.php:519 classes/utmdotcodes.php:538
+#: classes/utmdotcodes.php:936
 msgid "social"
 msgstr ""
 
-#: classes/utmdotcodes.php:641
+#: classes/utmdotcodes.php:707
 msgid "Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:644
+#: classes/utmdotcodes.php:710
 msgid "Campaign"
 msgstr ""
 
-#: classes/utmdotcodes.php:647
+#: classes/utmdotcodes.php:713
 msgid "Copy Links"
 msgstr ""
 
-#: classes/utmdotcodes.php:687
+#: classes/utmdotcodes.php:753
 msgctxt "Post list copy link input label"
 msgid "Full:"
 msgstr ""
 
-#: classes/utmdotcodes.php:693
+#: classes/utmdotcodes.php:759
 msgctxt "Post list copy link input label"
 msgid "Short:"
 msgstr ""
 
-#: classes/utmdotcodes.php:771
+#: classes/utmdotcodes.php:837
 msgid "Any"
 msgstr ""
 
-#: classes/utmdotcodes.php:857
+#: classes/utmdotcodes.php:923
 msgctxt ""
 "Batch link creation notice, links to settings page with number of active "
 "networks"
 msgid "Individual links will be created with unique source for"
 msgstr ""
 
-#: classes/utmdotcodes.php:860
+#: classes/utmdotcodes.php:926
 msgid "active"
-msgstr ""
-
-#: classes/utmdotcodes.php:862
-msgid "network"
-msgstr ""
-
-#: classes/utmdotcodes.php:863
-msgid "networks"
 msgstr ""
 
 #: classes/utmdotcodes_activation.php:42
