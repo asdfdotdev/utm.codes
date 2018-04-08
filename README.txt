@@ -3,9 +3,9 @@ Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: utm codes, google analytics, tracking links, campaign marketing, link generator
 Requires at least: 4.7
-Tested up to: 4.9.4
+Tested up to: 4.9.5
 Requires PHP: 5.6
-Stable tag: 1.0.1
+Stable tag: 1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,13 +20,12 @@ For more information [visit the utm.codes website](https://utm.codes).
 = Features =
 
 - Easily create marketing links with the custom UTM codes for better campaign analytics
+- Automatically format links elements in lowercase, remove spaces, and remove non alphanumeric characters
 - Batch create links for all your social networks with just a click
 - Search, filter, and easily find existing links for copy & paste use
 - Automatically shorten links using Goo.gl for easier sharing
 - Allow multiple users to share creation and management responsibilities within WordPress
 - See your current link count in the admin dashboard "At a Glance"
-- No additional plugins required
-- No annoying ads or nags
 - Works with PHP 5.6, 7.0, 7.1, and 7.2
 - 100% Free and Open Source
 
@@ -57,6 +56,11 @@ Batch social link creation requires selection of social networks. Select network
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.1 =
+
+- New link formatting options
+- New Logo
 
 = 1.0.1 =
 

@@ -58,7 +58,7 @@ class UtmDotCodes {
 	 * Create utm.codes link post type
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.1
 	 */
 	public function create_post_type() {
 		$this->link_elements = [
@@ -136,7 +136,7 @@ class UtmDotCodes {
 				'has_archive'			=> false,
 				'hierarchical'			=> false,
 				'supports'				=> [ 'author' ],
-				'menu_icon'				=> 'dashicons-admin-links'
+				'menu_icon' 			=> 'data:image/svg+xml;base64,' . base64_encode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22.222222222222225 -22.222222222222225 144.44444444444446 155.55555555555557" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><g transform="translate(-16.666666666666664 -11.11111111111111) scale(5.555555555555555)"><g fill="#000000"><path d="M15 2c-1.6 0-3.1.7-4.2 1.7.8.2 1.5.5 2.1.9.6-.4 1.3-.6 2.1-.6 2.2 0 4 1.8 4 4v5c0 2.2-1.8 4-4 4s-4-1.8-4-4V9.5c-.5-.6-1.2-1-2-1V13c0 3.3 2.7 6 6 6s6-2.7 6-6V8c0-3.3-2.7-6-6-6z"></path><path d="M9 22c1.6 0 3.1-.7 4.2-1.7-.8-.2-1.5-.5-2.1-.9-.6.4-1.3.6-2.1.6-2.2 0-4-1.8-4-4v-5c0-2.2 1.8-4 4-4s4 1.8 4 4v3.5c.5.6 1.2 1 2 1V11c0-3.3-2.7-6-6-6s-6 2.7-6 6v5c0 3.3 2.7 6 6 6z"></path></g></g></svg>')
 			]
 		);
 	}
@@ -290,7 +290,7 @@ class UtmDotCodes {
 	 * Generate and output links settings page options
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.1
 	 */
 	public function render_settings_options() {
 		$networks = [
@@ -314,18 +314,77 @@ class UtmDotCodes {
 			'vimeo' => ['Vimeo', 'fab fa-vimeo'],
 			'xing' => ['Xing', 'fab fa-xing'],
 			'youtube' => ['YouTube', 'fab fa-youtube']
-		]; ?>
+		];
+
+		$lowercase = ( 'on' == get_option(self::POST_TYPE . '_lowercase') );
+		$alphanumeric = ( 'on' == get_option(self::POST_TYPE . '_alphanumeric') );
+		$nospaces = ( 'on' == get_option(self::POST_TYPE . '_nospaces') );
+	?>
 
 	<div class="wrap">
+
 		<form method="post" action="options.php">
 			<h1>
-				<?php _ex( 'utm.codes Settings', 'Settings Page Title', UTMDC_TEXT_DOMAIN ); ?>
+				<img src="<?php echo UTMDC_PLUGIN_URL;?>img/utm-dot-codes-logo.png" id="utm-dot-codes-logo" alt="utm.codes Settings" title="Configure your utm.codes plugin here.">
 			</h1>
-			<h2 class="title">
-				<?php _e( 'Social', UTMDC_TEXT_DOMAIN ); ?>
-			</h2>
+			<h1 class="title">
+				<?php _e( 'Formating Options', UTMDC_TEXT_DOMAIN ); ?>
+			</h1>
+			<table class="form-table">
+				<tr valign="top">
+					<th scope="row">
+						<?php _ex( 'Force Lowercase:', 'Settings toggle for forcing lowercase.', UTMDC_TEXT_DOMAIN ); ?>
+					</th>
+					<td>
+						<?php
+						echo sprintf(
+							'<div class="utmdclinks-settings-toggle"><input id="%1$s" name="%1$s" type="checkbox" %2$s><label for="%1$s"><div data-on="%3$s" data-off="%4$s"></div></label></div>',
+							self::POST_TYPE . '_lowercase',
+							checked( $lowercase, true, false ),
+							__( 'On', UTMDC_TEXT_DOMAIN ),
+							__( 'Off', UTMDC_TEXT_DOMAIN )
+						);
+						?>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row">
+						<?php _ex( 'Alphanumeric Only:', 'Settings toggle for alphanumeric only.', UTMDC_TEXT_DOMAIN ); ?>
+					</th>
+					<td>
+						<?php
+						echo sprintf(
+							'<div class="utmdclinks-settings-toggle"><input id="%1$s" name="%1$s" type="checkbox" %2$s><label for="%1$s"><div data-on="%3$s" data-off="%4$s"></div></label></div>',
+							self::POST_TYPE . '_alphanumeric',
+							checked( $alphanumeric, true, false ),
+							__( 'On', UTMDC_TEXT_DOMAIN ),
+							__( 'Off', UTMDC_TEXT_DOMAIN )
+						);
+						?>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row">
+						<?php _ex( 'Remove Spaces:', 'Settings toggle for spaces removal.', UTMDC_TEXT_DOMAIN ); ?>
+					</th>
+					<td>
+						<?php
+						echo sprintf(
+							'<div class="utmdclinks-settings-toggle"><input id="%1$s" name="%1$s" type="checkbox" %2$s><label for="%1$s"><div data-on="%3$s" data-off="%4$s"></div></label></div>',
+							self::POST_TYPE . '_nospaces',
+							checked( $nospaces, true, false ),
+							__( 'On', UTMDC_TEXT_DOMAIN ),
+							__( 'Off', UTMDC_TEXT_DOMAIN )
+						);
+						?>
+					</td>
+				</tr>
+			</table>
+			<h1 class="title">
+				<?php _e( 'Social Sources', UTMDC_TEXT_DOMAIN ); ?>
+			</h1>
 			<p>
-				<?php _e( 'Select the sites to include when batch creating social links.', UTMDC_TEXT_DOMAIN ); ?>
+				<?php _e( 'Select sites to include when batch creating social links.', UTMDC_TEXT_DOMAIN ); ?>
 			</p>
 			<div class="utmdclinks-settings-social">
 			<?php
@@ -345,9 +404,9 @@ class UtmDotCodes {
 				echo implode(PHP_EOL, $social_options);
 			?>
 			</div>
-			<h2 class="title">
+			<h1 class="title">
 				<?php _e( 'URL Shortener', UTMDC_TEXT_DOMAIN ); ?>
-			</h2>
+			</h1>
 			<p>
 				<?php _e( 'Setup Goo.gl api access to enable link shortening.', UTMDC_TEXT_DOMAIN ); ?>
 			</p>
@@ -368,7 +427,7 @@ class UtmDotCodes {
 								'<br><sup>[ %s <a href="https://developers.google.com/url-shortener/v1/getting_started#APIKey" target="_blank">%s</a> ]</sup>',
 								__( 'Need an API key?', UTMDC_TEXT_DOMAIN ),
 								__( 'Click here to get one.', UTMDC_TEXT_DOMAIN )
-							)
+							);
 						?>
 					</td>
 				</tr>
@@ -384,11 +443,14 @@ class UtmDotCodes {
 	 * Register plugin settings
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.1
 	 */
 	public function register_plugin_settings() {
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_social' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_apikey' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_lowercase' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_alphanumeric' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_nospaces' );
 	}
 
 	/**
@@ -422,7 +484,7 @@ class UtmDotCodes {
 	 * Update link post meta data when saving the link
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.1
 	 *
 	 * @param $post_id				The post ID
 	 *
@@ -474,9 +536,9 @@ class UtmDotCodes {
 							self::POST_TYPE . '_url' => $_POST[self::POST_TYPE . '_url'],
 							self::POST_TYPE . '_source' => $network,
 							self::POST_TYPE . '_medium' => __( 'social', UTMDC_TEXT_DOMAIN ),
-							self::POST_TYPE . '_campaign' => $_POST[self::POST_TYPE . '_campaign'],
-							self::POST_TYPE . '_term' => $_POST[self::POST_TYPE . '_term'],
-							self::POST_TYPE . '_content' => $_POST[self::POST_TYPE . '_content']
+							self::POST_TYPE . '_campaign' => $this->filter_link_element( $_POST[self::POST_TYPE . '_campaign'] ),
+							self::POST_TYPE . '_term' => $this->filter_link_element( $_POST[self::POST_TYPE . '_term'] ),
+							self::POST_TYPE . '_content' => $this->filter_link_element( $_POST[self::POST_TYPE . '_content'] )
 						]
 					];
 
@@ -496,8 +558,12 @@ class UtmDotCodes {
 
 			array_map( function($key) {
 				$field = self::POST_TYPE . '_' . $key;
-				$updated = sanitize_text_field( $_POST[$field] );
 				$current = get_post_meta( $_POST['ID'], $field, true );
+				$updated = sanitize_text_field( $_POST[$field] );
+
+				if ( false === strpos( $field, 'url' ) ) {
+					$updated = $this->filter_link_element( $updated );
+				}
 
 				if ( '' === $updated ) {
 					delete_post_meta( $_POST['ID'], $field, $current );
@@ -549,7 +615,7 @@ class UtmDotCodes {
 	 * a post array with individual utm entries or an array with utm entries contained within a meta_input entry
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.1
 	 *
 	 * @param $data					Array of post data containing associative utm input values, or Array of post data
 	 * 								containing meta_input array with associative utm input values
@@ -563,7 +629,7 @@ class UtmDotCodes {
 		}
 
 		$params_array = array_map(
-			'sanitize_text_field',
+			[ $this, 'filter_link_element' ],
 			array_filter([
 				'utm_source' => $data[self::POST_TYPE . '_source'],
 				'utm_medium' => $data[self::POST_TYPE . '_medium'],
@@ -735,7 +801,7 @@ class UtmDotCodes {
 	 *
 	 * @param $post_type			Post type slug
 	 */
-	public function filter_ui($post_type) {
+	public function filter_ui( $post_type ) {
 		global $wpdb;
 
 		$filter_options = $this->link_elements;
@@ -833,7 +899,7 @@ class UtmDotCodes {
 	 * Generate alternate output for social inputs in link creation form to display when batch creation active
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.1
 	 *
 	 * @param $key					String name of link element
 	 *
@@ -858,7 +924,7 @@ class UtmDotCodes {
 					esc_url( admin_url( 'options-general.php?page=' . self::SETTINGS_PAGE ) ),
 					$network_count,
 					__( 'active', UTMDC_TEXT_DOMAIN ),
-					ngettext(
+					_n(
 						__( 'network', UTMDC_TEXT_DOMAIN ),
 						__( 'networks', UTMDC_TEXT_DOMAIN ),
 						$network_count
@@ -867,7 +933,7 @@ class UtmDotCodes {
 				break;
 
 			case 'medium':
-				$alt = __( 'Social', UTMDC_TEXT_DOMAIN );
+				$alt = __( 'social', UTMDC_TEXT_DOMAIN );
 				break;
 
 		}
@@ -889,7 +955,7 @@ class UtmDotCodes {
 	 * Add link count to dashboard glance
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.1
 	 */
 	public function add_glance( $glances ) {
 		$post_count = number_format_i18n( wp_count_posts( self::POST_TYPE )->publish );
@@ -900,7 +966,7 @@ class UtmDotCodes {
 			( current_user_can('edit_posts') ) ? admin_url('edit.php?post_type='.$post_object->name) : 'javascript:;',
 			'utmdclink-count',
 			$post_count,
-			ngettext(
+			_n(
 				$post_object->labels->singular_name,
 				$post_object->labels->name,
 				$post_count
@@ -958,6 +1024,36 @@ class UtmDotCodes {
 	 */
 	public function sanitize_url( $url ) {
 		return esc_url( $url );
+	}
+
+	/**
+	 * Apply format filters to link element based on current settings, additionally passes formatted string
+	 * to sanitize_text_field() to sanitize formatted element value
+	 *
+	 * @since 1.1
+	 * @version 1.1
+	 *
+	 * @param $element				String to format
+	 *
+	 * @return string				String with formatting applied
+	 */
+	public function filter_link_element( $element ) {
+
+		if ( 'on' == get_option(self::POST_TYPE . '_alphanumeric') ) {
+			$element = preg_replace( "/[^A-Za-z0-9\- ]/", '', $element );
+		}
+
+		if ( 'on' == get_option(self::POST_TYPE . '_lowercase') ) {
+			$element = strtolower( $element );
+		}
+
+		if ( 'on' == get_option(self::POST_TYPE . '_nospaces') ) {
+			$element = preg_replace( "/\s+/", '-', $element );
+		}
+
+		$element = sanitize_text_field( $element );
+
+		return $element;
 	}
 
 	/**
