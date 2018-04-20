@@ -11,4 +11,12 @@
 			<directory prefix="test-" suffix=".php">./tests/</directory>
 		</testsuite>
 	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<file>../classes/utmdotcodes.php</file>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-clover" target="build/logs/clover.xml"/>
+	</logging>
 </phpunit>
