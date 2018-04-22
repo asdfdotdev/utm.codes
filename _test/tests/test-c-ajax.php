@@ -34,7 +34,10 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		$response = json_decode($this->_last_response);
 
-		$this->assertTrue( $response->status == 200 );
+		$this->assertTrue(
+			$response->status == 200,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+		);
 	}
 
 	/**
@@ -53,7 +56,10 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		$response = json_decode($this->_last_response);
 
-		$this->assertTrue( $response->status == 404 );
+		$this->assertTrue(
+			$response->status == 404,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+		);
 	}
 
 	/**
@@ -74,7 +80,10 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		$response = json_decode($this->_last_response);
 
-		$this->assertTrue( $response->status == 500 );
+		$this->assertTrue(
+			$response->status == 500,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+		);
 	}
 
 	/**
@@ -93,6 +102,9 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		$response = json_decode($this->_last_response);
 
-		$this->assertTrue( $response->status == 500 );
+		$this->assertTrue(
+			$response->status == 500,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+		);
 	}
 }

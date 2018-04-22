@@ -1227,8 +1227,14 @@ class UtmDotCodes
 
 			if ( $is_valid_referer && $is_valid_url ) {
 				$url_check = wp_remote_get( $this->sanitize_url( $_REQUEST['url'] ) );
-				$response['status'] = $url_check['response']['code'];
-				$response['message'] = $url_check['response']['message'];
+
+				if ( is_wp_error($url_check) ) {
+					$response['message'] = $url_check->get_error_messages();
+				}
+				else {
+					$response['status'] = $url_check['response']['code'];
+					$response['message'] = $url_check['response']['message'];
+				}
 			}
 
 			wp_send_json( $response );
