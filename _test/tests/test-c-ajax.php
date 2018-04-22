@@ -24,7 +24,7 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 	function test_check_url_response_valid() {
 		$this->_setRole( 'administrator' );
 
-		$_POST['url'] = 'http://utm.codes';
+		$_POST['url'] = 'https://utm.codes';
 		$_POST['key'] = wp_create_nonce( UtmDotCodes::REST_NONCE_LABEL );
 
 		try {
@@ -46,7 +46,7 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 	function test_check_url_response_invalid() {
 		$this->_setRole( 'administrator' );
 
-		$_POST['url'] = 'http://utm.codes/asdf';
+		$_POST['url'] = 'https://utm.codes/asdf';
 		$_POST['key'] = wp_create_nonce( UtmDotCodes::REST_NONCE_LABEL );
 
 		try {
@@ -70,7 +70,7 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		wp_create_nonce( UtmDotCodes::REST_NONCE_LABEL );
 
-		$_POST['url'] = 'http://utm.codes';
+		$_POST['url'] = 'https://utm.codes';
 		$_POST['key'] = 'oops';
 
 		try {

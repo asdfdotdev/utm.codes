@@ -1220,13 +1220,18 @@ class UtmDotCodes
 			$is_valid_referer = false !== check_ajax_referer( self::REST_NONCE_LABEL, 'key', false );
 			$is_valid_url = $_REQUEST['url'] == filter_var( $_REQUEST['url'], FILTER_VALIDATE_URL );
 
+			$args = [];
+			if ( $this->is_test() ){
+				$args = ['sslverify' => false];
+			}
+
 			$response = [
 				'message' => 'Could not process request.',
 				'status' => 500
 			];
 
 			if ( $is_valid_referer && $is_valid_url ) {
-				$url_check = wp_remote_get( $this->sanitize_url( $_REQUEST['url'] ) );
+				$url_check = wp_remote_get( $this->sanitize_url( $_REQUEST['url'] ), $args );
 
 				if ( is_wp_error($url_check) ) {
 					$response['message'] = $url_check->get_error_messages();
