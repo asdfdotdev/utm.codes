@@ -1,6 +1,6 @@
 # utm.codes Developer Repository
 
-[![Build Status](https://travis-ci.org/christopherldotcom/utm.codes.svg?branch=master)](https://travis-ci.org/christopherldotcom/utm.codes) [![codecov](https://codecov.io/gh/chrislarrycarl/codes.utm/branch/master/graph/badge.svg?token=rc0h4XOMwl)](https://codecov.io/gh/chrislarrycarl/codes.utm) 
+[![Build Status](https://travis-ci.org/christopherldotcom/utm.codes.svg?branch=master)](https://travis-ci.org/christopherldotcom/utm.codes) [![codecov](https://codecov.io/gh/christopherldotcom/utm.codes/branch/master/graph/badge.svg)](https://codecov.io/gh/christopherldotcom/utm.codes)
 
 This is the developer repo for utm.codes, a WordPress plugin.
 
