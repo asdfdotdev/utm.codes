@@ -480,10 +480,11 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 
 		$test_id = edit_post();
 
-		$post_labels = array_column(
-			wp_get_post_terms($test_id, UtmDotCodes::POST_TYPE . '-label'),
-			'name'
-		);
+		$post_labels = [];
+
+		array_map( function($term) use($test_id, &$post_labels) {
+			$post_labels[] = $term->name;
+		}, wp_get_post_terms($test_id, UtmDotCodes::POST_TYPE . '-label'));
 
 		sort($test_labels);
 		sort($post_labels);
@@ -563,11 +564,11 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 
 		$x = 0;
 		array_map( function($test_post) use($test_posts, $test_networks, $test_labels, $x) {
+			$post_labels = [];
 
-			$post_labels = array_column(
-				wp_get_post_terms($test_post->ID, UtmDotCodes::POST_TYPE . '-label'),
-				'name'
-			);
+			array_map( function($term) use(&$post_labels) {
+				$post_labels[] = $term->name;
+			}, wp_get_post_terms($test_post->ID, UtmDotCodes::POST_TYPE . '-label'));
 
 			sort($post_labels);
 
