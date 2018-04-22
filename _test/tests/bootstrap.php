@@ -39,7 +39,7 @@ require_once $wp_tests_dir . '/includes/functions.php';
  * Manually load the utm.codes plugin for testing
  */
 function _manually_load_utm_dot_codes() {
-	require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/utm-dot-codes.php';
+	require_once '../utm-dot-codes.php';
 	update_option( 'active_plugins', 'utm-dot-codes/utm-dot-codes.php' );
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_utm_dot_codes' );
