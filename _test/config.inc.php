@@ -14,5 +14,5 @@ putenv( 'WP_TEST_DIR=' );
 // Absolute path to plugin root directory
 putenv( 'UTMDC_PLUGIN_DIR=' );
 
-// A valid Goo.gl API Key
-putenv( 'UTMDC_GOOGLE_API=' );
+// A valid Bitly API Generic Access Token
+putenv( 'UTMDC_BITLY_API=' );

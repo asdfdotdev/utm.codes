@@ -8,7 +8,7 @@
 define( 'UTMDC_IS_TEST', true );
 
 $config_path = realpath(dirname(__FILE__).'/../');
-$env_variables_set = ( (bool)getenv( 'UTMDC_PLUGIN_DIR' ) && (bool)getenv( 'UTMDC_GOOGLE_API' ) );
+$env_variables_set = ( (bool)getenv( 'UTMDC_PLUGIN_DIR' ) && (bool)getenv( 'UTMDC_BITLY_API' ) );
 
 if ( !$env_variables_set ) {
 	if ( file_exists( $config_path . '/config.inc.local.php' ) ) {

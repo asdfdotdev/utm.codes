@@ -1,0 +1,78 @@
+.utmdclink_url {
+
+	span {
+		display: inline !important;
+		position: relative;
+
+		i {
+			font-size: 20px;
+			border: solid 1px darken($wp_gray, 10%);
+			border-radius: 100%;
+			margin-left: 5px;
+			opacity: 0;
+			transition: opacity 0.4s;
+			position: absolute;
+			z-index: 5;
+		}
+
+		.fa-circle {
+			color: $wp_gray;
+			z-index: 10;
+		}
+
+		.fa-question-circle {
+			color: darken($wp_gray, 20%);
+		}
+
+		.fa-check-circle {
+			color: $wp_green;
+		}
+
+		.fa-times-circle {
+			color: $wp_red;
+		}
+
+		.fa-circle {
+			opacity: 1;
+		}
+
+		&.valid {
+			.fa-question-circle,
+			.fa-circle,
+			.fa-times-circle {
+				opacity: 0;
+			}
+
+			.fa-check-circle {
+				opacity: 1;
+				z-index: 10;
+			}
+		}
+
+		&.invalid {
+			.fa-question-circle,
+			.fa-circle,
+			.fa-check-circle {
+				opacity: 0;
+			}
+
+			.fa-times-circle {
+				opacity: 1;
+				z-index: 10;
+			}
+		}
+
+		&.unknown {
+			.fa-check-circle,
+			.fa-circle,
+			.fa-times-circle {
+				opacity: 0;
+			}
+
+			.fa-question-circle {
+				opacity: 1;
+				z-index: 10;
+			}
+		}
+	}
+}

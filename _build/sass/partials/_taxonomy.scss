@@ -1,0 +1,30 @@
+.taxonomy-utmdclink-label {
+
+	.form-field {
+		&.term-name-wrap,
+		&.term-description-wrap {
+			p {
+				display: none;
+			}
+		}
+
+		&.term-slug-wrap {
+			display: none;
+		}
+	}
+
+	.wp-list-table {
+		&.tags {
+			.column-slug {
+				display: none;
+			}
+		}
+
+		.row-actions {
+			.inline {
+				display: none;
+			}
+		}
+	}
+
+}

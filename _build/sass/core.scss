@@ -1,8 +1,13 @@
 // Mixins
 @import 'mixins/_toggle.scss';
 
+// Settings & Globals
+@import '_/settings';
+
 // Partials
 @import 'partials/dashboard';
 @import 'partials/settings';
 @import 'partials/meta-box';
 @import 'partials/post-list';
+@import "partials/taxonomy";
+@import "partials/url-checker";

@@ -10,7 +10,6 @@
  */
 class TestUtmDotCodesUnit extends WP_UnitTestCase
 {
-
 	public function setUp() {
 		parent::setUp();
 	}
@@ -110,6 +109,49 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 	/**
 	 * @depends test_version_numbers_active
 	 */
+	function test_post_taxonomy() {
+		$plugin = new UtmDotCodes();
+
+		update_option( UtmDotCodes::POST_TYPE . '_labels', '' );
+		$plugin->create_post_type();
+		$taxonomy_object = get_object_taxonomies( UtmDotCodes::POST_TYPE, 'objects' );
+
+		$this->assertEquals( count($taxonomy_object), 0 );
+
+		update_option( UtmDotCodes::POST_TYPE . '_labels', 'on' );
+		$plugin->create_post_type();
+		$taxonomy_object = get_object_taxonomies( UtmDotCodes::POST_TYPE, 'objects' )['utmdclink-label'];
+
+		$this->assertEquals( $taxonomy_object->labels->name, 'Link Labels');
+		$this->assertEquals( $taxonomy_object->labels->singular_name, 'Link Label');
+		$this->assertEquals( $taxonomy_object->labels->menu_name, 'Link Labels');
+		$this->assertEquals( $taxonomy_object->labels->all_items, 'All Link Labels');
+		$this->assertEquals( $taxonomy_object->labels->edit_item, 'Edit Link Label');
+		$this->assertEquals( $taxonomy_object->labels->view_item, 'View Link Label');
+		$this->assertEquals( $taxonomy_object->labels->update_item, 'Update Link Label');
+		$this->assertEquals( $taxonomy_object->labels->add_new_item, 'Add New Link Label');
+		$this->assertEquals( $taxonomy_object->labels->new_item_name, 'New Label');
+		$this->assertEquals( $taxonomy_object->labels->search_items, 'Search Labels');
+		$this->assertEquals( $taxonomy_object->labels->separate_items_with_commas, 'Separate labels with commas.');
+		$this->assertEquals( $taxonomy_object->labels->add_or_remove_items, 'Add or remove labels');
+		$this->assertEquals( $taxonomy_object->labels->choose_from_most_used, 'Select from most popular labels.');
+		$this->assertEquals( $taxonomy_object->labels->not_found, 'Not Found');
+		$this->assertEquals( $taxonomy_object->labels->no_terms, 'No labels');
+		$this->assertEquals( $taxonomy_object->labels->items_list, 'Labels list');
+		$this->assertEquals( $taxonomy_object->labels->items_list_navigation, 'Labels list navigation');
+		$this->assertFalse( $taxonomy_object->hierarchical );
+		$this->assertFalse( $taxonomy_object->public );
+		$this->assertFalse( $taxonomy_object->publicly_queryable );
+		$this->assertTrue( $taxonomy_object->show_ui );
+		$this->assertTrue( $taxonomy_object->show_admin_column );
+		$this->assertFalse( $taxonomy_object->show_in_nav_menus );
+		$this->assertFalse( $taxonomy_object->show_in_rest );
+		$this->assertTrue( $taxonomy_object->show_tagcloud );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
 	function test_bulk_action_remove() {
 		$plugin = new UtmDotCodes();
 
@@ -186,6 +228,19 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$setting_on = $plugin->filter_link_element( $unformatted );
 
 		$this->assertTrue( $setting_on == 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'' );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_validate_url() {
+		$plugin = new UtmDotCodes();
+		
+		$valid_url = $plugin->validate_url('https://utm.codes');
+		$this->assertEquals( $valid_url, 'https://utm.codes' );
+
+		$invalid_url = $plugin->validate_url('invalid');
+		$this->assertEquals( $invalid_url, get_home_url( null, '/' ) );
 	}
 
 }

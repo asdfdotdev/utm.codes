@@ -10,10 +10,6 @@
 				.attr('required', !$(this).is(':checked'));
 		});
 
-		$('.utmdclinks-copy').on('click', function(event){
-			$(this).select();
-		});
-
 	});
 
 })(jQuery);

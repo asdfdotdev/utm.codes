@@ -10,7 +10,6 @@
  */
 class TestUtmDotCodesIntegration extends WP_UnitTestCase
 {
-
 	public function setUp() {
 		parent::setUp();
 	}
@@ -51,8 +50,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			]
 		);
 
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		$test_id = edit_post();
 
@@ -108,8 +106,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			]
 		);
 
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		$test_id = edit_post();
 
@@ -137,7 +134,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
 	 */
 	function test_post_create_shorten() {
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_GOOGLE_API') );
+		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_BITLY_API') );
 
 		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
 
@@ -167,8 +164,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			]
 		);
 
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		$test_id = edit_post();
 
@@ -189,7 +185,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 		$this->assertEquals( $test_meta['utmdclink_campaign'][0], $test_data[UtmDotCodes::POST_TYPE . '_campaign'] );
 		$this->assertEquals( $test_meta['utmdclink_term'][0], $test_data[UtmDotCodes::POST_TYPE . '_term'] );
 		$this->assertEquals( $test_meta['utmdclink_content'][0], $test_data[UtmDotCodes::POST_TYPE . '_content'] );
-		$this->assertTrue( strpos($test_meta['utmdclink_shorturl'][0], 'https://goo.gl/') !== false );
+		$this->assertTrue( strpos($test_meta['utmdclink_shorturl'][0], 'http://bit.ly/') !== false );
 	}
 
 	/**
@@ -289,7 +285,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
 	 */
 	function test_post_create_batch_shorten() {
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_GOOGLE_API') );
+		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_BITLY_API') );
 
 		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
 
@@ -362,7 +358,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			$this->assertEquals( $test_meta['utmdclink_campaign'][$x], $_POST[UtmDotCodes::POST_TYPE . '_campaign'] );
 			$this->assertEquals( $test_meta['utmdclink_term'][$x], $_POST[UtmDotCodes::POST_TYPE . '_term'] );
 			$this->assertEquals( $test_meta['utmdclink_content'][$x], $_POST[UtmDotCodes::POST_TYPE . '_content'] );
-			$this->assertTrue( strpos($test_meta['utmdclink_shorturl'][$x], 'https://goo.gl/') !== false );
+			$this->assertTrue( strpos($test_meta['utmdclink_shorturl'][$x], 'http://bit.ly/') !== false );
 			$this->assertEquals(
 				$test_post->post_content,
 				sprintf(
@@ -416,8 +412,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			]
 		);
 
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		$test_id = edit_post();
 
@@ -439,6 +434,147 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 		$this->assertEquals( $test_meta['utmdclink_term'][0], 'utm-d0t-33---codes' );
 		$this->assertEquals( $test_meta['utmdclink_content'][0], 'val-id--paramz' );
 		$this->assertFalse( isset($test_meta['utmdclink_shorturl'][0]) );
+	}
+
+	/**
+	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 */
+	function test_post_create_label() {
+		$plugin = new UtmDotCodes();
+
+		update_option(UtmDotCodes::POST_TYPE . '_labels', 'on');
+
+		$plugin->create_post_type();
+		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
+
+		$test_data = [
+			'utm_source' => rand(25, 173929),
+			'utm_medium' => 'utm.codes',
+			'utm_campaign' => md5( rand(42, 4910984) ),
+			'utm_term' => wp_generate_password( 15, false ),
+			'utm_content' => md5( wp_generate_password( 30, true, true ) ),
+		];
+
+		array_map(function($key, $value) use(&$test_data) {
+			$test_data[str_replace('utm', UtmDotCodes::POST_TYPE, $key)] = $value;
+			unset($test_data[$key]);
+		}, array_keys($test_data), $test_data );
+
+		$test_labels = array_map(function($value){
+			return md5( rand(42, 4565882) );
+		}, array_fill(0, 10, 'placeholder') );
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID' => $post->ID,
+				'tax_input' => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
+				UtmDotCodes::POST_TYPE . '_url' => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => '',
+				UtmDotCodes::POST_TYPE . '_shorten' => '',
+				UtmDotCodes::POST_TYPE . '_batch' => '',
+			]
+		);
+
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
+		$test_id = edit_post();
+
+		$post_labels = array_column(
+			wp_get_post_terms($test_id, UtmDotCodes::POST_TYPE . '-label'),
+			'name'
+		);
+
+		sort($test_labels);
+		sort($post_labels);
+
+		$this->assertEquals($test_labels, $post_labels);
+	}
+
+	/**
+	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 */
+	function test_post_create_batch_labels() {
+		$plugin = new UtmDotCodes();
+
+		update_option(UtmDotCodes::POST_TYPE . '_labels', 'on');
+
+		$plugin->create_post_type();
+		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
+
+		$test_data = [
+			'utm_source' => 'this should be overwritten',
+			'utm_medium' => 'so should this',
+			'utm_campaign' => md5( rand(42, 4910984) ),
+			'utm_term' => wp_generate_password( 15, false ),
+			'utm_content' => md5( wp_generate_password( 30, true, true ) ),
+		];
+
+		$test_networks = ['a', 'b', 'c', 'd', 'e'];
+		$test_networks = array_map( function($value){
+			return wp_generate_password( 15, false );
+		}, $test_networks );
+		$test_networks = array_fill_keys( $test_networks, 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_social', $test_networks );
+		$test_networks = array_keys($test_networks);
+
+		array_map(function($key, $value) use(&$test_data) {
+			$test_data[str_replace('utm', UtmDotCodes::POST_TYPE, $key)] = $value;
+			unset($test_data[$key]);
+		}, array_keys($test_data), $test_data );
+
+		$test_labels = array_map(function($value){
+			return md5( rand(42, 4565882) );
+		}, array_fill(0, 10, 'placeholder') );
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID' => $post->ID,
+				'tax_input' => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
+				UtmDotCodes::POST_TYPE . '_url' => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => '',
+				UtmDotCodes::POST_TYPE . '_shorten' => '',
+				UtmDotCodes::POST_TYPE . '_batch' => 'on',
+			]
+		);
+
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+
+		edit_post();
+
+		$test_posts = get_posts(
+			[
+				'posts_per_page'	=> 100,
+				'offset'			=> 0,
+				'meta_key'			=> UtmDotCodes::POST_TYPE . '_url',
+				'meta_value'		=> $_POST[UtmDotCodes::POST_TYPE . '_url'],
+				'post_type'			=> UtmDotCodes::POST_TYPE,
+				'author'			=> $user_id,
+				'post_status'		=> 'publish',
+				'suppress_filters'	=> true,
+				'orderby'			=> 'date',
+				'order'				=> 'DESC'
+			]
+		);
+
+		sort($test_labels);
+
+		$x = 0;
+		array_map( function($test_post) use($test_posts, $test_networks, $test_labels, $x) {
+
+			$post_labels = array_column(
+				wp_get_post_terms($test_post->ID, UtmDotCodes::POST_TYPE . '-label'),
+				'name'
+			);
+
+			sort($post_labels);
+
+			$this->assertEquals($test_labels, $post_labels);
+
+			++$x;
+		}, $test_posts );
 	}
 
 	/**
@@ -468,6 +604,15 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			[$plugin, 'meta_box_contents']
 		);
 		$this->assertNull( $wp_meta_boxes[UtmDotCodes::POST_TYPE]['normal']['high']['utmdc_link_meta_box']['args'] );
+	}
+
+	/**
+	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 */
+	function test_slug_meta_box() {
+		global $wp_meta_boxes;
+
+		$this->assertFalse( array_key_exists('slugdiv', $wp_meta_boxes['utmdclink']['normal']['high']) );
 	}
 
 	/**
@@ -531,7 +676,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	function test_editor_meta_box_contents_editing() {
 		global $post;
 
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_GOOGLE_API') );
+		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_BITLY_API') );
 
 		$plugin = new UtmDotCodes();
 		$plugin->create_post_type();
@@ -563,8 +708,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 			]
 		);
 
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		$test_id = edit_post();
 		$post = get_post($test_id);
@@ -636,9 +780,6 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
 	 */
 	function test_settings_page() {
-		$start_page = get_current_screen();
-		$this->assertNull( $start_page );
-
 		set_current_screen( 'settings_page_utm-dot-codes' );
 		$settings_page = get_current_screen();
 		$this->assertEquals( $settings_page->base, 'settings_page_utm-dot-codes' );
@@ -662,7 +803,6 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 		$this->assertEquals( $wp_registered_settings['utmdclink_apikey']['type'], 'string' );
 		$this->assertEquals( $wp_registered_settings['utmdclink_apikey']['group'], UtmDotCodes::SETTINGS_GROUP );
 	}
-
 	/**
 	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
 	 */

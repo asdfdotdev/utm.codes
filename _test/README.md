@@ -37,7 +37,7 @@ Update the `config.inc.php` file to your needs:
 
 - **WP\_TEST\_DIR** - Path to the WordPress tests directory you setup in Step 1
 - **UTMDC\_PLUGIN\_DIR** - Path to the utm.codes plugin you're testing
-- **UTMDC\_GOOGLE\_API** - A valid Goo.gl API key
+- **UTMDC\_BITLY\_API** - A valid Bitly API Generic Access Token
 
 > Note: Rename to `config.inc.local.php` (ignored in .gitignore) for environment personalization.
 

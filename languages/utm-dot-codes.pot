@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the utm.codes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: utm.codes 1.1\n"
+"Project-Id-Version: utm.codes 1.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/source\n"
-"POT-Creation-Date: 2018-04-08 23:28:19+00:00\n"
+"POT-Creation-Date: 2018-04-22 15:35:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,259 +12,370 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: classes/utmdotcodes.php:66
+#: classes/utmdotcodes.php:68
 msgid "Link URL"
 msgstr ""
 
-#: classes/utmdotcodes.php:67
+#: classes/utmdotcodes.php:69
 msgid "URL"
 msgstr ""
 
-#: classes/utmdotcodes.php:72
+#: classes/utmdotcodes.php:75
 msgid "Campaign Source"
 msgstr ""
 
-#: classes/utmdotcodes.php:73 classes/utmdotcodes.php:708
+#: classes/utmdotcodes.php:76 classes/utmdotcodes.php:819
 msgid "Source"
 msgstr ""
 
-#: classes/utmdotcodes.php:79
+#: classes/utmdotcodes.php:82
 msgid "Campaign Medium"
 msgstr ""
 
-#: classes/utmdotcodes.php:80 classes/utmdotcodes.php:709
+#: classes/utmdotcodes.php:83 classes/utmdotcodes.php:820
 msgid "Medium"
 msgstr ""
 
-#: classes/utmdotcodes.php:86
+#: classes/utmdotcodes.php:89
 msgid "Campaign Name"
 msgstr ""
 
-#: classes/utmdotcodes.php:87
+#: classes/utmdotcodes.php:90
 msgid "Name"
 msgstr ""
 
-#: classes/utmdotcodes.php:92
+#: classes/utmdotcodes.php:95
 msgid "Campaign Term"
 msgstr ""
 
-#: classes/utmdotcodes.php:93 classes/utmdotcodes.php:711
+#: classes/utmdotcodes.php:96 classes/utmdotcodes.php:822
 msgid "Term"
 msgstr ""
 
-#: classes/utmdotcodes.php:98
+#: classes/utmdotcodes.php:101
 msgid "Campaign Content"
 msgstr ""
 
-#: classes/utmdotcodes.php:99 classes/utmdotcodes.php:712
+#: classes/utmdotcodes.php:102 classes/utmdotcodes.php:823
 msgid "Content"
 msgstr ""
 
-#: classes/utmdotcodes.php:104 classes/utmdotcodes.php:105
+#: classes/utmdotcodes.php:107 classes/utmdotcodes.php:108
 msgid "Short URL"
 msgstr ""
 
-#: classes/utmdotcodes.php:114
+#: classes/utmdotcodes.php:117
 msgctxt "admin menu"
 msgid "utm.codes"
 msgstr ""
 
-#: classes/utmdotcodes.php:115
+#: classes/utmdotcodes.php:118
 msgctxt "post type general name"
 msgid "Marketing Links"
 msgstr ""
 
-#: classes/utmdotcodes.php:116
+#: classes/utmdotcodes.php:119
 msgctxt "post type singular name"
 msgid "Marketing Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:117
+#: classes/utmdotcodes.php:120
 msgctxt "add new on admin bar"
 msgid "Marketing Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:118
+#: classes/utmdotcodes.php:121
 msgctxt "marketing link"
 msgid "Add New Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:119
+#: classes/utmdotcodes.php:122
 msgid "Add New Marketing Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:120
+#: classes/utmdotcodes.php:123
 msgid "New Marketing Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:121
+#: classes/utmdotcodes.php:124
 msgid "Edit Marketing Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:122
+#: classes/utmdotcodes.php:125
 msgid "View Marketing Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:123
+#: classes/utmdotcodes.php:126
 msgid "All Marketing Links"
 msgstr ""
 
-#: classes/utmdotcodes.php:124
+#: classes/utmdotcodes.php:127
 msgid "Search Marketing Links"
 msgstr ""
 
-#: classes/utmdotcodes.php:125
+#: classes/utmdotcodes.php:128
 msgid "Parent Link:"
 msgstr ""
 
-#: classes/utmdotcodes.php:126
+#: classes/utmdotcodes.php:129
 msgid "No marketing links found."
 msgstr ""
 
-#: classes/utmdotcodes.php:127
+#: classes/utmdotcodes.php:130
 msgid "No marketing links found in Trash."
 msgstr ""
 
-#: classes/utmdotcodes.php:129
+#: classes/utmdotcodes.php:132
 msgid "utm.codes Marketing Links"
 msgstr ""
 
-#: classes/utmdotcodes.php:185
+#: classes/utmdotcodes.php:150
+msgctxt "Taxonomy General Name"
+msgid "Link Labels"
+msgstr ""
+
+#: classes/utmdotcodes.php:151
+msgctxt "Taxonomy Singular Name"
+msgid "Link Label"
+msgstr ""
+
+#: classes/utmdotcodes.php:152
+msgid "Link Labels"
+msgstr ""
+
+#: classes/utmdotcodes.php:153
+msgid "All Link Labels"
+msgstr ""
+
+#: classes/utmdotcodes.php:154
+msgid "Edit Link Label"
+msgstr ""
+
+#: classes/utmdotcodes.php:155
+msgid "View Link Label"
+msgstr ""
+
+#: classes/utmdotcodes.php:156
+msgid "Update Link Label"
+msgstr ""
+
+#: classes/utmdotcodes.php:157
+msgid "Add New Link Label"
+msgstr ""
+
+#: classes/utmdotcodes.php:158
+msgid "New Label"
+msgstr ""
+
+#: classes/utmdotcodes.php:159
+msgid "Search Labels"
+msgstr ""
+
+#: classes/utmdotcodes.php:160
+msgid "Separate labels with commas."
+msgstr ""
+
+#: classes/utmdotcodes.php:161
+msgid "Add or remove labels"
+msgstr ""
+
+#: classes/utmdotcodes.php:162
+msgid "Select from most popular labels."
+msgstr ""
+
+#: classes/utmdotcodes.php:163
+msgid "Not Found"
+msgstr ""
+
+#: classes/utmdotcodes.php:164
+msgid "No labels"
+msgstr ""
+
+#: classes/utmdotcodes.php:165
+msgid "Labels list"
+msgstr ""
+
+#: classes/utmdotcodes.php:166
+msgid "Labels list navigation"
+msgstr ""
+
+#: classes/utmdotcodes.php:222
 msgid "Invalid URL format. Replaced with site URL. Please update as needed."
 msgstr ""
 
-#: classes/utmdotcodes.php:192
+#: classes/utmdotcodes.php:229
 msgid "Unable to save link. Please try again, your changes were not saved."
 msgstr ""
 
-#: classes/utmdotcodes.php:227
+#: classes/utmdotcodes.php:236
+msgid "Unable to connect to Bitly API to shorten url. Please try again later."
+msgstr ""
+
+#: classes/utmdotcodes.php:243
+msgid "Bitly API rate limit exceeded, could not shorten url."
+msgstr ""
+
+#: classes/utmdotcodes.php:250
+msgid "Invalid Bitly API token, please update settings to create short urls."
+msgstr ""
+
+#: classes/utmdotcodes.php:285
 msgid "Shorten Completed Link When Saving"
 msgstr ""
 
-#: classes/utmdotcodes.php:246
+#: classes/utmdotcodes.php:304
 msgid "Marketing Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:259
+#: classes/utmdotcodes.php:317
 msgid "Create Social Links in Batch"
 msgstr ""
 
-#: classes/utmdotcodes.php:281
+#: classes/utmdotcodes.php:339
 msgid "utm.codes Plugin Settings"
 msgstr ""
 
-#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.1)  #-#-#-#-#
+#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.2)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: classes/utmdotcodes.php:282
+#: classes/utmdotcodes.php:340
 msgid "utm.codes"
 msgstr ""
 
-#: classes/utmdotcodes.php:331
-msgid "Formating Options"
+#: classes/utmdotcodes.php:395
+msgid "Link Format Options"
 msgstr ""
 
-#: classes/utmdotcodes.php:336
+#: classes/utmdotcodes.php:400
 msgctxt "Settings toggle for forcing lowercase."
 msgid "Force Lowercase:"
 msgstr ""
 
-#: classes/utmdotcodes.php:344 classes/utmdotcodes.php:360
-#: classes/utmdotcodes.php:376
+#: classes/utmdotcodes.php:408 classes/utmdotcodes.php:424
+#: classes/utmdotcodes.php:440 classes/utmdotcodes.php:461
 msgid "On"
 msgstr ""
 
-#: classes/utmdotcodes.php:345 classes/utmdotcodes.php:361
-#: classes/utmdotcodes.php:377
+#: classes/utmdotcodes.php:409 classes/utmdotcodes.php:425
+#: classes/utmdotcodes.php:441 classes/utmdotcodes.php:462
 msgid "Off"
 msgstr ""
 
-#: classes/utmdotcodes.php:352
+#: classes/utmdotcodes.php:416
 msgctxt "Settings toggle for alphanumeric only."
 msgid "Alphanumeric Only:"
 msgstr ""
 
-#: classes/utmdotcodes.php:368
+#: classes/utmdotcodes.php:432
 msgctxt "Settings toggle for spaces removal."
 msgid "Remove Spaces:"
 msgstr ""
 
-#: classes/utmdotcodes.php:384
+#: classes/utmdotcodes.php:448
+msgid "Advanced Options"
+msgstr ""
+
+#: classes/utmdotcodes.php:453
+msgctxt "Setting to enable link labels."
+msgid "Link Labels:"
+msgstr ""
+
+#: classes/utmdotcodes.php:469
 msgid "Social Sources"
 msgstr ""
 
-#: classes/utmdotcodes.php:387
+#: classes/utmdotcodes.php:472
 msgid "Select sites to include when batch creating social links."
 msgstr ""
 
-#: classes/utmdotcodes.php:408
+#: classes/utmdotcodes.php:493
 msgid "URL Shortener"
 msgstr ""
 
-#: classes/utmdotcodes.php:411
-msgid "Setup Goo.gl api access to enable link shortening."
+#: classes/utmdotcodes.php:496
+msgid "Setup api access to enable link shortening."
 msgstr ""
 
-#: classes/utmdotcodes.php:416
+#: classes/utmdotcodes.php:501
 msgctxt "Settings input label for API key input."
-msgid "Goo.gl API Key:"
+msgid "Bitly Generic Access Token:"
 msgstr ""
 
-#: classes/utmdotcodes.php:428
-msgid "Need an API key?"
+#: classes/utmdotcodes.php:513
+msgid "Questions?"
 msgstr ""
 
-#: classes/utmdotcodes.php:429
-msgid "Click here to get one."
+#: classes/utmdotcodes.php:514
+msgid "Click here for more details."
 msgstr ""
 
-#: classes/utmdotcodes.php:472
+#: classes/utmdotcodes.php:558
 msgid "Settings"
 msgstr ""
 
-#: classes/utmdotcodes.php:476
+#: classes/utmdotcodes.php:562
 msgid "Code"
 msgstr ""
 
-#: classes/utmdotcodes.php:519 classes/utmdotcodes.php:538
-#: classes/utmdotcodes.php:936
+#: classes/utmdotcodes.php:605 classes/utmdotcodes.php:624
+#: classes/utmdotcodes.php:1085
 msgid "social"
 msgstr ""
 
-#: classes/utmdotcodes.php:707
+#: classes/utmdotcodes.php:818
 msgid "Link"
 msgstr ""
 
-#: classes/utmdotcodes.php:710
+#: classes/utmdotcodes.php:821
 msgid "Campaign"
 msgstr ""
 
-#: classes/utmdotcodes.php:713
+#: classes/utmdotcodes.php:824
 msgid "Copy Links"
 msgstr ""
 
-#: classes/utmdotcodes.php:753
+#: classes/utmdotcodes.php:865
 msgctxt "Post list copy link input label"
 msgid "Full:"
 msgstr ""
 
-#: classes/utmdotcodes.php:759
+#: classes/utmdotcodes.php:871
 msgctxt "Post list copy link input label"
 msgid "Short:"
 msgstr ""
 
-#: classes/utmdotcodes.php:837
+#: classes/utmdotcodes.php:949
 msgid "Any"
 msgstr ""
 
-#: classes/utmdotcodes.php:923
+#: classes/utmdotcodes.php:980
+msgid "Any Label"
+msgstr ""
+
+#: classes/utmdotcodes.php:1072
 msgctxt ""
 "Batch link creation notice, links to settings page with number of active "
 "networks"
 msgid "Individual links will be created with unique source for"
 msgstr ""
 
-#: classes/utmdotcodes.php:926
+#: classes/utmdotcodes.php:1075
 msgid "active"
+msgstr ""
+
+#: classes/utmdotcodes.php:1091
+msgid "Unable to validate url, please check manually."
+msgstr ""
+
+#: classes/utmdotcodes.php:1092
+msgid "Update Link URL to check status."
+msgstr ""
+
+#: classes/utmdotcodes.php:1093
+msgid "Link appears invalid, please check before saving."
+msgstr ""
+
+#: classes/utmdotcodes.php:1094
+msgid "Link appears valid."
 msgstr ""
 
 #: classes/utmdotcodes_activation.php:42

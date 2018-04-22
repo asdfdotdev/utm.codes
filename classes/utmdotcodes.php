@@ -6,13 +6,14 @@
 /**
  * Class UtmDotCodes
  */
-class UtmDotCodes {
-
+class UtmDotCodes
+{
 	const POST_TYPE = 'utmdclink';
 	const NONCE_LABEL = 'UTMDC_nonce';
+	const REST_NONCE_LABEL = 'UTMDC_REST_nonce';
 	const SETTINGS_PAGE = 'utm-dot-codes';
 	const SETTINGS_GROUP = 'UTMDC_settings_group';
-	const API_URL = 'https://www.googleapis.com/urlshortener/v1/url';
+	const API_URL = 'https://api-ssl.bitly.com/v3';
 
 	public $link_elements;
 
@@ -20,7 +21,7 @@ class UtmDotCodes {
 	 * utm.codes constructor, creates post type elements and adds hooks/filters used by the plugin
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.2
 	 */
 	function __construct() {
 		global $pagenow;
@@ -37,6 +38,7 @@ class UtmDotCodes {
 		add_action( 'add_meta_boxes', [&$this, 'remove_meta_boxes'] );
 		add_action( 'save_post', [&$this, 'save_post'], 10, 1 );
 		add_action( 'dashboard_glance_items', [&$this, 'add_glance'] );
+		add_action( 'wp_ajax_utmdc_check_url_response', [&$this, 'check_url_response'] );
 
 		add_filter( 'plugin_action_links_' . UTMDC_PLUGIN_FILE, [&$this, 'add_links'], 10, 1 );
 		add_filter( 'wp_insert_post_data', [&$this, 'insert_post_data'], 10, 2 );
@@ -55,10 +57,10 @@ class UtmDotCodes {
 	}
 
 	/**
-	 * Create utm.codes link post type
+	 * Create utm.codes link post type and, if enabled in settings, labels taxonomy
 	 *
 	 * @since 1.0
-	 * @version 1.1
+	 * @version 1.2
 	 */
 	public function create_post_type() {
 		$this->link_elements = [
@@ -66,7 +68,8 @@ class UtmDotCodes {
 				'label' => __( 'Link URL', UTMDC_TEXT_DOMAIN ),
 				'short_label' => __( 'URL', UTMDC_TEXT_DOMAIN ),
 				'type' => 'url',
-				'required' => true
+				'required' => true,
+				'batch_alt' => true,
 			],
 			'source' => [
 				'label' => __( 'Campaign Source', UTMDC_TEXT_DOMAIN ),
@@ -110,7 +113,7 @@ class UtmDotCodes {
 
 		register_post_type( self::POST_TYPE,
 			[
-				'labels' => array(
+				'labels' =>	[
 					'menu_name'				=> _x( 'utm.codes', 'admin menu', UTMDC_TEXT_DOMAIN ),
 					'name'					=> _x( 'Marketing Links', 'post type general name', UTMDC_TEXT_DOMAIN ),
 					'singular_name'			=> _x( 'Marketing Link', 'post type singular name', UTMDC_TEXT_DOMAIN ),
@@ -125,7 +128,7 @@ class UtmDotCodes {
 					'parent_item_colon'		=> __( 'Parent Link:', UTMDC_TEXT_DOMAIN ),
 					'not_found'				=> __( 'No marketing links found.', UTMDC_TEXT_DOMAIN ),
 					'not_found_in_trash'	=> __( 'No marketing links found in Trash.', UTMDC_TEXT_DOMAIN )
-				),
+				],
 				'description'			=> __( 'utm.codes Marketing Links', UTMDC_TEXT_DOMAIN ),
 				'public'				=> false,
 				'publicly_queryable'	=> false,
@@ -136,9 +139,43 @@ class UtmDotCodes {
 				'has_archive'			=> false,
 				'hierarchical'			=> false,
 				'supports'				=> [ 'author' ],
-				'menu_icon' 			=> 'data:image/svg+xml;base64,' . base64_encode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22.222222222222225 -22.222222222222225 144.44444444444446 155.55555555555557" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><g transform="translate(-16.666666666666664 -11.11111111111111) scale(5.555555555555555)"><g fill="#000000"><path d="M15 2c-1.6 0-3.1.7-4.2 1.7.8.2 1.5.5 2.1.9.6-.4 1.3-.6 2.1-.6 2.2 0 4 1.8 4 4v5c0 2.2-1.8 4-4 4s-4-1.8-4-4V9.5c-.5-.6-1.2-1-2-1V13c0 3.3 2.7 6 6 6s6-2.7 6-6V8c0-3.3-2.7-6-6-6z"></path><path d="M9 22c1.6 0 3.1-.7 4.2-1.7-.8-.2-1.5-.5-2.1-.9-.6.4-1.3.6-2.1.6-2.2 0-4-1.8-4-4v-5c0-2.2 1.8-4 4-4s4 1.8 4 4v3.5c.5.6 1.2 1 2 1V11c0-3.3-2.7-6-6-6s-6 2.7-6 6v5c0 3.3 2.7 6 6 6z"></path></g></g></svg>')
+				'menu_icon' 			=> 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22.222222222222225 -22.222222222222225 144.44444444444446 155.55555555555557" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><g transform="translate(-16.666666666666664 -11.11111111111111) scale(5.555555555555555)"><g fill="#000000"><path d="M15 2c-1.6 0-3.1.7-4.2 1.7.8.2 1.5.5 2.1.9.6-.4 1.3-.6 2.1-.6 2.2 0 4 1.8 4 4v5c0 2.2-1.8 4-4 4s-4-1.8-4-4V9.5c-.5-.6-1.2-1-2-1V13c0 3.3 2.7 6 6 6s6-2.7 6-6V8c0-3.3-2.7-6-6-6z"></path><path d="M9 22c1.6 0 3.1-.7 4.2-1.7-.8-.2-1.5-.5-2.1-.9-.6.4-1.3.6-2.1.6-2.2 0-4-1.8-4-4v-5c0-2.2 1.8-4 4-4s4 1.8 4 4v3.5c.5.6 1.2 1 2 1V11c0-3.3-2.7-6-6-6s-6 2.7-6 6v5c0 3.3 2.7 6 6 6z"></path></g></g></svg>' )
 			]
 		);
+
+		if ( 'on' == get_option(self::POST_TYPE . '_labels') ) {
+			register_taxonomy( self::POST_TYPE . '-label', [ self::POST_TYPE ],
+				[
+					'labels' => [
+						'name'							=> _x( 'Link Labels', 'Taxonomy General Name', UTMDC_TEXT_DOMAIN ),
+						'singular_name'					=> _x( 'Link Label', 'Taxonomy Singular Name', UTMDC_TEXT_DOMAIN ),
+						'menu_name'						=> __( 'Link Labels', UTMDC_TEXT_DOMAIN ),
+						'all_items'						=> __( 'All Link Labels', UTMDC_TEXT_DOMAIN ),
+						'edit_item'						=> __( 'Edit Link Label', UTMDC_TEXT_DOMAIN ),
+						'view_item'						=> __( 'View Link Label', UTMDC_TEXT_DOMAIN ),
+						'update_item'					=> __( 'Update Link Label', UTMDC_TEXT_DOMAIN ),
+						'add_new_item'					=> __( 'Add New Link Label', UTMDC_TEXT_DOMAIN ),
+						'new_item_name'					=> __( 'New Label', UTMDC_TEXT_DOMAIN ),
+						'search_items'					=> __( 'Search Labels', UTMDC_TEXT_DOMAIN ),
+						'separate_items_with_commas'	=> __( 'Separate labels with commas.', UTMDC_TEXT_DOMAIN ),
+						'add_or_remove_items'			=> __( 'Add or remove labels', UTMDC_TEXT_DOMAIN ),
+						'choose_from_most_used'			=> __( 'Select from most popular labels.', UTMDC_TEXT_DOMAIN ),
+						'not_found'						=> __( 'Not Found', UTMDC_TEXT_DOMAIN ),
+						'no_terms'						=> __( 'No labels', UTMDC_TEXT_DOMAIN ),
+						'items_list'					=> __( 'Labels list', UTMDC_TEXT_DOMAIN ),
+						'items_list_navigation'			=> __( 'Labels list navigation', UTMDC_TEXT_DOMAIN ),
+					],
+					'hierarchical'				=> false,
+					'public'					=> false,
+					'publicly_queryable'		=> false,
+					'show_ui'					=> true,
+					'show_admin_column'			=> true,
+					'show_in_nav_menus'			=> false,
+					'show_in_rest'				=> false,
+					'show_tagcloud'				=> true
+				]
+			);
+		}
 	}
 
 	/**
@@ -165,14 +202,14 @@ class UtmDotCodes {
 	 * @version 1.0
 	 */
 	public function remove_meta_boxes() {
-		remove_meta_box('slugdiv', self::POST_TYPE, 'normal');
+		remove_meta_box( 'slugdiv', self::POST_TYPE, 'normal' );
 	}
 
 	/**
 	 * Generate and output links form markup, used to update post meta with link contents
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.2
 	 */
 	public function meta_box_contents() {
 		global $post;
@@ -190,6 +227,27 @@ class UtmDotCodes {
 					echo sprintf(
 						'<div class="notice notice-error"><p>%s</p></div>',
 						__( 'Unable to save link. Please try again, your changes were not saved.', UTMDC_TEXT_DOMAIN )
+					);
+					break;
+
+				case 100:
+					echo sprintf(
+						'<div class="notice notice-error"><p>%s</p></div>',
+						__( 'Unable to connect to Bitly API to shorten url. Please try again later.', UTMDC_TEXT_DOMAIN )
+					);
+					break;
+
+				case 403:
+					echo sprintf(
+						'<div class="notice notice-error"><p>%s</p></div>',
+						__( 'Bitly API rate limit exceeded, could not shorten url.', UTMDC_TEXT_DOMAIN )
+					);
+					break;
+
+				case 500:
+					echo sprintf(
+						'<div class="notice notice-error"><p>%s</p></div>',
+						__( 'Invalid Bitly API token, please update settings to create short urls.', UTMDC_TEXT_DOMAIN )
 					);
 					break;
 			}
@@ -290,15 +348,20 @@ class UtmDotCodes {
 	 * Generate and output links settings page options
 	 *
 	 * @since 1.0
-	 * @version 1.1
+	 * @version 1.2
 	 */
 	public function render_settings_options() {
 		$networks = [
 			'behance' => ['Behance', 'fab fa-behance'],
 			'blogger' => ['Blogger', 'fab fa-blogger-b'],
+			'digg' => ['Digg', 'fab fa-digg'],
+			'discourse' => ['Discourse', 'fab fa-discourse'],
 			'facebook' => ['Facebook', 'fab fa-facebook-f'],
 			'flickr' => ['Flickr', 'fab fa-flickr'],
+			'github' => ['GitHub', 'fab fa-github'],
+			'goodreads' => ['Goodreads', 'fab fa-goodreads'],
 			'googleplus' => ['Google+', 'fab fa-google-plus-g'],
+			'hacker-news' => ['Hacker News', 'fab fa-hacker-news'],
 			'instagram' => ['Instagram', 'fab fa-instagram'],
 			'linkedin' => ['LinkedIn', 'fab fa-linkedin-in'],
 			'medium' => ['Medium', 'fab fa-medium-m'],
@@ -310,15 +373,16 @@ class UtmDotCodes {
 			'stack-overflow' => ['Stack Overflow', 'fab fa-stack-overflow'],
 			'tumblr' => ['Tumblr', 'fab fa-tumblr'],
 			'twitter' => ['Twitter', 'fab fa-twitter'],
-			'vine' => ['Vine', 'fab fa-vine'],
 			'vimeo' => ['Vimeo', 'fab fa-vimeo'],
 			'xing' => ['Xing', 'fab fa-xing'],
-			'youtube' => ['YouTube', 'fab fa-youtube']
+			'yelp' => ['Yelp', 'fab fa-yelp'],
+			'youtube' => ['YouTube', 'fab fa-youtube'],
 		];
 
 		$lowercase = ( 'on' == get_option(self::POST_TYPE . '_lowercase') );
 		$alphanumeric = ( 'on' == get_option(self::POST_TYPE . '_alphanumeric') );
 		$nospaces = ( 'on' == get_option(self::POST_TYPE . '_nospaces') );
+		$labels = ( 'on' == get_option(self::POST_TYPE . '_labels') );
 	?>
 
 	<div class="wrap">
@@ -328,7 +392,7 @@ class UtmDotCodes {
 				<img src="<?php echo UTMDC_PLUGIN_URL;?>img/utm-dot-codes-logo.png" id="utm-dot-codes-logo" alt="utm.codes Settings" title="Configure your utm.codes plugin here.">
 			</h1>
 			<h1 class="title">
-				<?php _e( 'Formating Options', UTMDC_TEXT_DOMAIN ); ?>
+				<?php _e( 'Link Format Options', UTMDC_TEXT_DOMAIN ); ?>
 			</h1>
 			<table class="form-table">
 				<tr valign="top">
@@ -381,6 +445,27 @@ class UtmDotCodes {
 				</tr>
 			</table>
 			<h1 class="title">
+				<?php _e( 'Advanced Options', UTMDC_TEXT_DOMAIN ); ?>
+			</h1>
+			<table class="form-table">
+				<tr valign="top">
+					<th scope="row">
+						<?php _ex( 'Link Labels:', 'Setting to enable link labels.', UTMDC_TEXT_DOMAIN ); ?>
+					</th>
+					<td>
+						<?php
+						echo sprintf(
+							'<div class="utmdclinks-settings-toggle"><input id="%1$s" name="%1$s" type="checkbox" %2$s><label for="%1$s"><div data-on="%3$s" data-off="%4$s"></div></label></div>',
+							self::POST_TYPE . '_labels',
+							checked( $labels, true, false ),
+							__( 'On', UTMDC_TEXT_DOMAIN ),
+							__( 'Off', UTMDC_TEXT_DOMAIN )
+						);
+						?>
+					</td>
+				</tr>
+			</table>
+			<h1 class="title">
 				<?php _e( 'Social Sources', UTMDC_TEXT_DOMAIN ); ?>
 			</h1>
 			<p>
@@ -408,12 +493,12 @@ class UtmDotCodes {
 				<?php _e( 'URL Shortener', UTMDC_TEXT_DOMAIN ); ?>
 			</h1>
 			<p>
-				<?php _e( 'Setup Goo.gl api access to enable link shortening.', UTMDC_TEXT_DOMAIN ); ?>
+				<?php _e( 'Setup api access to enable link shortening.', UTMDC_TEXT_DOMAIN ); ?>
 			</p>
 			<table class="form-table">
 				<tr valign="top">
 					<th scope="row">
-						<?php _ex( 'Goo.gl API Key:', 'Settings input label for API key input.', UTMDC_TEXT_DOMAIN ); ?>
+						<?php _ex( 'Bitly Generic Access Token:', 'Settings input label for API key input.', UTMDC_TEXT_DOMAIN ); ?>
 					</th>
 					<td>
 						<?php
@@ -424,9 +509,9 @@ class UtmDotCodes {
 							);
 
 							echo sprintf(
-								'<br><sup>[ %s <a href="https://developers.google.com/url-shortener/v1/getting_started#APIKey" target="_blank">%s</a> ]</sup>',
-								__( 'Need an API key?', UTMDC_TEXT_DOMAIN ),
-								__( 'Click here to get one.', UTMDC_TEXT_DOMAIN )
+								'<br><sup>[ %s <a href="https://github.com/christopherldotcom/utm.codes/wiki/Bitly-API-Integration" target="_blank">%s</a> ]</sup>',
+								__( 'Questions?', UTMDC_TEXT_DOMAIN ),
+								__( 'Click here for more details.', UTMDC_TEXT_DOMAIN )
 							);
 						?>
 					</td>
@@ -451,13 +536,14 @@ class UtmDotCodes {
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_lowercase' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_alphanumeric' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_nospaces' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_labels' );
 	}
 
 	/**
 	 * Add our special links for display beside the utm.codes plugin in the installed plugins list
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.2
 	 *
 	 * @param $links				Array of plugin action links
 	 *
@@ -493,8 +579,8 @@ class UtmDotCodes {
 	public function save_post( $post_id ) {
 		if ( isset($_POST['post_type']) && self::POST_TYPE === $_POST['post_type'] ) {
 			$invalid_nonce = ( isset($_POST[self::NONCE_LABEL]) && !wp_verify_nonce($_POST[self::NONCE_LABEL], UTMDC_PLUGIN_FILE) );
-			$doing_autosave = ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE );
-			$cannot_edit = ( !current_user_can('edit_page', $post_id) );
+			$doing_autosave = ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE );
+			$cannot_edit = ( !current_user_can( 'edit_page', $post_id ) );
 
 			if ( $invalid_nonce || $doing_autosave || $cannot_edit ) {
 				return $post_id;
@@ -503,7 +589,7 @@ class UtmDotCodes {
 			$valid_post_id = ( isset( $_POST['ID'] ) && is_numeric( $_POST['ID'] ) && $_POST['ID'] == $post_id );
 
 			if ( !$valid_post_id ) {
-				add_filter('redirect_post_location', function( $location ) {
+				add_filter( 'redirect_post_location', function( $location ) {
 					return add_query_arg( 'utmdc-error', '2', $location );
 				});
 
@@ -546,7 +632,17 @@ class UtmDotCodes {
 						$new_post['meta_input'][self::POST_TYPE . '_shorturl'] = $this->generate_short_url( $new_post, $new_post['meta_input'][self::POST_TYPE . '_url'] );
 					}
 
-					$result = wp_insert_post( $new_post );
+					$new_post_id = wp_insert_post( $new_post );
+
+					if ( $new_post_id > 0 && isset($_POST['tax_input'][self::POST_TYPE . '-label']) ) {
+						wp_set_object_terms(
+							$new_post_id,
+							$_POST['tax_input'][self::POST_TYPE . '-label'],
+							self::POST_TYPE . '-label',
+							false
+						);
+					}
+
 				}, $networks );
 
 				add_action( 'save_post', [&$this, 'save_post'], 10, 1 );
@@ -644,10 +740,10 @@ class UtmDotCodes {
 	}
 
 	/**
-	 * Retrieve short url from Goo.gl API
+	 * Retrieve short url, if unsuccessful add error code to return location
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.2
 	 *
 	 * @param $data					Array of post data containing associative utm input values, or Array of post data
 	 * 								containing meta_input array with associative utm input values
@@ -664,21 +760,35 @@ class UtmDotCodes {
 		}
 
 		if ( $api_key != '' ) {
-			$long_url = $data[self::POST_TYPE . '_url'] . $this->generate_query_string( $data, $url );
-
-			$response = wp_remote_post(
-				self::API_URL . '?key=' . $api_key,
-				[
-					'headers' => ['content-type' => 'application/json'],
-					'body' => json_encode( ['longUrl' => $long_url] ),
-				]
+			$response = wp_remote_get(
+				self::API_URL . '/shorten?' . http_build_query([
+					'access_token' => $api_key,
+					'longUrl' => $data[self::POST_TYPE . '_url'] . $this->generate_query_string( $data, $url )
+				])
 			);
 
-			if ( $response['response']['code'] == 200 ) {
+			if ( isset($response->errors) ) {
+				add_filter( 'redirect_post_location', function( $location ) {
+					return add_query_arg( 'utmdc-error', '100', $location );
+				});
+			}
+			else {
 				$body = json_decode( $response['body'] );
 
-				if ( @filter_var($body->id, FILTER_VALIDATE_URL) ) {
-					$short_url = $this->sanitize_url( $body->id );
+				if ( $body->status_code == 200 ) {
+					if ( @filter_var($body->data->url, FILTER_VALIDATE_URL) ) {
+						$short_url = $this->sanitize_url( $body->data->url );
+					}
+				}
+				else if ( $body->status_code == 500 ) {
+					add_filter( 'redirect_post_location', function( $location ) {
+						return add_query_arg( 'utmdc-error', '500', $location );
+					});
+				}
+				else if ( $body->status_code == 403 ) {
+					add_filter( 'redirect_post_location', function( $location ) {
+						return add_query_arg( 'utmdc-error', '403', $location );
+					});
 				}
 			}
 		}
@@ -690,28 +800,30 @@ class UtmDotCodes {
 	 * Update links post list to include link element columns, remove title and date columns
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.2
 	 *
 	 * @param $columns				An array of column name => label
 	 *
 	 * @return array				Updated column array, with new columns added
 	 */
 	public function post_list_header( $columns ) {
+		unset($columns['cb']);
 		unset($columns['title']);
 		unset($columns['date']);
 		unset($columns['author']);
 
 		return array_merge(
-			$columns,
 			[
+				'cb' => '<input type="checkbox" />',
 				'utmdc_link' => __( 'Link', UTMDC_TEXT_DOMAIN ),
 				'utmdc_source' => __( 'Source', UTMDC_TEXT_DOMAIN ),
 				'utmdc_medium' => __( 'Medium', UTMDC_TEXT_DOMAIN ),
 				'utmdc_campaign' => __( 'Campaign', UTMDC_TEXT_DOMAIN ),
 				'utmdc_term' => __( 'Term', UTMDC_TEXT_DOMAIN ),
 				'utmdc_content' => __( 'Content', UTMDC_TEXT_DOMAIN ),
-				'copy_utmdc_link' => __( 'Copy Links', UTMDC_TEXT_DOMAIN ),
-			]
+				'copy_utmdc_link' => __( 'Copy Links', UTMDC_TEXT_DOMAIN )
+			],
+			$columns
 		);
 	}
 
@@ -841,6 +953,35 @@ class UtmDotCodes {
 
 		}, array_keys($filter_options), $filter_options );
 
+		if ( 'on' == get_option(self::POST_TYPE . '_labels') ) {
+
+			$terms = get_terms([
+				'taxonomy' => self::POST_TYPE . '-label',
+				'hide_empty' => true
+			]);
+
+			$term_options = array_map( function($key, $value) {
+				return sprintf(
+					'<option value="%s"%s>%s (%s)</option>',
+					urlencode(str_replace( ' ', '-', $value->name)),
+					selected(
+						str_replace( ' ', '-', $value->name),
+						urldecode(@$_GET[self::POST_TYPE . '-label']),
+						false
+					),
+					$value->name,
+					$value->count
+				);
+			},	array_keys($terms), $terms);
+
+			$markup[] = sprintf(
+				'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
+				self::POST_TYPE . '-label',
+				__( 'Any Label', UTMDC_TEXT_DOMAIN ),
+				implode(PHP_EOL, $term_options)
+			);
+		}
+
 		echo implode(PHP_EOL, $markup);
 	}
 
@@ -874,24 +1015,32 @@ class UtmDotCodes {
 			'utm-dot-codes',
 			UTMDC_PLUGIN_URL . 'css/utmdotcodes.css',
 			['font-awesome'],
-			hash_file('sha1', UTMDC_PLUGIN_DIR . 'css/utmdotcodes.css'),
+			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'css/utmdotcodes.css' ),
 			'all'
 		);
 	}
 
 	/**
-	 * Enqueue utm.codes links javascript, uses hashed file contents for version
+	 * Enqueue utm.codes links javascript using hashed file contents for version, add rest object with localize script
 	 *
 	 * @since 1.0
-	 * @version 1.0
+	 * @version 1.2
 	 */
 	public function add_js() {
 		wp_enqueue_script(
 			'utm-dot-codes',
 			UTMDC_PLUGIN_URL . 'js/utmdotcodes.min.js',
 			['jquery'],
-			hash_file('sha1', UTMDC_PLUGIN_DIR . 'js/utmdotcodes.min.js'),
+			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'js/utmdotcodes.min.js' ),
 			'all'
+		);
+
+		wp_localize_script(
+			'utm-dot-codes',
+			'utmdc_rest_api',
+			[
+				'action_key' => wp_create_nonce( self::REST_NONCE_LABEL ),
+			]
 		);
 	}
 
@@ -899,7 +1048,7 @@ class UtmDotCodes {
 	 * Generate alternate output for social inputs in link creation form to display when batch creation active
 	 *
 	 * @since 1.0
-	 * @version 1.1
+	 * @version 1.2
 	 *
 	 * @param $key					String name of link element
 	 *
@@ -908,7 +1057,7 @@ class UtmDotCodes {
 	public function batch_alt($key) {
 		$alt = '';
 
-		switch ($key) {
+		switch ( $key ) {
 
 			case 'source':
 				$networks = get_option(self::POST_TYPE . '_social');
@@ -934,6 +1083,16 @@ class UtmDotCodes {
 
 			case 'medium':
 				$alt = __( 'social', UTMDC_TEXT_DOMAIN );
+				break;
+
+			case 'url':
+				$alt = sprintf(
+					'<i class="fas fa-question-circle" title="%s"></i><i class="fas fa-circle" title="%s"></i><i class="fas fa-times-circle" title="%s"></i><i class="fas fa-check-circle" title="%s"></i>',
+					__( 'Unable to validate url, please check manually.', UTMDC_TEXT_DOMAIN ),
+					__( 'Update Link URL to check status.', UTMDC_TEXT_DOMAIN ),
+					__( 'Link appears invalid, please check before saving.', UTMDC_TEXT_DOMAIN ),
+					__( 'Link appears valid.', UTMDC_TEXT_DOMAIN )
+				);
 				break;
 
 		}
@@ -963,7 +1122,7 @@ class UtmDotCodes {
 
 		$glances[] = sprintf(
 			'<a href="%s" class="%s">%s %s</a>',
-			( current_user_can('edit_posts') ) ? admin_url('edit.php?post_type='.$post_object->name) : 'javascript:;',
+			( current_user_can( 'edit_posts' ) ) ? admin_url( 'edit.php?post_type='.$post_object->name ) : 'javascript:;',
 			'utmdclink-count',
 			$post_count,
 			_n(
@@ -977,18 +1136,6 @@ class UtmDotCodes {
 	}
 
 	/**
-	 * Get link elements array with configured values
-	 *
-	 * @since 1.0
-	 * @version 1.0
-	 *
-	 * @return array				Array of link elements
-	 */
-	public function get_link_elements() {
-		return $this->link_elements;
-	}
-
-	/**
 	 * Validate URL input, if invalid sustitute with site url and add error notice
 	 *
 	 * @since 1.0
@@ -999,15 +1146,21 @@ class UtmDotCodes {
 	 * @return string				Validated URL or site URL on error
 	 */
 	public function validate_url( $url ) {
-		$url = $this->sanitize_url( $url );
 
-		if ( $url != filter_var( $url, FILTER_VALIDATE_URL ) ) {
+		/**
+		 * https://mathiasbynens.be/demo/url-regex
+		 */
+		preg_match('@^(https?|ftp)://[^\s/$.?#].[^\s]*$@iS', $url, $matches);
+
+		if ( empty($matches) ) {
 			$url = get_home_url( null, '/' );
 
 			add_filter('redirect_post_location', function( $location ) {
 				return add_query_arg( 'utmdc-error', '1', $location );
 			});
 		}
+
+		$url = $this->sanitize_url( $url );
 
 		return $url;
 	}
@@ -1057,6 +1210,32 @@ class UtmDotCodes {
 	}
 
 	/**
+	 * Check response code for user provided URL and send JSON response back to an ajax request
+	 *
+	 * @since 1.2
+	 * @version 1.2
+	 */
+	public function check_url_response() {
+		if ( $_REQUEST['action'] == 'utmdc_check_url_response' ) {
+			$is_valid_referer = false !== check_ajax_referer( self::REST_NONCE_LABEL, 'key', false );
+			$is_valid_url = $_REQUEST['url'] == filter_var( $_REQUEST['url'], FILTER_VALIDATE_URL );
+
+			$response = [
+				'message' => 'Could not process request.',
+				'status' => 500
+			];
+
+			if ( $is_valid_referer && $is_valid_url ) {
+				$url_check = wp_remote_get( $this->sanitize_url( $_REQUEST['url'] ) );
+				$response['status'] = $url_check['response']['code'];
+				$response['message'] = $url_check['response']['message'];
+			}
+
+			wp_send_json( $response );
+		}
+	}
+
+	/**
 	 * Determine if class is running in a test
 	 *
 	 * @since 1.0
@@ -1065,6 +1244,6 @@ class UtmDotCodes {
 	 * @return bool					True if running tests
 	 */
 	public function is_test() {
-		return defined('UTMDC_IS_TEST') && constant('UTMDC_IS_TEST');
+		return defined( 'UTMDC_IS_TEST' ) && constant( 'UTMDC_IS_TEST' );
 	}
 }
