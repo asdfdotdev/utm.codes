@@ -6,7 +6,6 @@ var node,
 	autoprefixer = require('gulp-autoprefixer'),
 	cssnano = require('gulp-cssnano'),
 	sass = require('gulp-sass'),
-	order = require('gulp-order'),
 	sourcemaps = require('gulp-sourcemaps'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify');
