@@ -41,13 +41,13 @@ To download just the plugin (without the developer extras in this repo) check ou
 
 ## Build Process
 
-utm.codes uses a simple gulp build process to generate static resource files. Prerequisites include a working and reasonably up-to-date install of node and npm.
+utm.codes uses webpack. Prerequisites include a working and reasonably up-to-date install of node and npm.
 
-From the `_build` directory running `$ yarn install` should get you up and running. The build process can be executed by running the `default` task in `_build/gulpfile.js`
+For instructions on running the build check out the [README](./_build#readme).
 
-## Running Test
+## Tests
 
-For instructions on running test check out the [README](./_test/README.md).
+For instructions on running test check out the [README](./_test#readme).
 
 ## Providing Feedback
 

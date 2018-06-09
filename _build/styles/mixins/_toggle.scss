@@ -1,4 +1,4 @@
-@mixin css-toggle($off-color: #444, $on-color: #0073AA, $button-color: #FFF, $text-color: #FFF, $width: 140px, $height: 36px) {
+@mixin css-toggle($off-color: #444444, $on-color: #0073aa, $button-color: #ffffff, $text-color: #ffffff, $width: 140px, $height: 36px) {
 
 	$shadow: 0 3px 3px rgba(black, 0.4);
 	$switch-width: $width/2;
@@ -8,12 +8,12 @@
 	position: relative;
 
 	*,
-	*:before,
-	*:after {
+	*::before,
+	*::after {
 		box-sizing: border-box;
 	}
 
-	input[type="checkbox"] {
+	input[type=checkbox] {
 		opacity: 0;
 		position: absolute;
 		top: 0;
@@ -37,12 +37,12 @@
 				div {
 					background-color: lighten($on-color, 5%);
 
-					&:before {
+					&::before {
 						content: attr(data-off);
 						left: 0;
 					}
 
-					&:after {
+					&::after {
 						content: attr(data-on);
 						color: darken($on-color, 5%);
 						transform: translate3d($width - ($switch-width + $offset),0,0);
@@ -65,14 +65,14 @@
 			height: $height;
 			flex: 0 0 $width;
 
-			&:before,
-			&:after {
+			&::before,
+			&::after {
 				text-transform: uppercase;
 				text-align: center;
 				position: absolute;
 			}
 
-			&:before {
+			&::before {
 				color: $text-color;
 				left: $width/2;
 				line-height: $height;
@@ -81,7 +81,7 @@
 				top: 0;
 			}
 
-			&:after {
+			&::after {
 				top: $offset;
 				left: $offset;
 				width: $switch-width - $offset;

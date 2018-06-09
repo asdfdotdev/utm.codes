@@ -6,7 +6,7 @@
  */
 
 /**
- * Unit tests, these should be run first
+ * Unit tests
  */
 class TestUtmDotCodesUnit extends WP_UnitTestCase
 {
@@ -116,7 +116,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$plugin->create_post_type();
 		$taxonomy_object = get_object_taxonomies( UtmDotCodes::POST_TYPE, 'objects' );
 
-		$this->assertEquals( count($taxonomy_object), 0 );
+		$this->assertEquals( count($taxonomy_object), 1 );
 
 		update_option( UtmDotCodes::POST_TYPE . '_labels', 'on' );
 		$plugin->create_post_type();
@@ -235,7 +235,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 	 */
 	function test_validate_url() {
 		$plugin = new UtmDotCodes();
-		
+
 		$valid_url = $plugin->validate_url('https://utm.codes');
 		$this->assertEquals( $valid_url, 'https://utm.codes' );
 
