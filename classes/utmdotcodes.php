@@ -87,7 +87,7 @@ class UtmDotCodes
 			],
 			'campaign' => [
 				'label' => __( 'Campaign Name', UTMDC_TEXT_DOMAIN ),
-				'short_label' => __( 'Name', UTMDC_TEXT_DOMAIN ),
+				'short_label' => __( 'Campaign', UTMDC_TEXT_DOMAIN ),
 				'type' => 'text',
 				'required' => false
 			],
