@@ -47,7 +47,7 @@ For additional details about installing, configuring, and using utm.codes [visit
 
 utm.codes is built using development code not included in the WordPress.org download because it isn't required for use. This code includes the webpack build used to create the minified CSS and JavaScript as well as PHPUnit tests to ensure the plugin supports new WordPress releases.
 
-All source code associated with utm.codes is open source, free to use for any purpose, and released under a GPL v2.0. Development code, including instructions for running both the build and tests, is available at the [utm.codes GitHub repository](https://github.com/christopherldotcom/utm.codes).
+All source code associated with utm.codes is open source, free to use for any purpose, and released under the GPL v2.0 license. Development code, including instructions for running both the build and tests, is available at the [utm.codes GitHub repository](https://github.com/christopherldotcom/utm.codes).
 
 == Frequently Asked Questions ==
 
