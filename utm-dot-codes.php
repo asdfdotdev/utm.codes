@@ -25,7 +25,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	die( '-1' );
 }
 
-define( 'UTMDC_VERSION', '1.2' );
+define( 'UTMDC_VERSION', '1.3.0' );
 define( 'UTMDC_MINIMUM_WP_VERSION', '4.7' );
 define( 'UTMDC_MINIMUM_PHP_VERSION', '5.6' );
 define( 'UTMDC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );

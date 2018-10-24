@@ -2,24 +2,24 @@
 Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: utm codes, google analytics, tracking links, campaign marketing, link generator
-Requires at least: 4.7
-Tested up to: 4.9.5
-Requires PHP: 5.6
-Stable tag: 1.2
+Requires at least: 4.7.0
+Tested up to: 5.0.0
+Requires PHP: 5.6.0
+Stable tag: 1.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create and manage your marketing campaign links in WordPress.
+Easily create and manage marketing links in WordPress for better campaign analytics.
 
 == Description ==
 
 Make your campaign marketing easier and more effective with WordPress. utm.codes turns your WordPress admin into your marketing links repository by making it easier to create, organize, and use your links.
 
-For more information [visit the utm.codes website](https://utm.codes).
+For more information, videos, and helpful tips [visit the utm.codes website](https://utm.codes).
 
 = Features =
 
-- Easily create marketing links with the custom UTM codes for better campaign analytics
+- Easily create marketing links with UTM codes for better campaign analytics
 - Automatically format links elements in lowercase, remove spaces, and remove non alphanumeric characters
 - Batch create links for all your social networks with just a click
 - Search, filter, and easily find existing links for copy & paste use
@@ -38,6 +38,16 @@ Upload the utm.codes plugin to your WordPress site, activate it, and start creat
 = Settings =
 
 Configure your targeted social networks, and shortening API key, under Settings / utm.codes to enable batch creation and auto shorten when saving links.
+
+= Documentation =
+
+For additional details about installing, configuring, and using utm.codes [visit our GitHub wiki](https://github.com/christopherldotcom/utm.codes/wiki)
+
+= Development Code =
+
+utm.codes is built using development code not included in the WordPress.org download because it isn't required for use. This code includes the webpack build used to create the minified CSS and JavaScript as well as PHPUnit tests to ensure the plugin supports new WordPress releases.
+
+All source code associated with utm.codes is open source, free to use for any purpose, and released under a GPL v2.0. Development code, including instructions for running both the build and tests, is available at the [utm.codes GitHub repository](https://github.com/christopherldotcom/utm.codes).
 
 == Frequently Asked Questions ==
 
@@ -62,6 +72,13 @@ Simply add the paramter to your Link URL (e.g. https://example.com/?param=value)
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.3 =
+
+- Supports WordPress 5.0
+- Fix filter label
+- Replace gulp build with webpack
+- Improved test coverage
 
 = 1.2 =
 
