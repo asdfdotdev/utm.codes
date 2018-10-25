@@ -25,7 +25,7 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - Search, filter, and easily find existing links for copy & paste use
 - Link builder detects url error responses to prevent creating bad links
 - Automatically shorten links using Bitly for easier sharing
-- Supports adding additional custom paramters to links
+- Supports adding additional custom parameters to links
 - Allow multiple users to share creation and management responsibilities within WordPress
 - See your current link count in the admin dashboard "At a Glance"
 - Works with PHP 5.6, 7.0, 7.1, and 7.2
@@ -59,9 +59,9 @@ Shortening links requires a valid Bitly API Generic Access Token. Add your key u
 
 Batch social link creation requires selection of social networks. Select networks under Settings > utm.codes to create links for when batch creating social links.
 
-= What if I need custom paramters in my links? =
+= What if I need custom parameters in my links? =
 
-Simply add the paramter to your Link URL (e.g. https://example.com/?param=value) and utm.codes will append your utm code values to the end of the url when you save the link.
+Simply add the parameter to your Link URL (e.g. https://example.com/?param=value) and utm.codes will append your utm code values to the end of the url when you save the link.
 
 == Screenshots ==
 

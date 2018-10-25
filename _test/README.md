@@ -74,6 +74,6 @@ failed to open dir: No such file or directory
 
 This occurs because WordPress creates the uploads directory at runtime the first time you run the tests. If the directory doesn't exist and you don't have permission to create it there will be an error.
 
-This can be reoslved my running `$ sudo phpunit` or by manually creating the directory within the test suite source.
+This can be resolved my running `$ sudo phpunit` or by manually creating the directory within the test suite source.
 
 Subsequent runs against the same test suite should not require sudo.
