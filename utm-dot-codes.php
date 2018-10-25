@@ -10,7 +10,7 @@
  * Plugin Name: utm.codes
  * Plugin URI: https://utm.codes
  * Description: Create and manage your marketing campaign links in WordPress.
- * Version: 1.2
+ * Version: 1.3.0
  * Author: ChristopherL
  * Author URI: https://christopherl.com
  * License: GPL v2
