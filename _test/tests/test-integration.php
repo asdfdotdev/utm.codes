@@ -19,7 +19,31 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * Confirm our plugin knows we're testing
+	 */
+	function test_is_test() {
+		$plugin = new UtmDotCodes();
+
+		$this->assertTrue( $plugin->is_test() );
+	}
+
+	/**
+	 * Confirm WordPress and PHP versions meet minimum requirements and plugin is active
+	 *
+	 * @depends test_is_test
+	 */
+	function test_version_numbers_active() {
+		$is_valid_wp = version_compare( get_bloginfo('version'), UTMDC_MINIMUM_WP_VERSION, '>');
+		$this->assertTrue( $is_valid_wp );
+
+		$is_valid_php = version_compare( phpversion(), UTMDC_MINIMUM_PHP_VERSION, '>');
+		$this->assertTrue( $is_valid_php );
+
+		$this->assertTrue( is_plugin_active('utm-dot-codes/utm-dot-codes.php') );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create() {
 		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
@@ -75,7 +99,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_extra_params() {
 		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
@@ -131,7 +155,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_shorten() {
 		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_BITLY_API') );
@@ -189,7 +213,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_batch() {
 		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
@@ -282,7 +306,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_batch_shorten() {
 		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv('UTMDC_BITLY_API') );
@@ -377,7 +401,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_filter() {
 		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
@@ -437,7 +461,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_label() {
 		$plugin = new UtmDotCodes();
@@ -493,7 +517,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_batch_labels() {
 		$plugin = new UtmDotCodes();
@@ -579,7 +603,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_editor_meta_box() {
 		global $wp_meta_boxes;
@@ -608,7 +632,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_slug_meta_box() {
 		global $wp_meta_boxes;
@@ -617,7 +641,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_editor_meta_box_contents_empty() {
 		global $post;
@@ -672,7 +696,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_editor_meta_box_contents_editing() {
 		global $post;
@@ -778,7 +802,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_settings_page() {
 		set_current_screen( 'settings_page_utm-dot-codes' );
@@ -788,7 +812,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_settings_register() {
 		global $wp_registered_settings;
@@ -805,7 +829,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 		$this->assertEquals( $wp_registered_settings['utmdclink_apikey']['group'], UtmDotCodes::SETTINGS_GROUP );
 	}
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_post_list_columns() {
 		$columns = _get_list_table('WP_Posts_List_Table', ['screen' => 'edit-' . UtmDotCodes::POST_TYPE])->get_column_info();
@@ -820,7 +844,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_add_static_resources() {
 		global $wp_scripts, $wp_styles;
@@ -840,12 +864,12 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase
 
 		$this->assertTrue( array_key_exists('utm-dot-codes', $wp_styles->registered) );
 		$this->assertEquals( $wp_styles->registered['utm-dot-codes']->deps[0], 'font-awesome' );
-		$this->assertEquals( $wp_styles->registered['utm-dot-codes']->src, UTMDC_PLUGIN_URL . 'css/utmdotcodes.css' );
+		$this->assertEquals( $wp_styles->registered['utm-dot-codes']->src, UTMDC_PLUGIN_URL . 'css/utmdotcodes.min.css' );
 		$this->assertTrue( in_array('utm-dot-codes', $wp_styles->queue) );
 	}
 
 	/**
-	 * @depends TestUtmDotCodesUnit::test_version_numbers_active
+	 * @depends test_version_numbers_active
 	 */
 	function test_add_glance() {
 		$glance_markup = apply_filters( 'dashboard_glance_items', array() );

@@ -6,7 +6,7 @@
  */
 
 /**
- * Unit tests, these should be run first
+ * Unit tests
  */
 class TestUtmDotCodesUnit extends WP_UnitTestCase
 {
@@ -116,7 +116,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$plugin->create_post_type();
 		$taxonomy_object = get_object_taxonomies( UtmDotCodes::POST_TYPE, 'objects' );
 
-		$this->assertEquals( count($taxonomy_object), 0 );
+		$this->assertEquals( count($taxonomy_object), 1 );
 
 		update_option( UtmDotCodes::POST_TYPE . '_labels', 'on' );
 		$plugin->create_post_type();
@@ -235,12 +235,117 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 	 */
 	function test_validate_url() {
 		$plugin = new UtmDotCodes();
-		
+
 		$valid_url = $plugin->validate_url('https://utm.codes');
 		$this->assertEquals( $valid_url, 'https://utm.codes' );
 
 		$invalid_url = $plugin->validate_url('invalid');
 		$this->assertEquals( $invalid_url, get_home_url( null, '/' ) );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_editor_meta_box_error_messages() {
+		global $post, $_GET;
+
+		$plugin = new UtmDotCodes();
+		$plugin->create_post_type();
+		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
+
+		$_GET['utmdc-error'] = 1;
+		$form_markup = $plugin->meta_box_contents();
+		$this->assertTrue(in_array(
+			sprintf(
+				'<div class="notice notice-warning"><p>%s</p></div>',
+				__( 'Invalid URL format. Replaced with site URL. Please update as needed.', UTMDC_TEXT_DOMAIN )
+			),
+			$form_markup
+		));
+
+		$_GET['utmdc-error'] = 2;
+		$form_markup = $plugin->meta_box_contents();
+		$this->assertTrue(in_array(
+			sprintf(
+				'<div class="notice notice-error"><p>%s</p></div>',
+				__( 'Unable to save link. Please try again, your changes were not saved.', UTMDC_TEXT_DOMAIN )
+			),
+			$form_markup
+		));
+
+		$_GET['utmdc-error'] = 100;
+		$form_markup = $plugin->meta_box_contents();
+		$this->assertTrue(in_array(
+			sprintf(
+				'<div class="notice notice-error"><p>%s</p></div>',
+				__( 'Unable to connect to Bitly API to shorten url. Please try again later.', UTMDC_TEXT_DOMAIN )
+			),
+			$form_markup
+		));
+
+		$_GET['utmdc-error'] = 403;
+		$form_markup = $plugin->meta_box_contents();
+		$this->assertTrue(in_array(
+			sprintf(
+				'<div class="notice notice-error"><p>%s</p></div>',
+				__( 'Bitly API rate limit exceeded, could not shorten url.', UTMDC_TEXT_DOMAIN )
+			),
+			$form_markup
+		));
+
+		$_GET['utmdc-error'] = 500;
+		$form_markup = $plugin->meta_box_contents();
+		$this->assertTrue(in_array(
+			sprintf(
+				'<div class="notice notice-error"><p>%s</p></div>',
+				__( 'Invalid Bitly API token, please update settings to create short urls.', UTMDC_TEXT_DOMAIN )
+			),
+			$form_markup
+		));
+
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_plugin_settings_links() {
+		$plugin = new UtmDotCodes();
+
+		$links = $plugin->add_links([]);
+		$this->assertEquals(
+			[
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( admin_url( 'options-general.php?page=' . UtmDotCodes::SETTINGS_PAGE ) ),
+					__( 'Settings', UTMDC_TEXT_DOMAIN )
+				),
+				sprintf(
+					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
+					__( 'Code', UTMDC_TEXT_DOMAIN )
+				)
+			],
+			$links
+		);
+
+		$bonus_links = ['<a href="https://blah.edu">This is a test</a>', '<a href="https://another.test">This is another test</a>'];
+		$links = $plugin->add_links($bonus_links);
+		$this->assertEquals(
+			[
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( admin_url( 'options-general.php?page=' . UtmDotCodes::SETTINGS_PAGE ) ),
+					__( 'Settings', UTMDC_TEXT_DOMAIN )
+				),
+				sprintf(
+					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
+					__( 'Code', UTMDC_TEXT_DOMAIN )
+				),
+				'<a href="https://blah.edu">This is a test</a>',
+				'<a href="https://another.test">This is another test</a>'
+			],
+			$links
+		);
+
 	}
 
 }

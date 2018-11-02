@@ -6,7 +6,7 @@
  */
 
 /**
- * Ajax tests, run them whenever you want
+ * Ajax tests
  */
 class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 {

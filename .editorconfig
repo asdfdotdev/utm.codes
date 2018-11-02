@@ -12,7 +12,7 @@ trim_trailing_whitespace = true
 indent_style = tab
 indent_sizesize = 4
 
-[{package.json,*.yml}]
+[{*.js,*.json,*.yml,.bablerc}]
 indent_style = space
 indent_size = 2
 

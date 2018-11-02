@@ -87,7 +87,7 @@ class UtmDotCodes
 			],
 			'campaign' => [
 				'label' => __( 'Campaign Name', UTMDC_TEXT_DOMAIN ),
-				'short_label' => __( 'Name', UTMDC_TEXT_DOMAIN ),
+				'short_label' => __( 'Campaign', UTMDC_TEXT_DOMAIN ),
 				'type' => 'text',
 				'required' => false
 			],
@@ -214,38 +214,40 @@ class UtmDotCodes
 	public function meta_box_contents() {
 		global $post;
 
+		$contents = [];
+
 		if ( array_key_exists( 'utmdc-error', $_GET ) ) {
 			switch ( $_GET['utmdc-error'] ) {
 				case 1:
-					echo sprintf(
+					$contents[] = sprintf(
 						'<div class="notice notice-warning"><p>%s</p></div>',
 						__( 'Invalid URL format. Replaced with site URL. Please update as needed.', UTMDC_TEXT_DOMAIN )
 					);
 					break;
 
 				case 2:
-					echo sprintf(
+					$contents[] = sprintf(
 						'<div class="notice notice-error"><p>%s</p></div>',
 						__( 'Unable to save link. Please try again, your changes were not saved.', UTMDC_TEXT_DOMAIN )
 					);
 					break;
 
 				case 100:
-					echo sprintf(
+					$contents[] = sprintf(
 						'<div class="notice notice-error"><p>%s</p></div>',
 						__( 'Unable to connect to Bitly API to shorten url. Please try again later.', UTMDC_TEXT_DOMAIN )
 					);
 					break;
 
 				case 403:
-					echo sprintf(
+					$contents[] = sprintf(
 						'<div class="notice notice-error"><p>%s</p></div>',
 						__( 'Bitly API rate limit exceeded, could not shorten url.', UTMDC_TEXT_DOMAIN )
 					);
 					break;
 
 				case 500:
-					echo sprintf(
+					$contents[] = sprintf(
 						'<div class="notice notice-error"><p>%s</p></div>',
 						__( 'Invalid Bitly API token, please update settings to create short urls.', UTMDC_TEXT_DOMAIN )
 					);
@@ -253,7 +255,7 @@ class UtmDotCodes
 			}
 		}
 
-		$form_markup = array_map( function($key, $entry) use($post) {
+		$contents = array_merge($contents, array_map( function($key, $entry) use($post) {
 			$value = get_post_meta( $post->ID, self::POST_TYPE . '_' . $key, true );
 
 			if ( $entry['type'] == 'url' ) {
@@ -273,11 +275,11 @@ class UtmDotCodes
 				isset($value) ? $value : '',
 				(@$entry['batch_alt']) ? $this->batch_alt($key) : ''
 			);
-		}, array_keys($this->link_elements), $this->link_elements );
+		}, array_keys($this->link_elements), $this->link_elements ));
 
 		if ( get_option(self::POST_TYPE . '_apikey') != '' ) {
 			array_unshift(
-				$form_markup,
+				$contents,
 				sprintf(
 					'<p><label for="%1$s_%2$s" class="selectit"><input type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%3$s</label></p>',
 					self::POST_TYPE,
@@ -288,7 +290,7 @@ class UtmDotCodes
 		}
 
 		array_unshift(
-			$form_markup,
+			$contents,
 			sprintf(
 				'<input type="hidden" name="%s" value="%s">',
 				self::NONCE_LABEL,
@@ -298,7 +300,7 @@ class UtmDotCodes
 
 		if ( $post->post_content != '' ) {
 			array_unshift(
-				$form_markup,
+				$contents,
 				sprintf(
 					'<p><b>%1$s</b><br><a href="%2$s" target="_blank">%2$s</a></p>',
 					__( 'Marketing Link', UTMDC_TEXT_DOMAIN ),
@@ -309,7 +311,7 @@ class UtmDotCodes
 		else {
 			if ( get_option(self::POST_TYPE . '_social') != '' ) {
 				array_unshift(
-					$form_markup,
+					$contents,
 					sprintf(
 						'<p><label for="%1$s_%2$s" class="selectit"><input type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%3$s</label></p>',
 						self::POST_TYPE,
@@ -321,10 +323,10 @@ class UtmDotCodes
 		}
 
 		if ( $this->is_test() ) {
-			return $form_markup;
+			return $contents;
 		}
 		else {
-			echo implode(PHP_EOL, $form_markup);
+			echo implode(PHP_EOL, $contents);
 		}
 	}
 
@@ -1013,9 +1015,9 @@ class UtmDotCodes
 		);
 		wp_enqueue_style(
 			'utm-dot-codes',
-			UTMDC_PLUGIN_URL . 'css/utmdotcodes.css',
+			UTMDC_PLUGIN_URL . 'css/utmdotcodes.min.css',
 			['font-awesome'],
-			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'css/utmdotcodes.css' ),
+			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'css/utmdotcodes.min.css' ),
 			'all'
 		);
 	}
@@ -1244,6 +1246,10 @@ class UtmDotCodes
 
 			wp_send_json( $response );
 		}
+	}
+
+	public function get_link_elements() {
+		return $this->link_elements;
 	}
 
 	/**
