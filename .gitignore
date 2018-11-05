@@ -4,3 +4,4 @@
 **/config.inc.local.php
 **/_test/build/**/*
 **/*.map
+/vendor/

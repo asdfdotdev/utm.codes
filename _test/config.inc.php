@@ -8,11 +8,11 @@
  * @package utm.codes
  */
 
-// Absolute path to your WordPress tests directory
+// Absolute path to your WordPress tests directory.
 putenv( 'WP_TEST_DIR=' );
 
-// Absolute path to plugin root directory
+// Absolute path to plugin root directory.
 putenv( 'UTMDC_PLUGIN_DIR=' );
 
-// A valid Bitly API Generic Access Token
+// A valid Bitly API Generic Access Token.
 putenv( 'UTMDC_BITLY_API=' );
