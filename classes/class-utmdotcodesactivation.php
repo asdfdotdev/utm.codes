@@ -17,7 +17,6 @@ class UtmDotCodesActivation {
 	/**
 	 * UtmDotCodes_Activation constructor, adds (de)activation hooks for our plugin
 	 *
-	 * @version 1.0
 	 * @since 1.0
 	 */
 	public function __construct() {
@@ -28,7 +27,6 @@ class UtmDotCodesActivation {
 	/**
 	 * Processes plugin activation, including version checks
 	 *
-	 * @version 1.0
 	 * @since 1.0
 	 */
 	public function activation() {
