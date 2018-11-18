@@ -275,7 +275,7 @@ class UtmDotCodes {
 				function( $key, $entry ) use ( $post ) {
 					$value = '';
 
-					if ( 'object' == gettype($post) ) {
+					if ( 'object' === gettype( $post ) ) {
 						$value = get_post_meta( $post->ID, self::POST_TYPE . '_' . $key, true );
 
 						if ( 'url' === $entry['type'] ) {
