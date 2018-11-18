@@ -13,7 +13,7 @@
 	</testsuites>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<file>../classes/utmdotcodes.php</file>
+			<file>../classes/class-utmdotcodes.php</file>
 		</whitelist>
 	</filter>
 	<logging>
