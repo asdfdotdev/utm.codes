@@ -3,7 +3,7 @@
  * Utm.codes - Marketing Campaign Link Builder
  *
  * @package utm.codes
- * @copyright 2018- ChristopherL (https://christopherl.com)
+ * @copyright 2018-2019 ChristopherL (https://christopherl.com)
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @wordpress-plugin

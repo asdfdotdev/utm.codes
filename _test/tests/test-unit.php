@@ -358,4 +358,91 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_get_links() {
+		$plugin = new UtmDotCodes();
+		$plugin->create_post_type();
+		$link_elements = $plugin->get_link_elements();
+
+		$this->assertEquals(
+			$link_elements['url'],
+			[
+				'label'       => esc_html_x( 'Link URL', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'URL', 'utm-dot-codes' ),
+				'type'        => 'url',
+				'required'    => true,
+				'batch_alt'   => true,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['source'],
+			[
+				'label'       => esc_html_x( 'Campaign Source', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Source', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => true,
+				'batch_alt'   => true,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['medium'],
+			[
+				'label'       => esc_html_x( 'Campaign Medium', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Medium', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => true,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['campaign'],
+			[
+				'label'       => esc_html_x( 'Campaign Name', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Campaign', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['term'],
+			[
+				'label'       => esc_html_x( 'Campaign Term', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Term', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['content'],
+			[
+				'label'       => esc_html_x( 'Campaign Content', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Content', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['shorturl'],
+			[
+				'label'       => esc_html_x( 'Short URL', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Short URL', 'utm-dot-codes' ),
+				'type'        => 'url',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
+		);
+
+	}
+
 }

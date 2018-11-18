@@ -75,6 +75,10 @@ Simply add the parameter to your Link URL (e.g. https://example.com/?param=value
 
 == Changelog ==
 
+= 1.3.1 =
+
+This release does not add new functionality, however, it does meaningfully improve utm.codes adherence to WordPress coding standards and improves the overall quality of the plugin.
+
 = 1.3 =
 
 - Supports WordPress 5.0

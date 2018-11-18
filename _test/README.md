@@ -1,6 +1,6 @@
 # utm.codes Tests
 
-The following should get you up and running PHPUnit tests for the utm.codes plugin.
+The following will help get you up and running PHPUnit tests for the utm.codes plugin.
 
 ## Contents
 
@@ -15,11 +15,21 @@ The following should get you up and running PHPUnit tests for the utm.codes plug
 
 ## Compatibility
 
-Tests support phpunit 5.7 (for PHP 5.6) and phpunit 6.5 (for PHP 7.0, 7.1, and 7.2)
+### PHPUnit Tests
 
+PHPUnit tests support phpunit 5.7 (for PHP 5.6) and phpunit 6.5 (for PHP 7.0, 7.1, and 7.2)
+
+### PHP Code Sniffer
+
+PHP Code Sniffer v3.3+ is recommended.
 
 ## Initial Setup
 
+### 0. Installing Requisite Tools
+
+If you have composer installed running `$ composer install` from the project root will set you up with the packages you need.
+
+To get started with composer [click here for installation details](https://getcomposer.org/download/).
 
 ### 1. Installing WordPress Tests (Automated)
 
@@ -41,9 +51,9 @@ Update the `config.inc.php` file to your needs:
 
 > Note: Rename to `config.inc.local.php` (ignored in .gitignore) for environment personalization.
 
-## Running Tests
+## Running PHPUnit Tests
 
-From the `_test` directory execute `$ phpunit` to run the tests. This should result in output similar to:
+From the `_test` directory execute `$ ../vendor/bin/phpunit` to run the tests. This should result in output similar to:
 
 ```
 Installing...
@@ -51,13 +61,13 @@ Running as single site... To run multisite, use -c tests/phpunit/multisite.xml
 Not running ajax tests. To execute these, use --group ajax.
 Not running ms-files tests. To execute these, use --group ms-files.
 Not running external-http tests. To execute these, use --group external-http.
-PHPUnit 6.5.6 by Sebastian Bergmann and contributors.
+PHPUnit 6.5.13 by Sebastian Bergmann and contributors.
 
 ...................................                               35 / 35 (100%)
 
-Time: 18.52 seconds, Memory: 46.25MB
+Time: 16.78 seconds, Memory: 36.00MB
 
-OK (35 tests, 327 assertions)
+OK (37 tests, 343 assertions)
 
 Generating code coverage report in Clover XML format ... done
 ```
@@ -77,3 +87,21 @@ This occurs because WordPress creates the uploads directory at runtime the first
 This can be resolved my running `$ sudo phpunit` or by manually creating the directory within the test suite source.
 
 Subsequent runs against the same test suite should not require sudo.
+
+## Running Code Standards & Compatibility Tests
+
+From the project root running the following command will test the project PHP files against the WordPress coding standard.
+
+```
+./vendor/bin/phpcs --standard=WordPress --report=summary ./index.php ./utm-dot-codes.php ./classes
+```
+
+From the project root running the following command will test utm.codes for compatibility with PHP 5.6+
+
+```
+./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.4- --report=summary ./index.php ./utm-dot-codes.php ./classes
+```
+
+## Travis Build
+
+All of these tests are [included in our Travis CI build](https://travis-ci.org/christopherldotcom/utm.codes) where you can browse the test history and results.

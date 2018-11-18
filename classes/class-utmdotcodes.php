@@ -75,50 +75,50 @@ class UtmDotCodes {
 	public function create_post_type() {
 		$this->link_elements = [
 			'url'      => [
-				'label'       => __( 'Link URL', 'utm-dot-codes' ),
-				'short_label' => __( 'URL', 'utm-dot-codes' ),
+				'label'       => esc_html_x( 'Link URL', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'URL', 'utm-dot-codes' ),
 				'type'        => 'url',
 				'required'    => true,
 				'batch_alt'   => true,
 			],
 			'source'   => [
-				'label'       => __( 'Campaign Source', 'utm-dot-codes' ),
-				'short_label' => __( 'Source', 'utm-dot-codes' ),
+				'label'       => esc_html_x( 'Campaign Source', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Source', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => true,
 				'batch_alt'   => true,
 			],
 			'medium'   => [
-				'label'       => __( 'Campaign Medium', 'utm-dot-codes' ),
-				'short_label' => __( 'Medium', 'utm-dot-codes' ),
+				'label'       => esc_html_x( 'Campaign Medium', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Medium', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => true,
 			],
 			'campaign' => [
-				'label'       => __( 'Campaign Name', 'utm-dot-codes' ),
-				'short_label' => __( 'Campaign', 'utm-dot-codes' ),
+				'label'       => esc_html_x( 'Campaign Name', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Campaign', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => false,
 			],
 			'term'     => [
-				'label'       => __( 'Campaign Term', 'utm-dot-codes' ),
-				'short_label' => __( 'Term', 'utm-dot-codes' ),
+				'label'       => esc_html_x( 'Campaign Term', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Term', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => false,
 			],
 			'content'  => [
-				'label'       => __( 'Campaign Content', 'utm-dot-codes' ),
-				'short_label' => __( 'Content', 'utm-dot-codes' ),
+				'label'       => esc_html_x( 'Campaign Content', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Content', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => false,
 			],
 			'shorturl' => [
-				'label'       => __( 'Short URL', 'utm-dot-codes' ),
-				'short_label' => __( 'Short URL', 'utm-dot-codes' ),
+				'label'       => esc_html_x( 'Short URL', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Short URL', 'utm-dot-codes' ),
 				'type'        => 'url',
 				'required'    => false,
 				'batch_alt'   => false,
@@ -273,12 +273,16 @@ class UtmDotCodes {
 			$contents,
 			array_map(
 				function( $key, $entry ) use ( $post ) {
-					$value = get_post_meta( $post->ID, self::POST_TYPE . '_' . $key, true );
+					$value = '';
 
-					if ( 'url' === $entry['type'] ) {
-						$value = esc_url( $value );
-					} else {
-						$value = esc_attr( $value );
+					if ( 'object' == gettype($post) ) {
+						$value = get_post_meta( $post->ID, self::POST_TYPE . '_' . $key, true );
+
+						if ( 'url' === $entry['type'] ) {
+							$value = esc_url( $value );
+						} else {
+							$value = esc_attr( $value );
+						}
 					}
 
 					return sprintf(
@@ -318,7 +322,7 @@ class UtmDotCodes {
 			)
 		);
 
-		if ( '' !== $post->post_content ) {
+		if ( ! empty( $post->post_content ) && '' !== $post->post_content ) {
 			array_unshift(
 				$contents,
 				sprintf(
@@ -328,7 +332,8 @@ class UtmDotCodes {
 				)
 			);
 		} else {
-			if ( '' !== get_option( self::POST_TYPE . '_social' ) ) {
+			$social_setting = get_option( self::POST_TYPE . '_social' );
+			if ( 'array' === gettype( $social_setting ) && count( $social_setting ) > 0 ) {
 				array_unshift(
 					$contents,
 					sprintf(
@@ -1088,6 +1093,8 @@ class UtmDotCodes {
 	/**
 	 * Remove Edit from links bulk actions.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param array $bulk_actions Array of bulk action links.
 	 *
 	 * @return array Updated bulk action links array.
@@ -1340,6 +1347,8 @@ class UtmDotCodes {
 
 	/**
 	 * Get the current link elements array.
+	 *
+	 * @since 1.0.0
 	 *
 	 * @return array of current link elements.
 	 */

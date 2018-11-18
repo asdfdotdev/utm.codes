@@ -705,14 +705,91 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 	/**
 	 * @depends test_version_numbers_active
 	 */
-	function test_editor_meta_box_contents_empty() {
+	function test_editor_meta_box_contents_empty_no_batch() {
 		global $post;
 
 		$plugin = new UtmDotCodes();
 		$plugin->create_post_type();
-		$post        = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
+		update_option( UtmDotCodes::POST_TYPE . '_social', [] );
 		$form_markup = $plugin->meta_box_contents();
 
+		$this->assertTrue(
+			strpos(
+				$form_markup[0],
+				sprintf(
+					'<p><label for="%1$s_%2$s" class="selectit"><input type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%3$s</label></p>',
+					UtmDotCodes::POST_TYPE,
+					'batch',
+					esc_html__( 'Create Social Links in Batch', 'utm-dot-codes' )
+				)
+			) === false
+		);
+		$this->assertTrue(
+			strpos(
+				$form_markup[2],
+				'<input type="url" name="' . UtmDotCodes::POST_TYPE . '_url" id="' . UtmDotCodes::POST_TYPE . '_url" required="required" value="">'
+			) !== false
+		);
+		$this->assertTrue(
+			strpos(
+				$form_markup[3],
+				'<input type="text" name="' . UtmDotCodes::POST_TYPE . '_source" id="' . UtmDotCodes::POST_TYPE . '_source" required="required" value="">'
+			) !== false
+		);
+		$this->assertTrue(
+			strpos(
+				$form_markup[4],
+				'<input type="text" name="' . UtmDotCodes::POST_TYPE . '_medium" id="' . UtmDotCodes::POST_TYPE . '_medium" value="">'
+			) !== false
+		);
+		$this->assertTrue(
+			strpos(
+				$form_markup[5],
+				'<input type="text" name="' . UtmDotCodes::POST_TYPE . '_campaign" id="' . UtmDotCodes::POST_TYPE . '_campaign" value="">'
+			) !== false
+		);
+		$this->assertTrue(
+			strpos(
+				$form_markup[6],
+				'<input type="text" name="' . UtmDotCodes::POST_TYPE . '_term" id="' . UtmDotCodes::POST_TYPE . '_term" value="">'
+			) !== false
+		);
+		$this->assertTrue(
+			strpos(
+				$form_markup[7],
+				'<input type="text" name="' . UtmDotCodes::POST_TYPE . '_content" id="' . UtmDotCodes::POST_TYPE . '_content" value="">'
+			) !== false
+		);
+		$this->assertTrue(
+			strpos(
+				$form_markup[8],
+				'<input type="url" name="' . UtmDotCodes::POST_TYPE . '_shorturl" id="' . UtmDotCodes::POST_TYPE . '_shorturl" value="">'
+			) !== false
+		);
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_editor_meta_box_contents_empty_with_batch() {
+		global $post;
+
+		$plugin = new UtmDotCodes();
+		$plugin->create_post_type();
+		update_option( UtmDotCodes::POST_TYPE . '_social', ['fake_network' => 'on'] );
+		$form_markup = $plugin->meta_box_contents();
+
+		$this->assertTrue(
+			strpos(
+				$form_markup[0],
+				sprintf(
+					'<p><label for="%1$s_%2$s" class="selectit"><input type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%3$s</label></p>',
+					UtmDotCodes::POST_TYPE,
+					'batch',
+					esc_html__( 'Create Social Links in Batch', 'utm-dot-codes' )
+				)
+			) !== false
+		);
 		$this->assertTrue(
 			strpos(
 				$form_markup[3],
