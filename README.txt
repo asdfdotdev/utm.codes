@@ -5,7 +5,7 @@ Tags: analytics, utm codes, google analytics, tracking links, campaign marketing
 Requires at least: 4.7.0
 Tested up to: 5.0.0
 Requires PHP: 5.6.0
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,10 @@ Simply add the parameter to your Link URL (e.g. https://example.com/?param=value
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.3.1 =
+
+This release does not add new functionality, however, it does meaningfully improve utm.codes adherence to WordPress coding standards and improves the overall quality of the plugin.
 
 = 1.3 =
 

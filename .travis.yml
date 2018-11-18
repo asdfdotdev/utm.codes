@@ -20,9 +20,13 @@ cache:
 matrix:
   include:
     - php: 7.2
-      env: WP_VERSION=4.9
+      env: WP_VERSION=4.7 CODE_STYLES=phpcs
     - php: 7.2
-      env: WP_VERSION=nightly
+      env: WP_VERSION=4.8 CODE_STYLES=phpcs
+    - php: 7.2
+      env: WP_VERSION=4.9 CODE_STYLES=phpcs
+    - php: 7.2
+      env: WP_VERSION=nightly CODE_STYLES=phpcs
     - php: 7.1
       env: WP_VERSION=nightly
     - php: 7.0
@@ -37,29 +41,29 @@ matrix:
       env: WP_VERSION=nightly
 
 before_script:
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash _test/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=5.7.*|6.5.*"
     fi
   - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      composer global require wp-coding-standards/wpcs
-      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+    if [[ "$CODE_STYLES" == "phpcs" ]] ; then
+      composer install
+      ./vendor/bin/phpcs --version
+      ./vendor/bin/phpcs -i
+      ./vendor/bin/phpcs --standard=WordPress --report=summary ./index.php ./utm-dot-codes.php ./classes
+      ./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.6- --report=summary ./index.php ./utm-dot-codes.php ./classes
     fi
 
 script:
+  - cd _test
+  - mkdir -p build/logs
   - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      cd _test
-      mkdir -p build/logs
+    if [[ "$CODE_STYLES" == "phpcs" ]] ; then
+      ../vendor/bin/phpunit
+      WP_MULTISITE=1 ../vendor/bin/phpunit
+    else
       phpunit
       WP_MULTISITE=1 phpunit
-    fi
-  - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      phpcs
     fi
 
 after_success:

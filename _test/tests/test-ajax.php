@@ -8,8 +8,8 @@
 /**
  * Ajax tests
  */
-class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
-{
+class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase {
+
 	public function setUp() {
 		parent::setUp();
 	}
@@ -29,14 +29,14 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		try {
 			$this->_handleAjax( 'utmdc_check_url_response' );
+		} catch ( WPAjaxDieContinueException $e ) {
 		}
-		catch (WPAjaxDieContinueException $e) {}
 
-		$response = json_decode($this->_last_response);
+		$response = json_decode( $this->_last_response );
 
 		$this->assertTrue(
-			$response->status == 200,
-			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+			200 === $response->status,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r( $response->message, true )
 		);
 	}
 
@@ -51,14 +51,14 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		try {
 			$this->_handleAjax( 'utmdc_check_url_response' );
+		} catch ( WPAjaxDieContinueException $e ) {
 		}
-		catch (WPAjaxDieContinueException $e) {}
 
-		$response = json_decode($this->_last_response);
+		$response = json_decode( $this->_last_response );
 
 		$this->assertTrue(
-			$response->status == 404,
-			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+			404 === $response->status,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r( $response->message, true )
 		);
 	}
 
@@ -75,14 +75,14 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		try {
 			$this->_handleAjax( 'utmdc_check_url_response' );
+		} catch ( WPAjaxDieContinueException $e ) {
 		}
-		catch (WPAjaxDieContinueException $e) {}
 
-		$response = json_decode($this->_last_response);
+		$response = json_decode( $this->_last_response );
 
 		$this->assertTrue(
-			$response->status == 500,
-			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+			500 === $response->status,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r( $response->message, true )
 		);
 	}
 
@@ -97,14 +97,14 @@ class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase
 
 		try {
 			$this->_handleAjax( 'utmdc_check_url_response' );
+		} catch ( WPAjaxDieContinueException $e ) {
 		}
-		catch (WPAjaxDieContinueException $e) {}
 
-		$response = json_decode($this->_last_response);
+		$response = json_decode( $this->_last_response );
 
 		$this->assertTrue(
-			$response->status == 500,
-			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r($response->message, true)
+			500 === $response->status,
+			'Ajax Error: Status ' . $response->status . ', Msg ' . print_r( $response->message, true )
 		);
 	}
 }

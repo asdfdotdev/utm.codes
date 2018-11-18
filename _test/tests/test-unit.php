@@ -8,8 +8,8 @@
 /**
  * Unit tests
  */
-class TestUtmDotCodesUnit extends WP_UnitTestCase
-{
+class TestUtmDotCodesUnit extends WP_UnitTestCase {
+
 	public function setUp() {
 		parent::setUp();
 	}
@@ -33,13 +33,13 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 	 * @depends test_is_test
 	 */
 	function test_version_numbers_active() {
-		$is_valid_wp = version_compare( get_bloginfo('version'), UTMDC_MINIMUM_WP_VERSION, '>');
+		$is_valid_wp = version_compare( get_bloginfo( 'version' ), UTMDC_MINIMUM_WP_VERSION, '>' );
 		$this->assertTrue( $is_valid_wp );
 
-		$is_valid_php = version_compare( phpversion(), UTMDC_MINIMUM_PHP_VERSION, '>');
+		$is_valid_php = version_compare( phpversion(), UTMDC_MINIMUM_PHP_VERSION, '>' );
 		$this->assertTrue( $is_valid_php );
 
-		$this->assertTrue( is_plugin_active('utm-dot-codes/utm-dot-codes.php') );
+		$this->assertTrue( is_plugin_active( 'utm-dot-codes/utm-dot-codes.php' ) );
 	}
 
 	/**
@@ -58,7 +58,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 			'Revisions have not been disabled'
 		);
 
-		$post_object = get_post_type_object(UtmDotCodes::POST_TYPE);
+		$post_object = get_post_type_object( UtmDotCodes::POST_TYPE );
 
 		$this->assertEquals( $post_object->name, 'utmdclink' );
 		$this->assertEquals( $post_object->label, 'Marketing Links' );
@@ -101,7 +101,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$this->assertEquals( $post_object->menu_icon, 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0yMi4yMjIyMjIyMjIyMjIyMjUgLTIyLjIyMjIyMjIyMjIyMjIyNSAxNDQuNDQ0NDQ0NDQ0NDQ0NDYgMTU1LjU1NTU1NTU1NTU1NTU3IiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTYuNjY2NjY2NjY2NjY2NjY0IC0xMS4xMTExMTExMTExMTExMSkgc2NhbGUoNS41NTU1NTU1NTU1NTU1NTUpIj48ZyBmaWxsPSIjMDAwMDAwIj48cGF0aCBkPSJNMTUgMmMtMS42IDAtMy4xLjctNC4yIDEuNy44LjIgMS41LjUgMi4xLjkuNi0uNCAxLjMtLjYgMi4xLS42IDIuMiAwIDQgMS44IDQgNHY1YzAgMi4yLTEuOCA0LTQgNHMtNC0xLjgtNC00VjkuNWMtLjUtLjYtMS4yLTEtMi0xVjEzYzAgMy4zIDIuNyA2IDYgNnM2LTIuNyA2LTZWOGMwLTMuMy0yLjctNi02LTZ6Ij48L3BhdGg+PHBhdGggZD0iTTkgMjJjMS42IDAgMy4xLS43IDQuMi0xLjctLjgtLjItMS41LS41LTIuMS0uOS0uNi40LTEuMy42LTIuMS42LTIuMiAwLTQtMS44LTQtNHYtNWMwLTIuMiAxLjgtNCA0LTRzNCAxLjggNCA0djMuNWMuNS42IDEuMiAxIDIgMVYxMWMwLTMuMy0yLjctNi02LTZzLTYgMi43LTYgNnY1YzAgMy4zIDIuNyA2IDYgNnoiPjwvcGF0aD48L2c+PC9nPjwvc3ZnPg==' );
 		$this->assertEquals( $post_object->capability_type, 'post' );
 		$this->assertTrue( $post_object->map_meta_cap );
-		$this->assertEquals( count($post_object->taxonomies), 0 );
+		$this->assertEquals( count( $post_object->taxonomies ), 0 );
 		$this->assertTrue( $post_object->can_export );
 		$this->assertFalse( $post_object->show_in_rest );
 	}
@@ -116,29 +116,29 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$plugin->create_post_type();
 		$taxonomy_object = get_object_taxonomies( UtmDotCodes::POST_TYPE, 'objects' );
 
-		$this->assertEquals( count($taxonomy_object), 1 );
+		$this->assertEquals( count( $taxonomy_object ), 1 );
 
 		update_option( UtmDotCodes::POST_TYPE . '_labels', 'on' );
 		$plugin->create_post_type();
 		$taxonomy_object = get_object_taxonomies( UtmDotCodes::POST_TYPE, 'objects' )['utmdclink-label'];
 
-		$this->assertEquals( $taxonomy_object->labels->name, 'Link Labels');
-		$this->assertEquals( $taxonomy_object->labels->singular_name, 'Link Label');
-		$this->assertEquals( $taxonomy_object->labels->menu_name, 'Link Labels');
-		$this->assertEquals( $taxonomy_object->labels->all_items, 'All Link Labels');
-		$this->assertEquals( $taxonomy_object->labels->edit_item, 'Edit Link Label');
-		$this->assertEquals( $taxonomy_object->labels->view_item, 'View Link Label');
-		$this->assertEquals( $taxonomy_object->labels->update_item, 'Update Link Label');
-		$this->assertEquals( $taxonomy_object->labels->add_new_item, 'Add New Link Label');
-		$this->assertEquals( $taxonomy_object->labels->new_item_name, 'New Label');
-		$this->assertEquals( $taxonomy_object->labels->search_items, 'Search Labels');
-		$this->assertEquals( $taxonomy_object->labels->separate_items_with_commas, 'Separate labels with commas.');
-		$this->assertEquals( $taxonomy_object->labels->add_or_remove_items, 'Add or remove labels');
-		$this->assertEquals( $taxonomy_object->labels->choose_from_most_used, 'Select from most popular labels.');
-		$this->assertEquals( $taxonomy_object->labels->not_found, 'Not Found');
-		$this->assertEquals( $taxonomy_object->labels->no_terms, 'No labels');
-		$this->assertEquals( $taxonomy_object->labels->items_list, 'Labels list');
-		$this->assertEquals( $taxonomy_object->labels->items_list_navigation, 'Labels list navigation');
+		$this->assertEquals( $taxonomy_object->labels->name, 'Link Labels' );
+		$this->assertEquals( $taxonomy_object->labels->singular_name, 'Link Label' );
+		$this->assertEquals( $taxonomy_object->labels->menu_name, 'Link Labels' );
+		$this->assertEquals( $taxonomy_object->labels->all_items, 'All Link Labels' );
+		$this->assertEquals( $taxonomy_object->labels->edit_item, 'Edit Link Label' );
+		$this->assertEquals( $taxonomy_object->labels->view_item, 'View Link Label' );
+		$this->assertEquals( $taxonomy_object->labels->update_item, 'Update Link Label' );
+		$this->assertEquals( $taxonomy_object->labels->add_new_item, 'Add New Link Label' );
+		$this->assertEquals( $taxonomy_object->labels->new_item_name, 'New Label' );
+		$this->assertEquals( $taxonomy_object->labels->search_items, 'Search Labels' );
+		$this->assertEquals( $taxonomy_object->labels->separate_items_with_commas, 'Separate labels with commas.' );
+		$this->assertEquals( $taxonomy_object->labels->add_or_remove_items, 'Add or remove labels' );
+		$this->assertEquals( $taxonomy_object->labels->choose_from_most_used, 'Select from most popular labels.' );
+		$this->assertEquals( $taxonomy_object->labels->not_found, 'Not Found' );
+		$this->assertEquals( $taxonomy_object->labels->no_terms, 'No labels' );
+		$this->assertEquals( $taxonomy_object->labels->items_list, 'Labels list' );
+		$this->assertEquals( $taxonomy_object->labels->items_list_navigation, 'Labels list navigation' );
 		$this->assertFalse( $taxonomy_object->hierarchical );
 		$this->assertFalse( $taxonomy_object->public );
 		$this->assertFalse( $taxonomy_object->publicly_queryable );
@@ -156,13 +156,13 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$plugin = new UtmDotCodes();
 
 		$test_actions = [
-			'edit' => 'Edit',
+			'edit'  => 'Edit',
 			'trash' => 'Move to Trash',
 		];
 
-		$filtered = $plugin->bulk_actions($test_actions);
+		$filtered = $plugin->bulk_actions( $test_actions );
 
-		$this->assertFalse( array_key_exists('edit', $filtered) );
+		$this->assertFalse( array_key_exists( 'edit', $filtered ) );
 	}
 
 	/**
@@ -171,9 +171,9 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 	function test_batch_alternative_text() {
 		$plugin = new UtmDotCodes();
 
-		$this->assertTrue( $plugin->batch_alt('source') !== '' );
-		$this->assertTrue( $plugin->batch_alt('medium') !== '' );
-		$this->assertTrue( $plugin->batch_alt('nothing') == '' );
+		$this->assertTrue( $plugin->batch_alt( 'source' ) !== '' );
+		$this->assertTrue( $plugin->batch_alt( 'medium' ) !== '' );
+		$this->assertTrue( $plugin->batch_alt( 'nothing' ) === '' );
 	}
 
 	/**
@@ -186,12 +186,12 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
 		$setting_off = $plugin->filter_link_element( $unformatted );
 
-		$this->assertTrue( $unformatted == $setting_off );
+		$this->assertTrue( $unformatted === $setting_off );
 
 		update_option( UtmDotCodes::POST_TYPE . '_alphanumeric', 'on' );
 		$setting_on = $plugin->filter_link_element( $unformatted );
 
-		$this->assertTrue( $setting_on == 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 -' );
+		$this->assertTrue( 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 -' === $setting_on );
 	}
 
 	/**
@@ -204,12 +204,12 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
 		$setting_off = $plugin->filter_link_element( $unformatted );
 
-		$this->assertTrue( $unformatted == $setting_off );
+		$this->assertTrue( $unformatted === $setting_off );
 
 		update_option( UtmDotCodes::POST_TYPE . '_nospaces', 'on' );
 		$setting_on = $plugin->filter_link_element( $unformatted );
 
-		$this->assertTrue( $setting_on == 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz-1234567890`~!@#$%^&*-()_+-=-?,./:";\'' );
+		$this->assertTrue( 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz-1234567890`~!@#$%^&*-()_+-=-?,./:";\'' === $setting_on );
 	}
 
 	/**
@@ -222,12 +222,12 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
 		$setting_off = $plugin->filter_link_element( $unformatted );
 
-		$this->assertTrue( $unformatted == $setting_off );
+		$this->assertTrue( $unformatted === $setting_off );
 
 		update_option( UtmDotCodes::POST_TYPE . '_lowercase', 'on' );
 		$setting_on = $plugin->filter_link_element( $unformatted );
 
-		$this->assertTrue( $setting_on == 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'' );
+		$this->assertTrue( 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'' === $setting_on );
 	}
 
 	/**
@@ -236,10 +236,10 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 	function test_validate_url() {
 		$plugin = new UtmDotCodes();
 
-		$valid_url = $plugin->validate_url('https://utm.codes');
+		$valid_url = $plugin->validate_url( 'https://utm.codes' );
 		$this->assertEquals( $valid_url, 'https://utm.codes' );
 
-		$invalid_url = $plugin->validate_url('invalid');
+		$invalid_url = $plugin->validate_url( 'invalid' );
 		$this->assertEquals( $invalid_url, get_home_url( null, '/' ) );
 	}
 
@@ -251,57 +251,67 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 
 		$plugin = new UtmDotCodes();
 		$plugin->create_post_type();
-		$post = $this->factory->post->create_and_get( ['post_type' => UtmDotCodes::POST_TYPE] );
+		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
 		$_GET['utmdc-error'] = 1;
-		$form_markup = $plugin->meta_box_contents();
-		$this->assertTrue(in_array(
-			sprintf(
-				'<div class="notice notice-warning"><p>%s</p></div>',
-				__( 'Invalid URL format. Replaced with site URL. Please update as needed.', UTMDC_TEXT_DOMAIN )
-			),
-			$form_markup
-		));
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-warning"><p>%s</p></div>',
+					__( 'Invalid URL format. Replaced with site URL. Please update as needed.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
 
 		$_GET['utmdc-error'] = 2;
-		$form_markup = $plugin->meta_box_contents();
-		$this->assertTrue(in_array(
-			sprintf(
-				'<div class="notice notice-error"><p>%s</p></div>',
-				__( 'Unable to save link. Please try again, your changes were not saved.', UTMDC_TEXT_DOMAIN )
-			),
-			$form_markup
-		));
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Unable to save link. Please try again, your changes were not saved.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
 
 		$_GET['utmdc-error'] = 100;
-		$form_markup = $plugin->meta_box_contents();
-		$this->assertTrue(in_array(
-			sprintf(
-				'<div class="notice notice-error"><p>%s</p></div>',
-				__( 'Unable to connect to Bitly API to shorten url. Please try again later.', UTMDC_TEXT_DOMAIN )
-			),
-			$form_markup
-		));
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Unable to connect to Bitly API to shorten url. Please try again later.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
 
 		$_GET['utmdc-error'] = 403;
-		$form_markup = $plugin->meta_box_contents();
-		$this->assertTrue(in_array(
-			sprintf(
-				'<div class="notice notice-error"><p>%s</p></div>',
-				__( 'Bitly API rate limit exceeded, could not shorten url.', UTMDC_TEXT_DOMAIN )
-			),
-			$form_markup
-		));
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Bitly API rate limit exceeded, could not shorten url.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
 
 		$_GET['utmdc-error'] = 500;
-		$form_markup = $plugin->meta_box_contents();
-		$this->assertTrue(in_array(
-			sprintf(
-				'<div class="notice notice-error"><p>%s</p></div>',
-				__( 'Invalid Bitly API token, please update settings to create short urls.', UTMDC_TEXT_DOMAIN )
-			),
-			$form_markup
-		));
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Invalid Bitly API token, please update settings to create short urls.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
 
 	}
 
@@ -311,39 +321,126 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase
 	function test_plugin_settings_links() {
 		$plugin = new UtmDotCodes();
 
-		$links = $plugin->add_links([]);
+		$links = $plugin->add_links( [] );
 		$this->assertEquals(
 			[
 				sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( admin_url( 'options-general.php?page=' . UtmDotCodes::SETTINGS_PAGE ) ),
-					__( 'Settings', UTMDC_TEXT_DOMAIN )
+					__( 'Settings', 'utm-dot-codes' )
 				),
 				sprintf(
 					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
-					__( 'Code', UTMDC_TEXT_DOMAIN )
-				)
+					__( 'Code', 'utm-dot-codes' )
+				),
 			],
 			$links
 		);
 
-		$bonus_links = ['<a href="https://blah.edu">This is a test</a>', '<a href="https://another.test">This is another test</a>'];
-		$links = $plugin->add_links($bonus_links);
+		$bonus_links = [ '<a href="https://blah.edu">This is a test</a>', '<a href="https://another.test">This is another test</a>' ];
+		$links       = $plugin->add_links( $bonus_links );
 		$this->assertEquals(
 			[
 				sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( admin_url( 'options-general.php?page=' . UtmDotCodes::SETTINGS_PAGE ) ),
-					__( 'Settings', UTMDC_TEXT_DOMAIN )
+					__( 'Settings', 'utm-dot-codes' )
 				),
 				sprintf(
 					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
-					__( 'Code', UTMDC_TEXT_DOMAIN )
+					__( 'Code', 'utm-dot-codes' )
 				),
 				'<a href="https://blah.edu">This is a test</a>',
-				'<a href="https://another.test">This is another test</a>'
+				'<a href="https://another.test">This is another test</a>',
 			],
 			$links
+		);
+
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_get_links() {
+		$plugin = new UtmDotCodes();
+		$plugin->create_post_type();
+		$link_elements = $plugin->get_link_elements();
+
+		$this->assertEquals(
+			$link_elements['url'],
+			[
+				'label'       => esc_html_x( 'Link URL', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'URL', 'utm-dot-codes' ),
+				'type'        => 'url',
+				'required'    => true,
+				'batch_alt'   => true,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['source'],
+			[
+				'label'       => esc_html_x( 'Campaign Source', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Source', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => true,
+				'batch_alt'   => true,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['medium'],
+			[
+				'label'       => esc_html_x( 'Campaign Medium', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Medium', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => true,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['campaign'],
+			[
+				'label'       => esc_html_x( 'Campaign Name', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Campaign', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['term'],
+			[
+				'label'       => esc_html_x( 'Campaign Term', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Term', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['content'],
+			[
+				'label'       => esc_html_x( 'Campaign Content', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Content', 'utm-dot-codes' ),
+				'type'        => 'text',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
+		);
+
+		$this->assertEquals(
+			$link_elements['shorturl'],
+			[
+				'label'       => esc_html_x( 'Short URL', 'utm-dot-codes' ),
+				'short_label' => esc_html_x( 'Short URL', 'utm-dot-codes' ),
+				'type'        => 'url',
+				'required'    => false,
+				'batch_alt'   => false,
+			]
 		);
 
 	}
