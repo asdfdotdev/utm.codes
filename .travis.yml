@@ -1,4 +1,3 @@
-sudo: false
 dist: trusty
 
 language: php
@@ -26,6 +25,8 @@ matrix:
     - php: 7.2
       env: WP_VERSION=4.9 CODE_STYLES=phpcs
     - php: 7.2
+      env: WP_VERSION=5.0 CODE_STYLES=phpcs
+    - php: 7.2
       env: WP_VERSION=nightly CODE_STYLES=phpcs
     - php: 7.1
       env: WP_VERSION=nightly
@@ -37,6 +38,8 @@ matrix:
       env: WP_VERSION=4.8
     - php: 5.6
       env: WP_VERSION=4.9
+    - php: 5.6
+      env: WP_VERSION=5.0
     - php: 5.6
       env: WP_VERSION=nightly
 
