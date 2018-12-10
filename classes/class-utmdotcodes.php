@@ -730,10 +730,10 @@ class UtmDotCodes {
 
 			array_map(
 				function( $key ) {
-					$field   = self::POST_TYPE . '_' . $key;
-					$post_id = absint( $_POST['ID'] );
-					$current = get_post_meta( $post_id, $field, true );
-					$updated = '';
+					$field         = self::POST_TYPE . '_' . $key;
+					$post_id       = absint( $_POST['ID'] );
+					$current       = get_post_meta( $post_id, $field, true );
+					$updated       = '';
 					$do_not_filter = [
 						self::POST_TYPE . '_url',
 						self::POST_TYPE . '_shorturl',
@@ -748,7 +748,7 @@ class UtmDotCodes {
 						}
 					}
 
-					if ( ! in_array( $field, $do_not_filter ) ) {
+					if ( ! in_array( $field, $do_not_filter, true ) ) {
 						$updated = $this->filter_link_element( 'utm_' . $key, $updated );
 					}
 
