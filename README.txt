@@ -5,7 +5,7 @@ Tags: analytics, utm codes, google analytics, tracking links, campaign marketing
 Requires at least: 4.7.0
 Tested up to: 5.0.0
 Requires PHP: 5.6.0
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,8 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - Search, filter, and easily find existing links using familiar WordPress admin controls
 - Link builder automatically detects url error responses to prevent creating bad links
 - One click shortening with Bitly for easier link sharing
+- Save notes with link
+- Filter API support for custom link element formatting
 - Supports adding additional custom parameters to links for improved versatility
 - Multi-user access to share creation and management responsibilities
 - See your current link count in the admin dashboard "At a Glance"
@@ -75,24 +77,31 @@ Simply add the parameter to your Link URL (e.g. https://example.com/?param=value
 
 == Changelog ==
 
+= 1.4.0 =
+
+- New API filter for custom link element formats (examples in the wiki)
+- New Notes field for saved links
+- New link to Bitly report in links list for shortened links
+- Additional Code Standards Improvements
+
 = 1.3.1 =
 
 This release does not add new functionality, however, it does meaningfully improve utm.codes adherence to WordPress coding standards and improves the overall quality of the plugin.
 
-= 1.3 =
+= 1.3.0 =
 
 - Supports WordPress 5.0
 - Fix filter label
 - Replace gulp build with webpack
 - Improved test coverage
 
-= 1.2 =
+= 1.2.0 =
 
 - Replace Goo.gl with Bitly url shortener
 - New "Labels" taxonomy
 - New link tester
 
-= 1.1 =
+= 1.1.0 =
 
 - New link formatting options
 - New Logo
@@ -101,6 +110,6 @@ This release does not add new functionality, however, it does meaningfully impro
 
 Fixes bug in batch link creation where source/medium were omitted from first generated link.
 
-= 1.0 =
+= 1.0.0 =
 
 Initial release
