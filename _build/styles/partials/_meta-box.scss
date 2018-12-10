@@ -47,4 +47,19 @@
 
 	}
 
+	.utmdclink {
+
+		&_notes {
+
+			textarea {
+				width: 100%;
+				min-height: 200px;
+				padding: 10px;
+				resize: vertical;
+			}
+
+		}
+
+	}
+
 }

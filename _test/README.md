@@ -99,7 +99,7 @@ From the project root running the following command will test the project PHP fi
 From the project root running the following command will test utm.codes for compatibility with PHP 5.6+
 
 ```
-./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.4- --report=summary ./index.php ./utm-dot-codes.php ./classes
+./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.6- --report=summary ./index.php ./utm-dot-codes.php ./classes
 ```
 
 ## Travis Build

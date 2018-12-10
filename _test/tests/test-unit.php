@@ -184,12 +184,12 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 
 		update_option( UtmDotCodes::POST_TYPE . '_alphanumeric', '' );
 		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
-		$setting_off = $plugin->filter_link_element( $unformatted );
+		$setting_off = $plugin->filter_link_element( 'test_param', $unformatted );
 
 		$this->assertTrue( $unformatted === $setting_off );
 
 		update_option( UtmDotCodes::POST_TYPE . '_alphanumeric', 'on' );
-		$setting_on = $plugin->filter_link_element( $unformatted );
+		$setting_on = $plugin->filter_link_element( 'test_param', $unformatted );
 
 		$this->assertTrue( 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 -' === $setting_on );
 	}
@@ -202,12 +202,12 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 
 		update_option( UtmDotCodes::POST_TYPE . '_nospaces', '' );
 		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
-		$setting_off = $plugin->filter_link_element( $unformatted );
+		$setting_off = $plugin->filter_link_element( 'test_param', $unformatted );
 
 		$this->assertTrue( $unformatted === $setting_off );
 
 		update_option( UtmDotCodes::POST_TYPE . '_nospaces', 'on' );
-		$setting_on = $plugin->filter_link_element( $unformatted );
+		$setting_on = $plugin->filter_link_element( 'test_param', $unformatted );
 
 		$this->assertTrue( 'ABCDEFGHIJKLMNOPQRSTUVWXYZ-abcdefghijklmnopqrstuvwxyz-1234567890`~!@#$%^&*-()_+-=-?,./:";\'' === $setting_on );
 	}
@@ -220,12 +220,12 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 
 		update_option( UtmDotCodes::POST_TYPE . '_lowercase', '' );
 		$unformatted = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'';
-		$setting_off = $plugin->filter_link_element( $unformatted );
+		$setting_off = $plugin->filter_link_element( 'test_param', $unformatted );
 
 		$this->assertTrue( $unformatted === $setting_off );
 
 		update_option( UtmDotCodes::POST_TYPE . '_lowercase', 'on' );
-		$setting_on = $plugin->filter_link_element( $unformatted );
+		$setting_on = $plugin->filter_link_element( 'test_param', $unformatted );
 
 		$this->assertTrue( 'abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz 1234567890`~!@#$%^&* ()_+-= ?,./:";\'' === $setting_on );
 	}
