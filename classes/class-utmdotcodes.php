@@ -336,7 +336,7 @@ class UtmDotCodes {
 				'<p><label for="%1$s_%2$s" class="%1$s_%2$s">%3$s<br><textarea type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%4$s</textarea></p>',
 				self::POST_TYPE,
 				'notes',
-				esc_html__( 'Notes:', 'utm-dot-codes' ),
+				esc_html__( 'Notes', 'utm-dot-codes' ),
 				esc_html( get_post_meta( $post->ID, self::POST_TYPE . '_notes', true ) )
 			);
 		} else {
