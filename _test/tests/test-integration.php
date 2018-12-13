@@ -614,7 +614,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 			$test_data,
 			[
 				'post_ID'                            => $post->ID,
-				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
+				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => implode( ',', $test_labels ) ],
 				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
 				UtmDotCodes::POST_TYPE . '_shorturl' => '',
 				UtmDotCodes::POST_TYPE . '_shorten'  => '',

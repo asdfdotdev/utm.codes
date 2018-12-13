@@ -709,9 +709,22 @@ class UtmDotCodes {
 						$new_post_id = wp_insert_post( $new_post );
 
 						if ( $new_post_id > 0 && isset( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) ) {
+
+							if ( is_array( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) ) {
+								$post_labels = array_map(
+									'sanitize_text_field',
+									wp_unslash( $_POST['tax_input'][ self::POST_TYPE . '-label' ] )
+								);
+							} else {
+								$post_labels = explode(
+									',',
+									sanitize_text_field( wp_unslash( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) )
+								);
+							}
+
 							wp_set_object_terms(
 								$new_post_id,
-								array_map( 'sanitize_text_field', wp_unslash( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) ),
+								$post_labels,
 								self::POST_TYPE . '-label',
 								false
 							);
