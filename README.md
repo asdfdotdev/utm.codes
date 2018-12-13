@@ -1,6 +1,7 @@
 # utm.codes Developer Repository
 
 [![Build Status](https://travis-ci.org/christopherldotcom/utm.codes.svg?branch=master)](https://travis-ci.org/christopherldotcom/utm.codes) [![codecov](https://codecov.io/gh/christopherldotcom/utm.codes/branch/master/graph/badge.svg)](https://codecov.io/gh/christopherldotcom/utm.codes) [![RIPS CodeRisk](https://coderisk.com/wp/plugin/utm-dot-codes/badge "RIPS CodeRisk")](https://coderisk.com/wp/plugin/utm-dot-codes) [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/christopherl/utm-codes)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchristopherldotcom%2Futm.codes.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchristopherldotcom%2Futm.codes?ref=badge_shield)
 
 This is the developer repository for utm.codes, a WordPress plugin.
 
@@ -54,3 +55,7 @@ For instructions on running test check out the [README](./_test#readme).
 We would be delighted if you'd submit a review of this plugin. [Click here to post a review.](https://wordpress.org/plugins/utm-dot-codes/)
 
 If you'd like to contribute to utm.codes please reference our [code of conduct](./.github/CODE_OF_CONDUCT.md) and [contributing](./.github/CONTRIBUTING.md) guides.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchristopherldotcom%2Futm.codes.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchristopherldotcom%2Futm.codes?ref=badge_large)
