@@ -1,7 +1,15 @@
-#utm-dot-codes-logo {
+#utm_dot_codes_logo {
 	width: 250px;
 	margin: auto;
 	display: block;
+}
+
+#utmdclinks_notes_preview_row {
+
+	&.hidden {
+		display: none;
+	}
+
 }
 
 .utmdclinks {
@@ -42,6 +50,51 @@
 		&-toggle {
 			@include css-toggle();
 		}
+
+		&-slider {
+			@include css-slider();
+
+			output {
+				position: relative;
+				display: inline-block;
+				margin-left: 25px;
+				padding: 7px;
+				margin-top:-5px;
+				width: 20px;
+				text-align: center;
+				background: $white;
+				border: solid 2px $wp_blue;
+
+				&::before,
+				&::after {
+					right: 100%;
+					top: 50%;
+					border: solid transparent;
+					content: " ";
+					height: 0;
+					width: 0;
+					position: absolute;
+					pointer-events: none;
+				}
+
+				&::before {
+					border-color: transparent;
+					border-right-color: $wp_blue;
+					border-width: 13px;
+					margin-top: -13px;
+				}
+
+				&::after {
+					border-color: transparent;
+					border-right-color: $white;
+					border-width: 10px;
+					margin-top: -10px;
+				}
+
+			}
+
+		}
+
 	}
 
 }

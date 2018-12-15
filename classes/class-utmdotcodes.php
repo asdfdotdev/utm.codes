@@ -410,17 +410,19 @@ class UtmDotCodes {
 			'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
 		];
 
-		$lowercase    = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
-		$alphanumeric = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
-		$nospaces     = ( 'on' === get_option( self::POST_TYPE . '_nospaces' ) );
-		$labels       = ( 'on' === get_option( self::POST_TYPE . '_labels' ) );
+		$lowercase     = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
+		$alphanumeric  = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
+		$nospaces      = ( 'on' === get_option( self::POST_TYPE . '_nospaces' ) );
+		$labels        = ( 'on' === get_option( self::POST_TYPE . '_labels' ) );
+		$show_notes    = ( 'on' === get_option( self::POST_TYPE . '_notes_show' ) );
+		$preview_notes = intval( get_option( self::POST_TYPE . '_notes_preview' ) );
 		?>
 
 		<div class="wrap">
 
 			<form method="post" action="options.php">
 				<h1>
-					<img src="<?php echo esc_url( UTMDC_PLUGIN_URL ); ?>img/utm-dot-codes-logo.png" id="utm-dot-codes-logo" alt="utm.codes Settings" title="Configure your utm.codes plugin here.">
+					<img src="<?php echo esc_url( UTMDC_PLUGIN_URL ); ?>img/utm-dot-codes-logo.png" id="utm_dot_codes_logo" alt="utm.codes Settings" title="Configure your utm.codes plugin here.">
 				</h1>
 				<h1 class="title">
 					<?php esc_html_e( 'Link Format Options', 'utm-dot-codes' ); ?>
@@ -475,6 +477,15 @@ class UtmDotCodes {
 						</td>
 					</tr>
 				</table>
+				<p>
+					<?php
+						printf(
+							'%s <a href="https://github.com/christopherldotcom/utm.codes/wiki" target="_blank">%s</a>',
+							esc_html__( 'Adding your own custom link formatting is easy with an API filter.', 'utm-dot-codes' ),
+							esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
+						);
+					?>
+				</p>
 				<h1 class="title">
 					<?php esc_html_e( 'Advanced Options', 'utm-dot-codes' ); ?>
 				</h1>
@@ -493,6 +504,40 @@ class UtmDotCodes {
 								esc_html__( 'Off', 'utm-dot-codes' )
 							);
 							?>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<?php esc_html_e( 'Notes in Link List:', 'utm-dot-codes' ); ?>
+						</th>
+						<td>
+							<?php
+							printf(
+								'<div class="utmdclinks-settings-toggle"><input id="%1$s" name="%1$s" type="checkbox" %2$s><label for="%1$s"><div data-on="%3$s" data-off="%4$s"></div></label></div>',
+								esc_html( self::POST_TYPE . '_notes_show' ),
+								esc_html( checked( $show_notes, true, false ) ),
+								esc_html__( 'On', 'utm-dot-codes' ),
+								esc_html__( 'Off', 'utm-dot-codes' )
+							);
+							?>
+						</td>
+					</tr>
+					<tr valign="top" id="utmdclinks_notes_preview_row"<?php echo ( ! $show_notes ) ? 'class="hidden"' : ''; ?>">
+						<th scope="row">
+							<?php esc_html_e( 'Notes Preview Length:', 'utm-dot-codes' ); ?>
+						</th>
+						<td>
+							<?php
+							printf(
+								'<div class="utmdclinks-settings-slider"><input id="%1$s" name="%1$s" type="range" min="0" max="50" value="%2$d" step="1"><output></output></div>',
+								esc_html( self::POST_TYPE . '_notes_preview' ),
+								intval( $preview_notes )
+							);
+							?>
+							<p>
+								<br>
+								<?php esc_html_e( 'Set to 0 to output complete notes.', 'utm-dot-codes' ); ?>
+							</p>
 						</td>
 					</tr>
 				</table>
@@ -570,6 +615,8 @@ class UtmDotCodes {
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_alphanumeric' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_nospaces' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_labels' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_show' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_preview' );
 	}
 
 	/**
@@ -945,7 +992,7 @@ class UtmDotCodes {
 		unset( $columns['date'] );
 		unset( $columns['author'] );
 
-		return array_merge(
+		$columns = array_merge(
 			[
 				'cb'              => '<input type="checkbox" />',
 				'utmdc_link'      => esc_html__( 'Link', 'utm-dot-codes' ),
@@ -954,10 +1001,17 @@ class UtmDotCodes {
 				'utmdc_campaign'  => esc_html__( 'Campaign', 'utm-dot-codes' ),
 				'utmdc_term'      => esc_html__( 'Term', 'utm-dot-codes' ),
 				'utmdc_content'   => esc_html__( 'Content', 'utm-dot-codes' ),
+				'utmdc_notes'     => esc_html__( 'Notes', 'utm-dot-codes' ),
 				'copy_utmdc_link' => esc_html__( 'Copy Links', 'utm-dot-codes' ),
 			],
 			$columns
 		);
+
+		if ( 'on' !== get_option( self::POST_TYPE . '_notes_show' ) ) {
+			unset( $columns['utmdc_notes'] );
+		}
+
+		return $columns;
 	}
 
 	/**
@@ -985,6 +1039,13 @@ class UtmDotCodes {
 			echo esc_html( get_post_meta( $post_id, self::POST_TYPE . '_term', true ) );
 		} elseif ( 'utmdc_content' === $column_name ) {
 			echo esc_html( get_post_meta( $post_id, self::POST_TYPE . '_content', true ) );
+		} elseif ( 'utmdc_notes' === $column_name ) {
+			echo esc_html(
+				wp_trim_words(
+					esc_html( get_post_meta( $post_id, self::POST_TYPE . '_notes', true ) ),
+					intval( get_option( self::POST_TYPE . '_notes_preview' ) )
+				)
+			);
 		} elseif ( 'copy_utmdc_link' === $column_name ) {
 			printf(
 				'%s <input type="text" value="%s" readonly="readonly" class="utmdclinks-copy">',
@@ -1431,6 +1492,14 @@ class UtmDotCodes {
 				wp_cache_delete( self::POST_TYPE . '_options_' . $element['type'] );
 			}
 		);
+	}
+
+	/**
+	 * Determine notes preview word length based on current setting.
+	 */
+	private function notes_preview_length() {
+		$trim = get_option( self::POST_TYPE . '_notes_preview' );
+
 	}
 
 	/**

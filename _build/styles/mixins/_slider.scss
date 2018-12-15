@@ -1,0 +1,96 @@
+@mixin css-slider($background_color: #ffffff, $slider_color: #0084c4, $track_width: 140px, $track_height: 28px, $button_width: 28px, $button_height: 28px) {
+
+	input[type=range] {
+		background: transparent;
+		-webkit-appearance: none;
+		margin: 0;
+		padding: 0;
+		width: $track_width;
+		vertical-align: middle;
+
+		&:focus {
+			outline: 0;
+			-moz-outline-style: 0;
+
+			&::-webkit-slider-runnable-track,
+			&::-ms-fill-lower,
+			&::-ms-fill-upper {
+				background: $slider_color;
+			}
+
+		}
+
+		&::-webkit-slider-runnable-track {
+			width: 100%;
+			height: $track_height;
+			cursor: pointer;
+			background: $slider_color;
+			border: 2px solid $slider_color;
+		}
+
+		&::-webkit-slider-thumb {
+			width: $button_width;
+			height: $button_height;
+			margin-top: -2px;
+			background: $background_color;
+			cursor: pointer;
+			-webkit-appearance: none;
+			border-top: 2px solid $slider_color;
+			border-bottom: 2px solid $slider_color;
+			border-radius: 0;
+		}
+
+		&::-moz-focus-outer {
+			border: 0;
+		}
+		
+		&::-moz-range-track {
+			width: 100%;
+			height: $track_height;
+			cursor: pointer;
+			background: $slider_color;
+			border: 2px solid $slider_color;
+		}
+
+		&::-moz-range-thumb {
+			width: $button_width;
+			height: $button_height;
+			background: $background_color;
+			cursor: pointer;
+			-webkit-appearance: none;
+			border: 0;
+			border-radius: 0;
+		}
+
+		&::-ms-track {
+			width: 100%;
+			height: $track_height;
+			cursor: pointer;
+			background: transparent;
+			border-color: transparent;
+			color: transparent;
+		}
+
+		&::-ms-fill-lower {
+			background: $slider_color;
+			border: 0;
+		}
+
+		&::-ms-fill-upper {
+			background: $slider_color;
+			border: 0;
+		}
+
+		&::-ms-thumb {
+			width: $button_width;
+			height: calc(#{$button_height} - 2px);
+			background: $background_color;
+			cursor: pointer;
+			margin-top: 0;
+			border: 1px solid $slider_color;
+			border-radius: 0;
+		}
+
+	}
+
+}

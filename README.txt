@@ -80,10 +80,10 @@ Simply add the parameter to your Link URL (e.g. https://example.com/?param=value
 = 1.4.0 =
 
 - New API filter for custom link element formats (examples in the wiki)
-- New Notes field for saved links
+- New Notes field - save notes with your links for contextual reference
 - New link to Bitly report in links list for shortened links
-- Fix link label concatenation for batch created links with multiple labels
 - Additional Code Standards Improvements
+- Fix link labels for batch social links to support security release changes
 
 = 1.3.1 =
 
