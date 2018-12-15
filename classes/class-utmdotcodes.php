@@ -1495,14 +1495,6 @@ class UtmDotCodes {
 	}
 
 	/**
-	 * Determine notes preview word length based on current setting.
-	 */
-	private function notes_preview_length() {
-		$trim = get_option( self::POST_TYPE . '_notes_preview' );
-
-	}
-
-	/**
 	 * Get the current link elements array.
 	 *
 	 * @since 1.0.0
