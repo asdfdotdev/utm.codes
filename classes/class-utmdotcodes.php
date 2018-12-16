@@ -1040,12 +1040,17 @@ class UtmDotCodes {
 		} elseif ( 'utmdc_content' === $column_name ) {
 			echo esc_html( get_post_meta( $post_id, self::POST_TYPE . '_content', true ) );
 		} elseif ( 'utmdc_notes' === $column_name ) {
-			echo esc_html(
-				wp_trim_words(
-					esc_html( get_post_meta( $post_id, self::POST_TYPE . '_notes', true ) ),
-					intval( get_option( self::POST_TYPE . '_notes_preview' ) )
-				)
-			);
+			$notes_length = intval( get_option( self::POST_TYPE . '_notes_preview' ) );
+			$notes = esc_html( get_post_meta( $post_id, self::POST_TYPE . '_notes', true ) );
+
+			if ( 0 < $notes_length ) {
+				$notes = wp_trim_words(
+					$notes,
+					$notes_length
+				);
+			}
+
+			echo esc_html( $notes );
 		} elseif ( 'copy_utmdc_link' === $column_name ) {
 			printf(
 				'%s <input type="text" value="%s" readonly="readonly" class="utmdclinks-copy">',
