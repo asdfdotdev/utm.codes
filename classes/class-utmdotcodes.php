@@ -1217,7 +1217,11 @@ class UtmDotCodes {
 			);
 		}
 
-		echo implode( PHP_EOL, $markup );
+		if ( $this->is_test() ) {
+			return $markup;
+		} else {
+			echo implode( PHP_EOL, $markup );
+		}
 	}
 
 	/**

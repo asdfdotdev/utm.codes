@@ -1283,4 +1283,94 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 
 	}
 
+	function test_filter_output() {
+		$plugin = new UtmDotCodes();
+		$plugin->create_post_type();
+
+		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
+
+		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
+
+		$test_data = [
+			'utm_source'   => 'this should be overwritten',
+			'utm_medium'   => 'so should this',
+			'utm_campaign' => md5( rand( 42, 4910984 ) ),
+			'utm_term'     => wp_generate_password( 15, false ),
+			'utm_content'  => md5( wp_generate_password( 30, true, true ) ),
+		];
+
+		$test_networks = [ 'a', 'b', 'c', 'd', 'e' ];
+		$test_networks = array_map(
+			function( $value ) use( &$network_options ) {
+				return wp_generate_password( 15, false );
+			},
+			$test_networks
+		);
+		$test_networks = array_fill_keys( $test_networks, 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_social', $test_networks );
+		$test_networks = array_keys( $test_networks );
+		natcasesort( $test_networks );
+
+		$network_options = array_map(
+			function( $value ) {
+				return '<option value="' . $value . '">' . $value . '</option>';
+			},
+			$test_networks
+		);
+
+		array_map(
+			function( $key, $value ) use ( &$test_data ) {
+				$test_data[ str_replace( 'utm', UtmDotCodes::POST_TYPE, $key ) ] = $value;
+				unset( $test_data[ $key ] );
+			},
+			array_keys( $test_data ),
+			$test_data
+		);
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID'                            => $post->ID,
+				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => '',
+				UtmDotCodes::POST_TYPE . '_shorten'  => 'on',
+				UtmDotCodes::POST_TYPE . '_batch'    => 'on',
+			]
+		);
+
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+
+		edit_post();
+
+		$output = $plugin->filter_ui( UtmDotCodes::POST_TYPE );
+
+
+		$this->assertEquals(
+			preg_replace( '/[\r\n\t]+/', '', $output[0] ),
+			'<select id="filter-by-utmdclink_source" name="utmdclink_source"><option value="">Any Source</option>' . implode('', $network_options) . '</select>'
+		);
+
+		$this->assertEquals(
+			$output[1],
+			'<select id="filter-by-utmdclink_medium" name="utmdclink_medium"><option value="">Any Medium</option><option value="social">social</option></select>'
+		);
+
+		$this->assertEquals(
+			$output[2],
+			'<select id="filter-by-utmdclink_campaign" name="utmdclink_campaign"><option value="">Any Campaign</option><option value="' . $_POST[UtmDotCodes::POST_TYPE . '_campaign'] . '">' . $_POST[UtmDotCodes::POST_TYPE . '_campaign'] . '</option></select>'
+		);
+
+		$this->assertEquals(
+			$output[3],
+			'<select id="filter-by-utmdclink_term" name="utmdclink_term"><option value="">Any Term</option><option value="' . $_POST[UtmDotCodes::POST_TYPE . '_term'] . '">' . $_POST[UtmDotCodes::POST_TYPE . '_term'] . '</option></select>'
+		);
+
+		$this->assertEquals(
+			$output[4],
+			'<select id="filter-by-utmdclink_content" name="utmdclink_content"><option value="">Any Content</option><option value="' . $_POST[UtmDotCodes::POST_TYPE . '_content'] . '">' . $_POST[UtmDotCodes::POST_TYPE . '_content'] . '</option></select>'
+		);
+
+	}
+
 }
