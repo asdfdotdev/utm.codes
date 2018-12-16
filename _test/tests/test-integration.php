@@ -75,6 +75,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 				UtmDotCodes::POST_TYPE . '_shorturl' => '',
 				UtmDotCodes::POST_TYPE . '_shorten'  => '',
 				UtmDotCodes::POST_TYPE . '_batch'    => '',
+				UtmDotCodes::POST_TYPE . '_notes'    => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
 			]
 		);
 
@@ -100,6 +101,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertEquals( $test_meta['utmdclink_term'][0], $test_data[ UtmDotCodes::POST_TYPE . '_term' ] );
 		$this->assertEquals( $test_meta['utmdclink_content'][0], $test_data[ UtmDotCodes::POST_TYPE . '_content' ] );
 		$this->assertFalse( isset( $test_meta['utmdclink_shorturl'][0] ) );
+		$this->assertEquals( $test_meta['utmdclink_notes'][0], 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.' );
 	}
 
 	/**
@@ -612,7 +614,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 			$test_data,
 			[
 				'post_ID'                            => $post->ID,
-				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
+				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => implode( ',', $test_labels ) ],
 				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
 				UtmDotCodes::POST_TYPE . '_shorturl' => '',
 				UtmDotCodes::POST_TYPE . '_shorten'  => '',
@@ -963,6 +965,11 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$plugin = new UtmDotCodes();
 		$plugin->register_plugin_settings();
 
+		$this->assertEquals(
+			count( $wp_registered_settings ),
+			8
+		);
+
 		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_social'] ) );
 		$this->assertEquals( $wp_registered_settings['utmdclink_social']['type'], 'string' );
 		$this->assertEquals( $wp_registered_settings['utmdclink_social']['group'], UtmDotCodes::SETTINGS_GROUP );
@@ -970,6 +977,30 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_apikey'] ) );
 		$this->assertEquals( $wp_registered_settings['utmdclink_apikey']['type'], 'string' );
 		$this->assertEquals( $wp_registered_settings['utmdclink_apikey']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_lowercase'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_lowercase']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_lowercase']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_alphanumeric'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_alphanumeric']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_alphanumeric']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_nospaces'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_nospaces']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_nospaces']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_labels'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_labels']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_labels']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_notes_show'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_show']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_show']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_notes_preview'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['group'], UtmDotCodes::SETTINGS_GROUP );
 	}
 	/**
 	 * @depends test_version_numbers_active
@@ -1002,7 +1033,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertTrue( in_array( 'utm-dot-codes', $wp_scripts->queue ) );
 
 		$this->assertTrue( array_key_exists( 'font-awesome', $wp_styles->registered ) );
-		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://use.fontawesome.com/releases/v5.0.4/css/all.css' );
+		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://use.fontawesome.com/releases/v5.6.1/css/all.css' );
 		$this->assertTrue( in_array( 'font-awesome', $wp_styles->queue ) );
 
 		$this->assertTrue( array_key_exists( 'utm-dot-codes', $wp_styles->registered ) );
@@ -1023,6 +1054,372 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 				$glance_markup
 			)
 		);
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_pre_filter_api_hook() {
+		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
+
+		update_option( UtmDotCodes::POST_TYPE . '_alphanumeric', 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_nospaces', 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_lowercase', 'on' );
+
+		$test_data = [
+			'utm_source'   => 'ASDF 2468 `~!@#$%^&*-()_+-=-?,./:";\' asdf 1357',
+			'utm_medium'   => 'foo 999 `~!@#$%^&*-()_+-=-?,./:";\' BAR 555',
+			'utm_campaign' => 'ping `~!@#11$%^22&*-()_+33-=-?,./:";\' PONG',
+			'utm_term'     => 'UTM `~!@#$%^d0t&*-()_+33-=-?,./:";\' CoDeS',
+			'utm_content'  => '`~!@#v$%a^&*l-()i_+d-=-pArAmz?,./:";\'',
+		];
+
+		$query_string = '?' . http_build_query( $test_data ) . '&utm_gen=utmdc';
+
+		array_map(
+			function( $key, $value ) use ( &$test_data ) {
+				$test_data[ str_replace( 'utm', UtmDotCodes::POST_TYPE, $key ) ] = $value;
+				unset( $test_data[ $key ] );
+			},
+			array_keys( $test_data ),
+			$test_data
+		);
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID'                            => $post->ID,
+				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => '',
+				UtmDotCodes::POST_TYPE . '_shorten'  => '',
+				UtmDotCodes::POST_TYPE . '_batch'    => '',
+			]
+		);
+
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
+		add_filter( 'utmdc_element_pre_filters', function( $value, $element ){
+			$is_campaign = 'utm_campaign' === $element;
+			$is_source = 'utm_source' === $element;
+			$has_prefix = 'prefix-' === substr( $value, 0, 7 );
+
+			if ( ( $is_campaign || $is_source ) && ! $has_prefix ) {
+				$value = 'p!@re *&FIX-' . $value;
+			}
+
+			return $value;
+
+		}, 10, 2 );
+
+		$test_id = edit_post();
+
+		$test_post = get_post( $test_id );
+		$this->assertEquals( $test_post->post_type, UtmDotCodes::POST_TYPE );
+		$this->assertEquals( $test_post->post_content, $_POST[ UtmDotCodes::POST_TYPE . '_url' ] . '?utm_source=pre-fix-asdf-2468-----asdf-1357&utm_medium=foo-999-----bar-555&utm_campaign=pre-fix-ping-1122-33---pong&utm_term=utm-d0t-33---codes&utm_content=val-id--paramz&utm_gen=utmdc' );
+		$this->assertEquals(
+			filter_var( $test_post->post_content, FILTER_VALIDATE_URL ),
+			$test_post->post_content
+		);
+		$this->assertEquals( $test_post->post_title, $_POST[ UtmDotCodes::POST_TYPE . '_url' ] );
+		$this->assertEquals( $test_post->post_status, 'publish' );
+
+		$test_meta = get_post_meta( $test_post->ID );
+		$this->assertEquals( $test_meta['utmdclink_url'][0], $_POST[ UtmDotCodes::POST_TYPE . '_url' ] );
+		$this->assertEquals( $test_meta['utmdclink_source'][0], 'pre-fix-asdf-2468-----asdf-1357' );
+		$this->assertEquals( $test_meta['utmdclink_medium'][0], 'foo-999-----bar-555' );
+		$this->assertEquals( $test_meta['utmdclink_campaign'][0], 'pre-fix-ping-1122-33---pong' );
+		$this->assertEquals( $test_meta['utmdclink_term'][0], 'utm-d0t-33---codes' );
+		$this->assertEquals( $test_meta['utmdclink_content'][0], 'val-id--paramz' );
+		$this->assertFalse( isset( $test_meta['utmdclink_shorturl'][0] ) );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_post_filter_api_hook() {
+		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
+
+		update_option( UtmDotCodes::POST_TYPE . '_alphanumeric', 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_nospaces', 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_lowercase', 'on' );
+
+		$test_data = [
+			'utm_source'   => 'ASDF 2468 `~!@#$%^&*-()_+-=-?,./:";\' asdf 1357',
+			'utm_medium'   => 'foo 999 `~!@#$%^&*-()_+-=-?,./:";\' BAR 555',
+			'utm_campaign' => 'ping `~!@#11$%^22&*-()_+33-=-?,./:";\' PONG',
+			'utm_term'     => 'UTM `~!@#$%^d0t&*-()_+33-=-?,./:";\' CoDeS',
+			'utm_content'  => '`~!@#v$%a^&*l-()i_+d-=-pArAmz?,./:";\'',
+		];
+
+		$query_string = '?' . http_build_query( $test_data ) . '&utm_gen=utmdc';
+
+		array_map(
+			function( $key, $value ) use ( &$test_data ) {
+				$test_data[ str_replace( 'utm', UtmDotCodes::POST_TYPE, $key ) ] = $value;
+				unset( $test_data[ $key ] );
+			},
+			array_keys( $test_data ),
+			$test_data
+		);
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID'                            => $post->ID,
+				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => '',
+				UtmDotCodes::POST_TYPE . '_shorten'  => '',
+				UtmDotCodes::POST_TYPE . '_batch'    => '',
+			]
+		);
+
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
+		add_filter( 'utmdc_element_post_filters', function( $value, $element ){
+			$is_campaign = 'utm_campaign' === $element;
+			$is_source = 'utm_source' === $element;
+			$has_prefix = 'prefix-' === substr( $value, 0, 7 );
+
+			if ( ( $is_campaign || $is_source ) && ! $has_prefix ) {
+				$value = 'prefix-' . $value;
+			}
+
+			return $value;
+
+		}, 10, 2 );
+
+		$test_id = edit_post();
+
+		$test_post = get_post( $test_id );
+		$this->assertEquals( $test_post->post_type, UtmDotCodes::POST_TYPE );
+		$this->assertEquals( $test_post->post_content, $_POST[ UtmDotCodes::POST_TYPE . '_url' ] . '?utm_source=prefix-asdf-2468-----asdf-1357&utm_medium=foo-999-----bar-555&utm_campaign=prefix-ping-1122-33---pong&utm_term=utm-d0t-33---codes&utm_content=val-id--paramz&utm_gen=utmdc' );
+		$this->assertEquals(
+			filter_var( $test_post->post_content, FILTER_VALIDATE_URL ),
+			$test_post->post_content
+		);
+		$this->assertEquals( $test_post->post_title, $_POST[ UtmDotCodes::POST_TYPE . '_url' ] );
+		$this->assertEquals( $test_post->post_status, 'publish' );
+
+		$test_meta = get_post_meta( $test_post->ID );
+		$this->assertEquals( $test_meta['utmdclink_url'][0], $_POST[ UtmDotCodes::POST_TYPE . '_url' ] );
+		$this->assertEquals( $test_meta['utmdclink_source'][0], 'prefix-asdf-2468-----asdf-1357' );
+		$this->assertEquals( $test_meta['utmdclink_medium'][0], 'foo-999-----bar-555' );
+		$this->assertEquals( $test_meta['utmdclink_campaign'][0], 'prefix-ping-1122-33---pong' );
+		$this->assertEquals( $test_meta['utmdclink_term'][0], 'utm-d0t-33---codes' );
+		$this->assertEquals( $test_meta['utmdclink_content'][0], 'val-id--paramz' );
+		$this->assertFalse( isset( $test_meta['utmdclink_shorturl'][0] ) );
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_list_column_output() {
+		$plugin = new UtmDotCodes();
+
+		update_option( UtmDotCodes::POST_TYPE . '_notes_show', 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_notes_preview', '5' );
+
+		$plugin->create_post_type();
+		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
+
+		$test_data = [
+			'utm_source'   => rand( 25, 173929 ),
+			'utm_medium'   => 'utm.codes',
+			'utm_campaign' => md5( rand( 42, 4910984 ) ),
+			'utm_term'     => wp_generate_password( 15, false ),
+			'utm_content'  => md5( wp_generate_password( 30, true, true ) ),
+		];
+
+		array_map(
+			function( $key, $value ) use ( &$test_data ) {
+				$test_data[ str_replace( 'utm', UtmDotCodes::POST_TYPE, $key ) ] = $value;
+				unset( $test_data[ $key ] );
+			},
+			array_keys( $test_data ),
+			$test_data
+		);
+
+		$test_labels = array_map(
+			function( $value ) {
+				return md5( rand( 42, 4565882 ) );
+			},
+			array_fill( 0, 10, 'placeholder' )
+		);
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID'                            => $post->ID,
+				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
+				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => 'https://' . uniqid() . '.short',
+				UtmDotCodes::POST_TYPE . '_shorten'  => '',
+				UtmDotCodes::POST_TYPE . '_batch'    => '',
+				UtmDotCodes::POST_TYPE . '_notes'    => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+			]
+		);
+
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
+		$test_id = edit_post();
+		$test_post = get_post( $test_id );
+
+		$columns = [
+			'utmdc_link' => sprintf(
+				'<a href="%1$s" target="_blank">%1$s?utm_source=%2$s&amp;utm_medium=%3$s&amp;utm_campaign=%4$s&amp;utm_term=%5$s&amp;utm_content=%6$s&amp;utm_gen=utmdc</a>',
+				$_POST[ UtmDotCodes::POST_TYPE . '_url' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_source' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_medium' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_campaign' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_term' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_content' ]
+			),
+			'utmdc_source' => $_POST[ UtmDotCodes::POST_TYPE . '_source' ],
+			'utmdc_medium' => $_POST[ UtmDotCodes::POST_TYPE . '_medium' ],
+			'utmdc_campaign' => $_POST[ UtmDotCodes::POST_TYPE . '_campaign' ],
+			'utmdc_term' => $_POST[ UtmDotCodes::POST_TYPE . '_term' ],
+			'utmdc_content' => $_POST[ UtmDotCodes::POST_TYPE . '_content' ],
+			'utmdc_notes' => 'Lorem ipsum dolor sit amet,&hellip;',
+			'copy_utmdc_link' => sprintf(
+				'Full: <input type="text" value="%1$s?utm_source=%2$s&utm_medium=%3$s&utm_campaign=%4$s&utm_term=%5$s&utm_content=%6$s&utm_gen=utmdc" readonly="readonly" class="utmdclinks-copy">Short: <input type="text" value="%7$s" readonly="readonly" class="utmdclinks-copy"><a href="%7$s+" target="_blank"><i class="fas fa-chart-line"></i> View Report</a>',
+				$_POST[ UtmDotCodes::POST_TYPE . '_url' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_source' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_medium' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_campaign' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_term' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_content' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_shorturl' ]
+			)
+		];
+
+		global $post, $page, $more, $preview, $pages, $multipage;
+		$post = $test_post;
+		$page = 1;
+		$more = 0;
+		$preview = false;
+		$pages = [$test_post->post_content];
+		$multipage = 0;
+
+		foreach ( $columns as $column => $markup ) {
+			ob_start();
+			$plugin->post_list_columns( $column, $test_id );
+			$output = ob_get_contents();
+			ob_end_clean();
+
+			$this->assertEquals( $markup, $output );
+		}
+
+	}
+
+	function test_filter_output() {
+		$plugin = new UtmDotCodes();
+		$plugin->create_post_type();
+
+		update_option( UtmDotCodes::POST_TYPE . '_labels', 'on' );
+
+		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
+
+		$test_data = [
+			'utm_source'   => 'this should be overwritten',
+			'utm_medium'   => 'so should this',
+			'utm_campaign' => md5( rand( 42, 4910984 ) ),
+			'utm_term'     => wp_generate_password( 15, false ),
+			'utm_content'  => md5( wp_generate_password( 30, true, true ) ),
+		];
+
+		$test_networks = [ 'a', 'b', 'c', 'd', 'e' ];
+		$test_networks = array_map(
+			function( $value ) use( &$network_options ) {
+				return rand( 11111111, 99999999 );
+			},
+			$test_networks
+		);
+		$test_networks = array_fill_keys( $test_networks, 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_social', $test_networks );
+		$test_networks = array_keys( $test_networks );
+		natcasesort( $test_networks );
+
+		$network_options = array_map(
+			function( $value ) {
+				return '<option value="' . $value . '">' . $value . '</option>';
+			},
+			$test_networks
+		);
+
+		array_map(
+			function( $key, $value ) use ( &$test_data ) {
+				$test_data[ str_replace( 'utm', UtmDotCodes::POST_TYPE, $key ) ] = $value;
+				unset( $test_data[ $key ] );
+			},
+			array_keys( $test_data ),
+			$test_data
+		);
+
+		$test_labels = array_map(
+			function( $value ) {
+				return rand( 11111111, 99999999 );
+			},
+			array_fill( 0, 10, 'placeholder' )
+		);
+		natcasesort( $test_labels );
+
+		$label_options = array_map(
+			function ( $value ) use( $test_networks ) {
+				return '<option value="' . $value . '">' . $value . ' (' . count($test_networks) . ')</option>';
+			},
+			$test_labels
+		);
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID'                            => $post->ID,
+				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
+				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => 'https://' . uniqid() . '.short',
+				UtmDotCodes::POST_TYPE . '_shorten'  => '',
+				UtmDotCodes::POST_TYPE . '_batch'    => 'on',
+			]
+		);
+
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+
+		edit_post();
+		edit_post( $_POST );
+
+		$output = $plugin->filter_ui( UtmDotCodes::POST_TYPE );
+
+		$this->assertEquals(
+			preg_replace( '/[\r\n\t]+/', '', $output[0] ),
+			'<select id="filter-by-utmdclink_source" name="utmdclink_source"><option value="">Any Source</option>' . implode('', $network_options) . '</select>'
+		);
+
+		$this->assertEquals(
+			$output[1],
+			'<select id="filter-by-utmdclink_medium" name="utmdclink_medium"><option value="">Any Medium</option><option value="social">social</option></select>'
+		);
+
+		$this->assertEquals(
+			$output[2],
+			'<select id="filter-by-utmdclink_campaign" name="utmdclink_campaign"><option value="">Any Campaign</option><option value="' . $_POST[UtmDotCodes::POST_TYPE . '_campaign'] . '">' . $_POST[UtmDotCodes::POST_TYPE . '_campaign'] . '</option></select>'
+		);
+
+		$this->assertEquals(
+			$output[3],
+			'<select id="filter-by-utmdclink_term" name="utmdclink_term"><option value="">Any Term</option><option value="' . $_POST[UtmDotCodes::POST_TYPE . '_term'] . '">' . $_POST[UtmDotCodes::POST_TYPE . '_term'] . '</option></select>'
+		);
+
+		$this->assertEquals(
+			$output[4],
+			'<select id="filter-by-utmdclink_content" name="utmdclink_content"><option value="">Any Content</option><option value="' . $_POST[UtmDotCodes::POST_TYPE . '_content'] . '">' . $_POST[UtmDotCodes::POST_TYPE . '_content'] . '</option></select>'
+		);
+
+		$this->assertEquals(
+			preg_replace( '/[\r\n\t]+/', '', $output[5] ),
+			'<select id="filter-by-utmdclink-label" name="utmdclink-label"><option value="">Any Label</option>' . implode('', $label_options) . '</select>'
+		);
+
 	}
 
 }

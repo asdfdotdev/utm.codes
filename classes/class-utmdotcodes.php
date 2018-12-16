@@ -331,6 +331,14 @@ class UtmDotCodes {
 					esc_html( $post->post_content )
 				)
 			);
+
+			$contents[] = sprintf(
+				'<p><label for="%1$s_%2$s" class="%1$s_%2$s">%3$s<br><textarea type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%4$s</textarea></p>',
+				self::POST_TYPE,
+				'notes',
+				esc_html__( 'Notes', 'utm-dot-codes' ),
+				esc_html( get_post_meta( $post->ID, self::POST_TYPE . '_notes', true ) )
+			);
 		} else {
 			$social_setting = get_option( self::POST_TYPE . '_social' );
 			if ( 'array' === gettype( $social_setting ) && count( $social_setting ) > 0 ) {
@@ -382,37 +390,39 @@ class UtmDotCodes {
 			'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
 			'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
 			'github'         => [ 'GitHub', 'fab fa-github' ],
-			'goodreads'      => [ 'Goodreads', 'fab fa-goodreads' ],
+			'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
 			'googleplus'     => [ 'Google+', 'fab fa-google-plus-g' ],
 			'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
 			'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
 			'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
 			'medium'         => [ 'Medium', 'fab fa-medium-m' ],
 			'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
+			'mix'            => [ 'Mix', 'fab fa-mix' ],
 			'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
 			'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
-			'stumbleupon'    => [ 'StumbleUpon', 'fab fa-stumbleupon' ],
 			'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
 			'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
 			'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
 			'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
-			'vimeo'          => [ 'Vimeo', 'fab fa-vimeo' ],
+			'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
 			'xing'           => [ 'Xing', 'fab fa-xing' ],
 			'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
 			'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
 		];
 
-		$lowercase    = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
-		$alphanumeric = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
-		$nospaces     = ( 'on' === get_option( self::POST_TYPE . '_nospaces' ) );
-		$labels       = ( 'on' === get_option( self::POST_TYPE . '_labels' ) );
+		$lowercase     = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
+		$alphanumeric  = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
+		$nospaces      = ( 'on' === get_option( self::POST_TYPE . '_nospaces' ) );
+		$labels        = ( 'on' === get_option( self::POST_TYPE . '_labels' ) );
+		$show_notes    = ( 'on' === get_option( self::POST_TYPE . '_notes_show' ) );
+		$preview_notes = intval( get_option( self::POST_TYPE . '_notes_preview' ) );
 		?>
 
 		<div class="wrap">
 
 			<form method="post" action="options.php">
 				<h1>
-					<img src="<?php echo esc_url( UTMDC_PLUGIN_URL ); ?>img/utm-dot-codes-logo.png" id="utm-dot-codes-logo" alt="utm.codes Settings" title="Configure your utm.codes plugin here.">
+					<img src="<?php echo esc_url( UTMDC_PLUGIN_URL ); ?>img/utm-dot-codes-logo.png" id="utm_dot_codes_logo" alt="utm.codes Settings" title="Configure your utm.codes plugin here.">
 				</h1>
 				<h1 class="title">
 					<?php esc_html_e( 'Link Format Options', 'utm-dot-codes' ); ?>
@@ -467,6 +477,15 @@ class UtmDotCodes {
 						</td>
 					</tr>
 				</table>
+				<p>
+					<?php
+						printf(
+							'%s <a href="https://github.com/christopherldotcom/utm.codes/wiki" target="_blank">%s</a>',
+							esc_html__( 'Adding your own custom link formatting is easy with an API filter.', 'utm-dot-codes' ),
+							esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
+						);
+					?>
+				</p>
 				<h1 class="title">
 					<?php esc_html_e( 'Advanced Options', 'utm-dot-codes' ); ?>
 				</h1>
@@ -485,6 +504,40 @@ class UtmDotCodes {
 								esc_html__( 'Off', 'utm-dot-codes' )
 							);
 							?>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<?php esc_html_e( 'Notes in Link List:', 'utm-dot-codes' ); ?>
+						</th>
+						<td>
+							<?php
+							printf(
+								'<div class="utmdclinks-settings-toggle"><input id="%1$s" name="%1$s" type="checkbox" %2$s><label for="%1$s"><div data-on="%3$s" data-off="%4$s"></div></label></div>',
+								esc_html( self::POST_TYPE . '_notes_show' ),
+								esc_html( checked( $show_notes, true, false ) ),
+								esc_html__( 'On', 'utm-dot-codes' ),
+								esc_html__( 'Off', 'utm-dot-codes' )
+							);
+							?>
+						</td>
+					</tr>
+					<tr valign="top" id="utmdclinks_notes_preview_row"<?php echo ( ! $show_notes ) ? 'class="hidden"' : ''; ?>">
+						<th scope="row">
+							<?php esc_html_e( 'Notes Preview Length:', 'utm-dot-codes' ); ?>
+						</th>
+						<td>
+							<?php
+							printf(
+								'<div class="utmdclinks-settings-slider"><input id="%1$s" name="%1$s" type="range" min="0" max="50" value="%2$d" step="1"><output></output></div>',
+								esc_html( self::POST_TYPE . '_notes_preview' ),
+								intval( $preview_notes )
+							);
+							?>
+							<p>
+								<br>
+								<?php esc_html_e( 'Set to 0 to output complete notes.', 'utm-dot-codes' ); ?>
+							</p>
 						</td>
 					</tr>
 				</table>
@@ -562,6 +615,8 @@ class UtmDotCodes {
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_alphanumeric' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_nospaces' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_labels' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_show' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_preview' );
 	}
 
 	/**
@@ -665,18 +720,21 @@ class UtmDotCodes {
 
 						if ( isset( $_POST[ self::POST_TYPE . '_campaign' ] ) ) {
 							$meta_input[ self::POST_TYPE . '_campaign' ] = $this->filter_link_element(
+								'utm_campaign',
 								sanitize_text_field( wp_unslash( $_POST[ self::POST_TYPE . '_campaign' ] ) )
 							);
 						}
 
 						if ( isset( $_POST[ self::POST_TYPE . '_term' ] ) ) {
 							$meta_input[ self::POST_TYPE . '_term' ] = $this->filter_link_element(
+								'utm_term',
 								sanitize_text_field( wp_unslash( $_POST[ self::POST_TYPE . '_term' ] ) )
 							);
 						}
 
 						if ( isset( $_POST[ self::POST_TYPE . '_content' ] ) ) {
 							$meta_input[ self::POST_TYPE . '_content' ] = $this->filter_link_element(
+								'utm_content',
 								sanitize_text_field( wp_unslash( $_POST[ self::POST_TYPE . '_content' ] ) )
 							);
 						}
@@ -698,9 +756,22 @@ class UtmDotCodes {
 						$new_post_id = wp_insert_post( $new_post );
 
 						if ( $new_post_id > 0 && isset( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) ) {
+
+							if ( is_array( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) ) {
+								$post_labels = array_map(
+									'sanitize_text_field',
+									wp_unslash( $_POST['tax_input'][ self::POST_TYPE . '-label' ] )
+								);
+							} else {
+								$post_labels = explode(
+									',',
+									sanitize_text_field( wp_unslash( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) )
+								);
+							}
+
 							wp_set_object_terms(
 								$new_post_id,
-								array_map( 'sanitize_text_field', wp_unslash( $_POST['tax_input'][ self::POST_TYPE . '-label' ] ) ),
+								$post_labels,
 								self::POST_TYPE . '-label',
 								false
 							);
@@ -719,17 +790,26 @@ class UtmDotCodes {
 
 			array_map(
 				function( $key ) {
-					$field   = self::POST_TYPE . '_' . $key;
-					$post_id = absint( $_POST['ID'] );
-					$current = get_post_meta( $post_id, $field, true );
-					$updated = '';
+					$field         = self::POST_TYPE . '_' . $key;
+					$post_id       = absint( $_POST['ID'] );
+					$current       = get_post_meta( $post_id, $field, true );
+					$updated       = '';
+					$do_not_filter = [
+						self::POST_TYPE . '_url',
+						self::POST_TYPE . '_shorturl',
+						self::POST_TYPE . '_notes',
+					];
 
 					if ( isset( $_POST[ $field ] ) ) {
-						$updated = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+						if ( self::POST_TYPE . '_notes' === $field ) {
+							$updated = sanitize_textarea_field( wp_unslash( $_POST[ $field ] ) );
+						} else {
+							$updated = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+						}
 					}
 
-					if ( false === strpos( $field, 'url' ) ) {
-						$updated = $this->filter_link_element( $updated );
+					if ( ! in_array( $field, $do_not_filter, true ) ) {
+						$updated = $this->filter_link_element( 'utm_' . $key, $updated );
 					}
 
 					if ( '' === $updated ) {
@@ -738,8 +818,13 @@ class UtmDotCodes {
 						update_post_meta( $post_id, $field, $updated );
 					}
 				},
-				array_keys( $this->link_elements )
+				array_merge(
+					array_keys( $this->link_elements ),
+					[ 'notes' ]
+				)
 			);
+
+			$this->delete_cache();
 		}
 
 		unset( $_POST[ self::POST_TYPE . '_batch' ] );
@@ -793,18 +878,30 @@ class UtmDotCodes {
 			$data = $data['meta_input'];
 		}
 
-		$params_array = array_map(
-			[ $this, 'filter_link_element' ],
-			array_filter(
-				[
-					'utm_source'   => $data[ self::POST_TYPE . '_source' ],
-					'utm_medium'   => $data[ self::POST_TYPE . '_medium' ],
-					'utm_campaign' => $data[ self::POST_TYPE . '_campaign' ],
-					'utm_term'     => $data[ self::POST_TYPE . '_term' ],
-					'utm_content'  => $data[ self::POST_TYPE . '_content' ],
-					'utm_gen'      => 'utmdc',
-				]
-			)
+		$params_array = array_filter(
+			[
+				'utm_source'   => $this->filter_link_element(
+					'utm_source',
+					$data[ self::POST_TYPE . '_source' ]
+				),
+				'utm_medium'   => $this->filter_link_element(
+					'utm_medium',
+					$data[ self::POST_TYPE . '_medium' ]
+				),
+				'utm_campaign' => $this->filter_link_element(
+					'utm_campaign',
+					$data[ self::POST_TYPE . '_campaign' ]
+				),
+				'utm_term'     => $this->filter_link_element(
+					'utm_term',
+					$data[ self::POST_TYPE . '_term' ]
+				),
+				'utm_content'  => $this->filter_link_element(
+					'utm_content',
+					$data[ self::POST_TYPE . '_content' ]
+				),
+				'utm_gen'      => 'utmdc',
+			]
 		);
 
 		return ( strpos( $url, '?' ) ? '&' : '?' ) . http_build_query( $params_array );
@@ -895,7 +992,7 @@ class UtmDotCodes {
 		unset( $columns['date'] );
 		unset( $columns['author'] );
 
-		return array_merge(
+		$columns = array_merge(
 			[
 				'cb'              => '<input type="checkbox" />',
 				'utmdc_link'      => esc_html__( 'Link', 'utm-dot-codes' ),
@@ -904,10 +1001,17 @@ class UtmDotCodes {
 				'utmdc_campaign'  => esc_html__( 'Campaign', 'utm-dot-codes' ),
 				'utmdc_term'      => esc_html__( 'Term', 'utm-dot-codes' ),
 				'utmdc_content'   => esc_html__( 'Content', 'utm-dot-codes' ),
+				'utmdc_notes'     => esc_html__( 'Notes', 'utm-dot-codes' ),
 				'copy_utmdc_link' => esc_html__( 'Copy Links', 'utm-dot-codes' ),
 			],
 			$columns
 		);
+
+		if ( 'on' !== get_option( self::POST_TYPE . '_notes_show' ) ) {
+			unset( $columns['utmdc_notes'] );
+		}
+
+		return $columns;
 	}
 
 	/**
@@ -935,6 +1039,18 @@ class UtmDotCodes {
 			echo esc_html( get_post_meta( $post_id, self::POST_TYPE . '_term', true ) );
 		} elseif ( 'utmdc_content' === $column_name ) {
 			echo esc_html( get_post_meta( $post_id, self::POST_TYPE . '_content', true ) );
+		} elseif ( 'utmdc_notes' === $column_name ) {
+			$notes_length = intval( get_option( self::POST_TYPE . '_notes_preview' ) );
+			$notes        = esc_html( get_post_meta( $post_id, self::POST_TYPE . '_notes', true ) );
+
+			if ( 0 < $notes_length ) {
+				$notes = wp_trim_words(
+					$notes,
+					$notes_length
+				);
+			}
+
+			echo esc_html( $notes );
 		} elseif ( 'copy_utmdc_link' === $column_name ) {
 			printf(
 				'%s <input type="text" value="%s" readonly="readonly" class="utmdclinks-copy">',
@@ -942,11 +1058,21 @@ class UtmDotCodes {
 				esc_url_raw( get_the_content() )
 			);
 
-			printf(
-				'%s <input type="text" value="%s" readonly="readonly" class="utmdclinks-copy">',
-				esc_html_x( 'Short:', 'utm-dot-codes' ),
-				esc_url_raw( get_post_meta( $post_id, self::POST_TYPE . '_shorturl', true ) )
-			);
+			$short_url = get_post_meta( $post_id, self::POST_TYPE . '_shorturl', true );
+
+			if ( $short_url ) {
+				printf(
+					'%s <input type="text" value="%s" readonly="readonly" class="utmdclinks-copy">',
+					esc_html_x( 'Short:', 'utm-dot-codes' ),
+					esc_url_raw( $short_url )
+				);
+
+				printf(
+					'<a href="%s+" target="_blank"><i class="fas fa-chart-line"></i> %s</a>',
+					esc_url_raw( $short_url ),
+					esc_html_x( 'View Report', 'utm-dot-codes' )
+				);
+			}
 		}
 	}
 
@@ -1001,6 +1127,26 @@ class UtmDotCodes {
 
 		$markup = array_map(
 			function( $key, $filter ) use ( $wpdb ) {
+				$cached_key    = self::POST_TYPE . '_options_' . $key;
+				$cached_values = wp_cache_get( $cached_key );
+
+				if ( false === $cached_values ) {
+					$cached_values = $wpdb->get_results(
+						$wpdb->prepare(
+							"SELECT DISTINCT(meta_value)
+						FROM $wpdb->postmeta
+						WHERE meta_key = %s
+							AND meta_value != ''
+							AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status != 'trash' )
+						ORDER BY meta_value",
+							self::POST_TYPE . '_' . $key,
+							self::POST_TYPE
+						)
+					);
+
+					wp_cache_set( $cached_key, $cached_values );
+				}
+
 				$options = array_map(
 					function ( $value ) use ( $key ) {
 						$key_value = '';
@@ -1020,18 +1166,7 @@ class UtmDotCodes {
 							$value->meta_value
 						);
 					},
-					$wpdb->get_results(
-						$wpdb->prepare(
-							"SELECT DISTINCT(meta_value)
-					FROM $wpdb->postmeta
-					WHERE meta_key = %s
-						AND meta_value != ''
-						AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status != 'trash' )
-					ORDER BY meta_value",
-							self::POST_TYPE . '_' . $key,
-							self::POST_TYPE
-						)
-					)
+					$cached_values
 				);
 
 				return sprintf(
@@ -1087,7 +1222,11 @@ class UtmDotCodes {
 			);
 		}
 
-		echo implode( PHP_EOL, $markup );
+		if ( $this->is_test() ) {
+			return $markup;
+		} else {
+			echo implode( PHP_EOL, $markup );
+		}
 	}
 
 	/**
@@ -1112,7 +1251,7 @@ class UtmDotCodes {
 	public function add_css() {
 		wp_enqueue_style(
 			'font-awesome',
-			'https://use.fontawesome.com/releases/v5.0.4/css/all.css',
+			'https://use.fontawesome.com/releases/v5.6.1/css/all.css',
 			[],
 			UTMDC_VERSION,
 			'all'
@@ -1284,25 +1423,29 @@ class UtmDotCodes {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $element Value of link element to format.
+	 * @param string $element Name of link element being formatted.
+	 * @param string $value Value of link element to format.
 	 *
 	 * @return string Value with formatting applied.
 	 */
-	public function filter_link_element( $element ) {
+	public function filter_link_element( $element, $value ) {
+		$value = apply_filters( 'utmdc_element_pre_filters', $value, $element );
 
 		if ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) ) {
-			$element = preg_replace( '/[^A-Za-z0-9\- ]/', '', $element );
+			$value = preg_replace( '/[^A-Za-z0-9\- ]/', '', $value );
 		}
 
 		if ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) ) {
-			$element = strtolower( $element );
+			$value = strtolower( $value );
 		}
 
 		if ( 'on' === get_option( self::POST_TYPE . '_nospaces' ) ) {
-			$element = preg_replace( '/\s+/', '-', $element );
+			$value = preg_replace( '/\s+/', '-', $value );
 		}
 
-		return trim( $element );
+		$value = apply_filters( 'utmdc_element_post_filters', $value, $element );
+
+		return sanitize_text_field( trim( $value ) );
 	}
 
 	/**
@@ -1343,6 +1486,21 @@ class UtmDotCodes {
 
 			wp_send_json( $response );
 		}
+	}
+
+	/**
+	 * Delete cache entries we create.
+	 */
+	private function delete_cache() {
+		/**
+		 * Delete options cache used for filtering links post list.
+		 */
+		array_walk(
+			$this->link_elements,
+			function( $element ) {
+				wp_cache_delete( self::POST_TYPE . '_options_' . $element['type'] );
+			}
+		);
 	}
 
 	/**

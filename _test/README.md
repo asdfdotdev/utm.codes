@@ -63,11 +63,11 @@ Not running ms-files tests. To execute these, use --group ms-files.
 Not running external-http tests. To execute these, use --group external-http.
 PHPUnit 6.5.13 by Sebastian Bergmann and contributors.
 
-...................................                               35 / 35 (100%)
+.........................................                         41 / 41 (100%)
 
-Time: 16.78 seconds, Memory: 36.00MB
+Time: 22.53 seconds, Memory: 40.00MB
 
-OK (37 tests, 343 assertions)
+OK (41 tests, 381 assertions)
 
 Generating code coverage report in Clover XML format ... done
 ```
@@ -99,7 +99,7 @@ From the project root running the following command will test the project PHP fi
 From the project root running the following command will test utm.codes for compatibility with PHP 5.6+
 
 ```
-./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.4- --report=summary ./index.php ./utm-dot-codes.php ./classes
+./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.6- --report=summary ./index.php ./utm-dot-codes.php ./classes
 ```
 
 ## Travis Build
