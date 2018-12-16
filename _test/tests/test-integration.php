@@ -1288,6 +1288,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$plugin->create_post_type();
 
 		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
+		update_option( UtmDotCodes::POST_TYPE . '_labels', 'on' );
 
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
@@ -1327,10 +1328,26 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 			$test_data
 		);
 
+		$test_labels = array_map(
+			function( $value ) {
+				return wp_generate_password( 15, false );
+			},
+			array_fill( 0, 10, 'placeholder' )
+		);
+		natcasesort( $test_labels );
+
+		$label_options = array_map(
+			function ( $value ) use( $test_networks ) {
+				return '<option value="' . $value . '">' . $value . ' (' . count($test_networks) . ')</option>';
+			},
+			$test_labels
+		);
+
 		$_POST = array_merge(
 			$test_data,
 			[
 				'post_ID'                            => $post->ID,
+				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
 				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
 				UtmDotCodes::POST_TYPE . '_shorturl' => '',
 				UtmDotCodes::POST_TYPE . '_shorten'  => 'on',
@@ -1344,7 +1361,6 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		edit_post();
 
 		$output = $plugin->filter_ui( UtmDotCodes::POST_TYPE );
-
 
 		$this->assertEquals(
 			preg_replace( '/[\r\n\t]+/', '', $output[0] ),
@@ -1369,6 +1385,11 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertEquals(
 			$output[4],
 			'<select id="filter-by-utmdclink_content" name="utmdclink_content"><option value="">Any Content</option><option value="' . $_POST[UtmDotCodes::POST_TYPE . '_content'] . '">' . $_POST[UtmDotCodes::POST_TYPE . '_content'] . '</option></select>'
+		);
+
+		$this->assertEquals(
+			preg_replace( '/[\r\n\t]+/', '', $output[5] ),
+			'<select id="filter-by-utmdclink-label" name="utmdclink-label"><option value="">Any Label</option>' . implode('', $label_options) . '</select>'
 		);
 
 	}
