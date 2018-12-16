@@ -1303,7 +1303,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$test_networks = [ 'a', 'b', 'c', 'd', 'e' ];
 		$test_networks = array_map(
 			function( $value ) use( &$network_options ) {
-				return wp_generate_password( 15, false );
+				return rand( 11111111, 99999999 );
 			},
 			$test_networks
 		);
@@ -1330,7 +1330,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 
 		$test_labels = array_map(
 			function( $value ) {
-				return wp_generate_password( 15, false );
+				return rand( 11111111, 99999999 );
 			},
 			array_fill( 0, 10, 'placeholder' )
 		);
@@ -1359,6 +1359,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		wp_set_current_user( $user_id );
 
 		edit_post();
+		edit_post( $_POST );
 
 		$output = $plugin->filter_ui( UtmDotCodes::POST_TYPE );
 
