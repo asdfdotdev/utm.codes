@@ -965,6 +965,11 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$plugin = new UtmDotCodes();
 		$plugin->register_plugin_settings();
 
+		$this->assertEquals(
+			count( $wp_registered_settings ),
+			8
+		);
+
 		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_social'] ) );
 		$this->assertEquals( $wp_registered_settings['utmdclink_social']['type'], 'string' );
 		$this->assertEquals( $wp_registered_settings['utmdclink_social']['group'], UtmDotCodes::SETTINGS_GROUP );
@@ -972,6 +977,30 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_apikey'] ) );
 		$this->assertEquals( $wp_registered_settings['utmdclink_apikey']['type'], 'string' );
 		$this->assertEquals( $wp_registered_settings['utmdclink_apikey']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_lowercase'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_lowercase']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_lowercase']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_alphanumeric'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_alphanumeric']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_alphanumeric']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_nospaces'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_nospaces']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_nospaces']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_labels'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_labels']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_labels']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_notes_show'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_show']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_show']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_notes_preview'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['group'], UtmDotCodes::SETTINGS_GROUP );
 	}
 	/**
 	 * @depends test_version_numbers_active
