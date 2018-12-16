@@ -1181,4 +1181,106 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertFalse( isset( $test_meta['utmdclink_shorturl'][0] ) );
 	}
 
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_list_column_output() {
+		$plugin = new UtmDotCodes();
+
+		update_option( UtmDotCodes::POST_TYPE . '_notes_show', 'on' );
+		update_option( UtmDotCodes::POST_TYPE . '_notes_preview', '5' );
+		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
+
+		$plugin->create_post_type();
+		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
+
+		$test_data = [
+			'utm_source'   => rand( 25, 173929 ),
+			'utm_medium'   => 'utm.codes',
+			'utm_campaign' => md5( rand( 42, 4910984 ) ),
+			'utm_term'     => wp_generate_password( 15, false ),
+			'utm_content'  => md5( wp_generate_password( 30, true, true ) ),
+		];
+
+		array_map(
+			function( $key, $value ) use ( &$test_data ) {
+				$test_data[ str_replace( 'utm', UtmDotCodes::POST_TYPE, $key ) ] = $value;
+				unset( $test_data[ $key ] );
+			},
+			array_keys( $test_data ),
+			$test_data
+		);
+
+		$test_labels = array_map(
+			function( $value ) {
+				return md5( rand( 42, 4565882 ) );
+			},
+			array_fill( 0, 10, 'placeholder' )
+		);
+
+		$_POST = array_merge(
+			$test_data,
+			[
+				'post_ID'                            => $post->ID,
+				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
+				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
+				UtmDotCodes::POST_TYPE . '_shorturl' => '',
+				UtmDotCodes::POST_TYPE . '_shorten'  => 'on',
+				UtmDotCodes::POST_TYPE . '_batch'    => '',
+				UtmDotCodes::POST_TYPE . '_notes'    => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+			]
+		);
+
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
+		$test_id = edit_post();
+		$test_post = get_post( $test_id );
+
+		$columns = [
+			'utmdc_link' => sprintf(
+				'<a href="%1$s" target="_blank">%1$s?utm_source=%2$s&amp;utm_medium=%3$s&amp;utm_campaign=%4$s&amp;utm_term=%5$s&amp;utm_content=%6$s&amp;utm_gen=utmdc</a>',
+				$_POST[ UtmDotCodes::POST_TYPE . '_url' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_source' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_medium' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_campaign' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_term' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_content' ]
+			),
+			'utmdc_source' => $_POST[ UtmDotCodes::POST_TYPE . '_source' ],
+			'utmdc_medium' => $_POST[ UtmDotCodes::POST_TYPE . '_medium' ],
+			'utmdc_campaign' => $_POST[ UtmDotCodes::POST_TYPE . '_campaign' ],
+			'utmdc_term' => $_POST[ UtmDotCodes::POST_TYPE . '_term' ],
+			'utmdc_content' => $_POST[ UtmDotCodes::POST_TYPE . '_content' ],
+			'utmdc_notes' => 'Lorem ipsum dolor sit amet,&hellip;',
+			'copy_utmdc_link' => sprintf(
+				'Full: <input type="text" value="%1$s?utm_source=%2$s&utm_medium=%3$s&utm_campaign=%4$s&utm_term=%5$s&utm_content=%6$s&utm_gen=utmdc" readonly="readonly" class="utmdclinks-copy">Short: <input type="text" value="%7$s" readonly="readonly" class="utmdclinks-copy"><a href="%7$s+" target="_blank"><i class="fas fa-chart-line"></i> View Report</a>',
+				$_POST[ UtmDotCodes::POST_TYPE . '_url' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_source' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_medium' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_campaign' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_term' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_content' ],
+				$_POST[ UtmDotCodes::POST_TYPE . '_shorturl' ]
+			)
+		];
+
+		global $post, $page, $more, $preview, $pages, $multipage;
+		$post = $test_post;
+		$page = 1;
+		$more = 0;
+		$preview = false;
+		$pages = [$test_post->post_content];
+		$multipage = 0;
+
+		foreach ( $columns as $column => $markup ) {
+			ob_start();
+			$plugin->post_list_columns( $column, $test_id );
+			$output = ob_get_contents();
+			ob_end_clean();
+
+			$this->assertEquals( $markup, $output );
+		}
+
+	}
+
 }
