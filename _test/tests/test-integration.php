@@ -1218,7 +1218,6 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 
 		update_option( UtmDotCodes::POST_TYPE . '_notes_show', 'on' );
 		update_option( UtmDotCodes::POST_TYPE . '_notes_preview', '5' );
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
 
 		$plugin->create_post_type();
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
@@ -1253,8 +1252,8 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 				'post_ID'                            => $post->ID,
 				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
 				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
-				UtmDotCodes::POST_TYPE . '_shorturl' => '',
-				UtmDotCodes::POST_TYPE . '_shorten'  => 'on',
+				UtmDotCodes::POST_TYPE . '_shorturl' => 'https://' . uniqid() . '.short',
+				UtmDotCodes::POST_TYPE . '_shorten'  => '',
 				UtmDotCodes::POST_TYPE . '_batch'    => '',
 				UtmDotCodes::POST_TYPE . '_notes'    => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
 			]
@@ -1316,7 +1315,6 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$plugin = new UtmDotCodes();
 		$plugin->create_post_type();
 
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
 		update_option( UtmDotCodes::POST_TYPE . '_labels', 'on' );
 
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
@@ -1378,8 +1376,8 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 				'post_ID'                            => $post->ID,
 				'tax_input'                          => [ UtmDotCodes::POST_TYPE . '-label' => $test_labels ],
 				UtmDotCodes::POST_TYPE . '_url'      => 'https://www.' . uniqid() . '.test',
-				UtmDotCodes::POST_TYPE . '_shorturl' => '',
-				UtmDotCodes::POST_TYPE . '_shorten'  => 'on',
+				UtmDotCodes::POST_TYPE . '_shorturl' => 'https://' . uniqid() . '.short',
+				UtmDotCodes::POST_TYPE . '_shorten'  => '',
 				UtmDotCodes::POST_TYPE . '_batch'    => 'on',
 			]
 		);
