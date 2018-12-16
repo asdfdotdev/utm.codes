@@ -1,12 +1,21 @@
-# utm.codes Developer Repository
+<p align="center" style="padding-bottom:20px"><img src="img/utm-dot-codes-logo.png" width="400"></p><p>&nbsp;</p>
 
 [![Build Status](https://travis-ci.org/christopherldotcom/utm.codes.svg?branch=master)](https://travis-ci.org/christopherldotcom/utm.codes) [![codecov](https://codecov.io/gh/christopherldotcom/utm.codes/branch/master/graph/badge.svg)](https://codecov.io/gh/christopherldotcom/utm.codes) [![RIPS CodeRisk](https://coderisk.com/wp/plugin/utm-dot-codes/badge "RIPS CodeRisk")](https://coderisk.com/wp/plugin/utm-dot-codes) [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/christopherl/utm-codes)
 
-This is the developer repository for utm.codes, a WordPress plugin.
+Welcome to the developer repository for utm.codes, a WordPress plugin that makes creating analytics friendly marketing links quick and easy.
 
 For more information about this plugin [visit utm.codes](https://utm.codes).
 
 To download just the plugin (without the developer extras in this repo) check out [utm.codes on WordPress.org](https://wordpress.org/plugins/utm-dot-codes/).
+
+### Compatibility
+
+[![WordPress Compatibility](https://img.shields.io/badge/WordPress-4.7_to_5.0-blue.svg?logo=wordpress)](https://wordpress.org/) [![PHP Compatibility](https://img.shields.io/badge/PHP-5.6_to_7.2-%238892BF.svg?logo=php)](https://php.net/)
+
+utm.codes is developed for, and tested with, a variety of recent platform versions, including:
+
+- WordPress 4.7, 4.8, 4.9, and 5.0
+- PHP 5.6, 7.0, 7.1, and 7.2
 
 ## Branches
 
