@@ -1355,12 +1355,14 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 			$test_data
 		);
 
-		$test_labels = array_map(
-			function( $value ) {
-				return wp_generate_password( 15, false );
-			},
-			array_fill( 0, 10, 'placeholder' )
-		);
+		$test_labels = [
+			'these',
+			'are',
+			'my',
+			'test',
+			'labels',
+			wp_generate_password( 15, false )
+		];
 		natcasesort( $test_labels );
 
 		$label_options = array_map(
