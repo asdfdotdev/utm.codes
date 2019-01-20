@@ -49,7 +49,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
 		$test_data = [
-			'utm_source'   => rand( 25, 173929 ),
+			'utm_source'   => wp_generate_password( 15, false ),
 			'utm_medium'   => 'utm.codes',
 			'utm_campaign' => md5( rand( 42, 4910984 ) ),
 			'utm_term'     => wp_generate_password( 15, false ),
@@ -111,7 +111,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
 		$test_data = [
-			'utm_source'   => rand( 25, 173929 ),
+			'utm_source'   => wp_generate_password( 15, false ),
 			'utm_medium'   => 'utm.codes',
 			'utm_campaign' => md5( rand( 42, 4910984 ) ),
 			'utm_term'     => wp_generate_password( 15, false ),
@@ -173,7 +173,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
 		$test_data = [
-			'utm_source'   => rand( 25, 173929 ),
+			'utm_source'   => wp_generate_password( 15, false ),
 			'utm_medium'   => 'utm.codes',
 			'utm_campaign' => md5( rand( 42, 4910984 ) ),
 			'utm_term'     => wp_generate_password( 15, false ),
@@ -849,7 +849,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
 		$test_data = [
-			'utm_source'   => rand( 25, 173929 ),
+			'utm_source'   => wp_generate_password( 15, false ),
 			'utm_medium'   => 'utm.codes',
 			'utm_campaign' => md5( rand( 42, 4910984 ) ),
 			'utm_term'     => wp_generate_password( 15, false ),
@@ -1223,7 +1223,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
 		$test_data = [
-			'utm_source'   => rand( 25, 173929 ),
+			'utm_source'   => wp_generate_password( 15, false ),
 			'utm_medium'   => 'utm.codes',
 			'utm_campaign' => md5( rand( 42, 4910984 ) ),
 			'utm_term'     => wp_generate_password( 15, false ),
@@ -1330,7 +1330,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$test_networks = [ 'a', 'b', 'c', 'd', 'e' ];
 		$test_networks = array_map(
 			function( $value ) use( &$network_options ) {
-				return rand( 11111111, 99999999 );
+				return wp_generate_password( 15, false );
 			},
 			$test_networks
 		);
@@ -1357,7 +1357,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 
 		$test_labels = array_map(
 			function( $value ) {
-				return rand( 11111111, 99999999 );
+				return wp_generate_password( 15, false );
 			},
 			array_fill( 0, 10, 'placeholder' )
 		);
