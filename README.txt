@@ -3,7 +3,7 @@ Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: analytics, utm codes, google analytics, tracking links, campaign marketing, link generator
 Requires at least: 4.7.0
-Tested up to: 5.0.1
+Tested up to: 5.1.0
 Requires PHP: 5.6.0
 Stable tag: 1.4.0
 License: GPLv2
