@@ -382,33 +382,37 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 */
 	public function render_settings_options() {
-		$networks = [
-			'behance'        => [ 'Behance', 'fab fa-behance' ],
-			'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
-			'digg'           => [ 'Digg', 'fab fa-digg' ],
-			'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
-			'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
-			'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
-			'github'         => [ 'GitHub', 'fab fa-github' ],
-			'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
-			'googleplus'     => [ 'Google+', 'fab fa-google-plus-g' ],
-			'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
-			'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
-			'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
-			'medium'         => [ 'Medium', 'fab fa-medium-m' ],
-			'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
-			'mix'            => [ 'Mix', 'fab fa-mix' ],
-			'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
-			'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
-			'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
-			'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
-			'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
-			'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
-			'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
-			'xing'           => [ 'Xing', 'fab fa-xing' ],
-			'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
-			'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
-		];
+		$networks = apply_filters(
+			'utmdc_social_sources',
+			[
+				'behance'        => [ 'Behance', 'fab fa-behance' ],
+				'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
+				'digg'           => [ 'Digg', 'fab fa-digg' ],
+				'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
+				'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
+				'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
+				'github'         => [ 'GitHub', 'fab fa-github' ],
+				'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
+				'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
+				'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
+				'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
+				'medium'         => [ 'Medium', 'fab fa-medium-m' ],
+				'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
+				'mix'            => [ 'Mix', 'fab fa-mix' ],
+				'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
+				'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
+				'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
+				'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
+				'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
+				'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
+				'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
+				'xing'           => [ 'Xing', 'fab fa-xing' ],
+				'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
+				'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
+			]
+		);
+
+		ksort( $networks );
 
 		$lowercase     = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
 		$alphanumeric  = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
@@ -1251,7 +1255,7 @@ class UtmDotCodes {
 	public function add_css() {
 		wp_enqueue_style(
 			'font-awesome',
-			'https://use.fontawesome.com/releases/v5.6.1/css/all.css',
+			'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
 			[],
 			UTMDC_VERSION,
 			'all'

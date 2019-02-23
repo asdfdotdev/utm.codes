@@ -1033,7 +1033,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertTrue( in_array( 'utm-dot-codes', $wp_scripts->queue ) );
 
 		$this->assertTrue( array_key_exists( 'font-awesome', $wp_styles->registered ) );
-		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://use.fontawesome.com/releases/v5.6.1/css/all.css' );
+		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://use.fontawesome.com/releases/v5.7.2/css/all.css' );
 		$this->assertTrue( in_array( 'font-awesome', $wp_styles->queue ) );
 
 		$this->assertTrue( array_key_exists( 'utm-dot-codes', $wp_styles->registered ) );
