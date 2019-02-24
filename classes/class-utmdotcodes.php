@@ -223,11 +223,10 @@ class UtmDotCodes {
 	public function meta_box_contents() {
 		global $post;
 
-		$contents   = [];
-		$error_code = filter_input( INPUT_GET, 'utmdc-error', FILTER_VALIDATE_INT );
+		$contents = [];
 
-		if ( isset( $error_code ) ) {
-			switch ( intval( $error_code ) ) {
+		if ( isset( $_GET['utmdc-error'] ) ) {
+			switch ( intval( $_GET['utmdc-error'] ) ) {
 				case 1:
 					$contents[] = sprintf(
 						'<div class="notice notice-warning"><p>%s</p></div>',
