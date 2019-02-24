@@ -445,4 +445,35 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * @depends test_version_numbers_active
+	 */
+	function test_disable_month_dropdown() {
+		$plugin = new UtmDotCodes();
+		$plugin->create_post_type();
+
+		$test_months = [
+			[
+				'year' => '2018',
+				'month' => '1',
+			],
+			[
+				'year' => '2018',
+				'month' => '2',
+			],
+			[
+				'year' => '2018',
+				'month' => '3',
+			],
+		];
+
+		$unchnaged_months = $plugin->months_dropdown_results( $test_months, 'not-our-post-type' );
+		$this->assertCount( 3, $test_months );
+		$this->assertEquals( $test_months, $unchnaged_months );
+
+		$changed_months = $plugin->months_dropdown_results( $test_months, $plugin::POST_TYPE );
+		$this->assertCount( 0, $changed_months );
+		$this->assertEquals( [], $changed_months );
+	}
+
 }
