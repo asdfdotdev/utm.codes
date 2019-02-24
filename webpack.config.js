@@ -1,45 +1,45 @@
-module.exports = env => {
-  let entry_files = [
+module.exports = (env) => {
+  let entryFiles = [
     "./_build/javascript/index.js",
     "./_build/styles/core.scss"
-  ]
+  ];
 
-  let js_filename = "utmdotcodes.min.js"
-  let css_filename = "utmdotcodes.min.css"
+  let jsOutputFile = "utmdotcodes.min.js";
+  let cssOutputFile = "utmdotcodes.min.css";
 
-  let notifier_title = "Webpack Build"
-  let notifier_logo = ""
+  let notifierTitle = "utm.codes Webpack Build";
+  let notifierLogo = "";
 
-  const Path = require("path")
-  const DashboardPlugin = require("webpack-dashboard/plugin")
-  const GlobImporter = require("node-sass-glob-importer")
-  const WebpackNotifierPlugin = require("webpack-notifier")
+  const path = require("path");
+  const dashboardPlugin = require("webpack-dashboard/plugin");
+  const globImporter = require("node-sass-glob-importer");
+  const webpackNotifierPlugin = require("webpack-notifier");
 
-  let css_sourcemaps = false
-  let active_plugins = [
-    new WebpackNotifierPlugin({
-      title: notifier_title,
-      contentImage: Path.join(__dirname, notifier_logo),
+  let cssSourceMaps = false;
+  let activePlugins = [
+    new webpackNotifierPlugin({
+      title: notifierTitle,
+      contentImage: path.join(__dirname, notifierLogo),
       alwaysNotify: true,
       skipFirstNotification: false,
       excludeWarnings: false
     })
-  ]
+  ];
 
   if (env.development) {
-    css_sourcemaps = "inline"
-    active_plugins.push(
-      new DashboardPlugin(),
+    cssSourceMaps = "inline";
+    activePlugins.push(
+      new dashboardPlugin(),
     );
   }
 
   return {
-    entry: entry_files,
+    entry: entryFiles,
     output: {
       path: __dirname,
-      filename: "./js/" + js_filename
+      filename: "./js/" + jsOutputFile
     },
-    plugins: active_plugins,
+    plugins: activePlugins,
     devtool: "source-map",
     module: {
       rules: [
@@ -55,20 +55,20 @@ module.exports = env => {
             {
               loader: "file-loader",
               options: {
-                name: css_filename,
+                name: cssOutputFile,
                 outputPath: "./css/",
                 sourceMap: true
               }
             },
             {
               loader: "postcss-loader",
-              options: { sourceMap: css_sourcemaps }
+              options: { sourceMap: cssSourceMaps }
             },
             {
               loader: "sass-loader",
               options: {
                 sourceMap: true,
-                importer: GlobImporter()
+                importer: globImporter()
               }
             },
           ]
@@ -83,4 +83,4 @@ module.exports = env => {
       ],
     }
   }
-}
+};

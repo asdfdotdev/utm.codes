@@ -774,8 +774,6 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 	 * @depends test_version_numbers_active
 	 */
 	function test_editor_meta_box_contents_empty_with_batch() {
-		global $post;
-
 		$plugin = new UtmDotCodes();
 		$plugin->create_post_type();
 		update_option( UtmDotCodes::POST_TYPE . '_social', ['fake_network' => 'on'] );
@@ -1150,8 +1148,6 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 			'utm_term'     => 'UTM `~!@#$%^d0t&*-()_+33-=-?,./:";\' CoDeS',
 			'utm_content'  => '`~!@#v$%a^&*l-()i_+d-=-pArAmz?,./:";\'',
 		];
-
-		$query_string = '?' . http_build_query( $test_data ) . '&utm_gen=utmdc';
 
 		array_map(
 			function( $key, $value ) use ( &$test_data ) {

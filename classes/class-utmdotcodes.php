@@ -1130,116 +1130,122 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type slug.
+	 *
+	 * @return array|void
 	 */
 	public function filter_ui( $post_type ) {
 		global $wpdb;
 
-		$filter_options = $this->link_elements;
-		unset( $filter_options['url'] );
-		unset( $filter_options['shorturl'] );
+		if ( self::POST_TYPE === $post_type ) {
 
-		$markup = array_map(
-			function( $key, $filter ) use ( $wpdb ) {
-				$cached_key    = self::POST_TYPE . '_options_' . $key;
-				$cached_values = wp_cache_get( $cached_key );
+			$filter_options = $this->link_elements;
+			unset( $filter_options['url'] );
+			unset( $filter_options['shorturl'] );
 
-				if ( false === $cached_values ) {
-					$cached_values = $wpdb->get_results(
-						$wpdb->prepare(
-							"SELECT DISTINCT(meta_value)
+			$markup = array_map(
+				function( $key, $filter ) use ( $wpdb ) {
+					$cached_key    = self::POST_TYPE . '_options_' . $key;
+					$cached_values = wp_cache_get( $cached_key );
+
+					if ( false === $cached_values ) {
+						$cached_values = $wpdb->get_results(
+							$wpdb->prepare(
+								"SELECT DISTINCT(meta_value)
 						FROM $wpdb->postmeta
 						WHERE meta_key = %s
 							AND meta_value != ''
 							AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status != 'trash' )
 						ORDER BY meta_value",
-							self::POST_TYPE . '_' . $key,
-							self::POST_TYPE
-						)
+								self::POST_TYPE . '_' . $key,
+								self::POST_TYPE
+							)
+						);
+
+						wp_cache_set( $cached_key, $cached_values );
+					}
+
+					$options = array_map(
+						function ( $value ) use ( $key ) {
+							$key_value = '';
+
+							if ( isset( $_GET[ self::POST_TYPE . '_' . $key ] ) ) {
+								$key_value = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '_' . $key ] ) );
+							}
+
+							return sprintf(
+								'<option value="%s"%s>%s</option>',
+								rawurlencode( $value->meta_value ),
+								selected(
+									$value->meta_value,
+									rawurldecode( $key_value ),
+									false
+								),
+								$value->meta_value
+							);
+						},
+						$cached_values
 					);
 
-					wp_cache_set( $cached_key, $cached_values );
-				}
+					return sprintf(
+						'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s %3$s</option>%4$s</select>',
+						self::POST_TYPE . '_' . $key,
+						esc_html__( 'Any', 'utm-dot-codes' ),
+						$filter['short_label'],
+						implode( PHP_EOL, $options )
+					);
 
-				$options = array_map(
-					function ( $value ) use ( $key ) {
-						$key_value = '';
+				},
+				array_keys( $filter_options ),
+				$filter_options
+			);
 
-						if ( isset( $_GET[ self::POST_TYPE . '_' . $key ] ) ) {
-							$key_value = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '_' . $key ] ) );
+			if ( 'on' === get_option( self::POST_TYPE . '_labels' ) ) {
+
+				$terms = get_terms(
+					[
+						'taxonomy'   => self::POST_TYPE . '-label',
+						'hide_empty' => true,
+					]
+				);
+
+				$term_options = array_map(
+					function( $key, $value ) {
+						$label = '';
+						if ( isset( $_GET[ self::POST_TYPE . '-label' ] ) ) {
+							$label = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '-label' ] ) );
 						}
 
 						return sprintf(
-							'<option value="%s"%s>%s</option>',
-							rawurlencode( $value->meta_value ),
+							'<option value="%s"%s>%s (%s)</option>',
+							rawurlencode( str_replace( ' ', '-', $value->name ) ),
 							selected(
-								$value->meta_value,
-								rawurldecode( $key_value ),
+								str_replace( ' ', '-', $value->name ),
+								rawurldecode( $label ),
 								false
 							),
-							$value->meta_value
+							$value->name,
+							$value->count
 						);
 					},
-					$cached_values
+					array_keys( $terms ),
+					$terms
 				);
 
-				return sprintf(
-					'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s %3$s</option>%4$s</select>',
-					self::POST_TYPE . '_' . $key,
-					esc_html__( 'Any', 'utm-dot-codes' ),
-					$filter['short_label'],
-					implode( PHP_EOL, $options )
+				$markup[] = sprintf(
+					'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
+					self::POST_TYPE . '-label',
+					esc_html__( 'Any Label', 'utm-dot-codes' ),
+					implode( PHP_EOL, $term_options )
 				);
+			}
 
-			},
-			array_keys( $filter_options ),
-			$filter_options
-		);
-
-		if ( 'on' === get_option( self::POST_TYPE . '_labels' ) ) {
-
-			$terms = get_terms(
-				[
-					'taxonomy'   => self::POST_TYPE . '-label',
-					'hide_empty' => true,
-				]
-			);
-
-			$term_options = array_map(
-				function( $key, $value ) {
-					$label = '';
-					if ( isset( $_GET[ self::POST_TYPE . '-label' ] ) ) {
-						$label = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '-label' ] ) );
-					}
-
-					return sprintf(
-						'<option value="%s"%s>%s (%s)</option>',
-						rawurlencode( str_replace( ' ', '-', $value->name ) ),
-						selected(
-							str_replace( ' ', '-', $value->name ),
-							rawurldecode( $label ),
-							false
-						),
-						$value->name,
-						$value->count
-					);
-				},
-				array_keys( $terms ),
-				$terms
-			);
-
-			$markup[] = sprintf(
-				'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
-				self::POST_TYPE . '-label',
-				esc_html__( 'Any Label', 'utm-dot-codes' ),
-				implode( PHP_EOL, $term_options )
-			);
+			if ( $this->is_test() ) {
+				return $markup;
+			} else {
+				echo implode( PHP_EOL, $markup );
+			}
 		}
 
-		if ( $this->is_test() ) {
-			return $markup;
-		} else {
-			echo implode( PHP_EOL, $markup );
-		}
 	}
 
 	/**
