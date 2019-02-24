@@ -2,7 +2,7 @@
 /**
  * Class TestUtmDotCodesIntegration
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 /**

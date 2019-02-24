@@ -2,9 +2,10 @@
 /**
  * Utm.codes - Marketing Campaign Link Builder
  *
- * @package utm.codes
+ * @package UtmDotCodes
  * @copyright 2018-2019 ChristopherL (https://christopherl.com)
  * @license http://www.gnu.org/licenses/gpl-2.0.html
+ * @link https://utm.codes
  *
  * @wordpress-plugin
  * Plugin Name: utm.codes

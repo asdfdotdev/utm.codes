@@ -5,7 +5,7 @@
  *
  * @environment Default
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 // Absolute path to your WordPress tests directory.

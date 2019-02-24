@@ -2,7 +2,7 @@
 /**
  * Utm.codes plugin class
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 /**

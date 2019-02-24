@@ -2,7 +2,7 @@
 /**
  * Utm.codes blank index file
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 // Silence is golden.

@@ -2,7 +2,7 @@
 /**
  * Utm.codes activation class
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 /**
@@ -10,7 +10,7 @@
  *
  * Implements activation and deactivation hooks for the utm.codes plugin
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 class UtmDotCodesActivation {
 
