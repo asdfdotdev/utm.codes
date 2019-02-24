@@ -572,6 +572,15 @@ class UtmDotCodes {
 					);
 					?>
 				</div>
+				<p>
+					<?php
+					printf(
+						'%s <a href="https://github.com/christopherldotcom/utm.codes/wiki" target="_blank">%s</a>',
+						esc_html__( 'Adding your own custom network options is easy with an API filter.', 'utm-dot-codes' ),
+						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
+					);
+					?>
+				</p>
 				<h1 class="title">
 					<?php esc_html_e( 'URL Shortener', 'utm-dot-codes' ); ?>
 				</h1>

@@ -1,14 +1,14 @@
-# Copyright (C) 2018 utm.codes
+# Copyright (C) 2019 utm.codes
 # This file is distributed under the same license as the utm.codes package.
 msgid ""
 msgstr ""
-"Project-Id-Version: utm.codes 1.4.0\n"
+"Project-Id-Version: utm.codes 1.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/source\n"
-"POT-Creation-Date: 2018-12-16 06:39:19+00:00\n"
+"POT-Creation-Date: 2019-02-24 00:35:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -38,12 +38,12 @@ msgid "Invalid Bitly API token, please update settings to create short urls."
 msgstr ""
 
 #: _test/tests/test-unit.php:330 _test/tests/test-unit.php:347
-#: classes/class-utmdotcodes.php:637
+#: classes/class-utmdotcodes.php:650
 msgid "Settings"
 msgstr ""
 
 #: _test/tests/test-unit.php:334 _test/tests/test-unit.php:351
-#: classes/class-utmdotcodes.php:641
+#: classes/class-utmdotcodes.php:654
 msgid "Code"
 msgstr ""
 
@@ -252,11 +252,11 @@ msgstr ""
 msgid "Shorten Completed Link When Saving"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:330 classes/class-utmdotcodes.php:1369
+#: classes/class-utmdotcodes.php:330 classes/class-utmdotcodes.php:1382
 msgid "Marketing Link"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:339 classes/class-utmdotcodes.php:1004
+#: classes/class-utmdotcodes.php:339 classes/class-utmdotcodes.php:1017
 msgid "Notes"
 msgstr ""
 
@@ -264,182 +264,186 @@ msgstr ""
 msgid "utm.codes Plugin Settings"
 msgstr ""
 
-#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.4.0)  #-#-#-#-#
+#. #-#-#-#-#  utm-dot-codes.pot (utm.codes 1.5.0)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: classes/class-utmdotcodes.php:372
 msgid "utm.codes"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:428
+#: classes/class-utmdotcodes.php:432
 msgid "Link Format Options"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:433
+#: classes/class-utmdotcodes.php:437
 msgid "Force Lowercase:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:441 classes/class-utmdotcodes.php:457
-#: classes/class-utmdotcodes.php:473 classes/class-utmdotcodes.php:503
-#: classes/class-utmdotcodes.php:519
+#: classes/class-utmdotcodes.php:445 classes/class-utmdotcodes.php:461
+#: classes/class-utmdotcodes.php:477 classes/class-utmdotcodes.php:507
+#: classes/class-utmdotcodes.php:523
 msgid "On"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:442 classes/class-utmdotcodes.php:458
-#: classes/class-utmdotcodes.php:474 classes/class-utmdotcodes.php:504
-#: classes/class-utmdotcodes.php:520
+#: classes/class-utmdotcodes.php:446 classes/class-utmdotcodes.php:462
+#: classes/class-utmdotcodes.php:478 classes/class-utmdotcodes.php:508
+#: classes/class-utmdotcodes.php:524
 msgid "Off"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:449
+#: classes/class-utmdotcodes.php:453
 msgid "Alphanumeric Only:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:465
+#: classes/class-utmdotcodes.php:469
 msgid "Remove Spaces:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:484
+#: classes/class-utmdotcodes.php:488
 msgid "Adding your own custom link formatting is easy with an API filter."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:485
+#: classes/class-utmdotcodes.php:489 classes/class-utmdotcodes.php:580
 msgid "Visit our wiki for examples and to find out more."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:490
+#: classes/class-utmdotcodes.php:494
 msgid "Advanced Options"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:495
+#: classes/class-utmdotcodes.php:499
 msgid "Link Labels:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:511
+#: classes/class-utmdotcodes.php:515
 msgid "Notes in Link List:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:527
+#: classes/class-utmdotcodes.php:531
 msgid "Notes Preview Length:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:539
+#: classes/class-utmdotcodes.php:543
 msgid "Set to 0 to output complete notes."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:545
+#: classes/class-utmdotcodes.php:549
 msgid "Social Sources"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:548
+#: classes/class-utmdotcodes.php:552
 msgid "Select sites to include when batch creating social links."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:572
+#: classes/class-utmdotcodes.php:579
+msgid "Adding your own custom network options is easy with an API filter."
+msgstr ""
+
+#: classes/class-utmdotcodes.php:585
 msgid "URL Shortener"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:575
+#: classes/class-utmdotcodes.php:588
 msgid "Setup api access to enable link shortening."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:580
+#: classes/class-utmdotcodes.php:593
 msgid "Bitly Generic Access Token:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:592
+#: classes/class-utmdotcodes.php:605
 msgid "Questions?"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:593
+#: classes/class-utmdotcodes.php:606
 msgid "Click here for more details."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:692 classes/class-utmdotcodes.php:712
-#: classes/class-utmdotcodes.php:1324
+#: classes/class-utmdotcodes.php:705 classes/class-utmdotcodes.php:725
+#: classes/class-utmdotcodes.php:1337
 msgid "social"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:998
+#: classes/class-utmdotcodes.php:1011
 msgid "Link"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:999
+#: classes/class-utmdotcodes.php:1012
 msgid "Source"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1000
+#: classes/class-utmdotcodes.php:1013
 msgid "Medium"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1001
+#: classes/class-utmdotcodes.php:1014
 msgid "Campaign"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1002
+#: classes/class-utmdotcodes.php:1015
 msgid "Term"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1003
+#: classes/class-utmdotcodes.php:1016
 msgid "Content"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1005
+#: classes/class-utmdotcodes.php:1018
 msgid "Copy Links"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1057
+#: classes/class-utmdotcodes.php:1070
 msgctxt "utm-dot-codes"
 msgid "Full:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1066
+#: classes/class-utmdotcodes.php:1079
 msgctxt "utm-dot-codes"
 msgid "Short:"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1073
+#: classes/class-utmdotcodes.php:1086
 msgctxt "utm-dot-codes"
 msgid "View Report"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1175
+#: classes/class-utmdotcodes.php:1188
 msgid "Any"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1220
+#: classes/class-utmdotcodes.php:1233
 msgid "Any Label"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1315
+#: classes/class-utmdotcodes.php:1328
 msgctxt ""
 "Batch link creation notice, links to settings page with number of active "
 "networks"
 msgid "Individual links will be created with unique source for"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1318
+#: classes/class-utmdotcodes.php:1331
 msgid "active"
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1319
+#: classes/class-utmdotcodes.php:1332
 msgid "network"
 msgid_plural "networks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-utmdotcodes.php:1330
+#: classes/class-utmdotcodes.php:1343
 msgid "Unable to validate url, please check manually."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1331
+#: classes/class-utmdotcodes.php:1344
 msgid "Update Link URL to check status."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1332
+#: classes/class-utmdotcodes.php:1345
 msgid "Link appears invalid, please check before saving."
 msgstr ""
 
-#: classes/class-utmdotcodes.php:1333
+#: classes/class-utmdotcodes.php:1346
 msgid "Link appears valid."
 msgstr ""
 
