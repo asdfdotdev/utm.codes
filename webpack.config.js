@@ -82,5 +82,5 @@ module.exports = (env) => {
         }
       ],
     }
-  }
+  };
 };
