@@ -1209,6 +1209,84 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 	/**
 	 * @depends test_version_numbers_active
 	 */
+	function test_social_api_filter_hook() {
+		$plugin = new UtmDotCodes();
+
+		$default_networks = $plugin->get_social_networks();
+		$this->assertEquals(
+			$default_networks,
+			[
+				'behance'        => [ 'Behance', 'fab fa-behance' ],
+				'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
+				'digg'           => [ 'Digg', 'fab fa-digg' ],
+				'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
+				'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
+				'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
+				'github'         => [ 'GitHub', 'fab fa-github' ],
+				'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
+				'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
+				'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
+				'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
+				'medium'         => [ 'Medium', 'fab fa-medium-m' ],
+				'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
+				'mix'            => [ 'Mix', 'fab fa-mix' ],
+				'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
+				'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
+				'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
+				'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
+				'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
+				'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
+				'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
+				'xing'           => [ 'Xing', 'fab fa-xing' ],
+				'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
+				'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
+			]
+		);
+
+		add_filter(
+			'utmdc_social_sources',
+			function( $networks ) {
+				$networks['dev-to'] = [ 'Dev.to', 'fab fa-dev' ];
+				unset( $networks['mix'] );
+				return $networks;
+			}
+		);
+
+		$modified_networks = $plugin->get_social_networks();
+		$this->assertEquals(
+			$modified_networks,
+			[
+				'behance'        => [ 'Behance', 'fab fa-behance' ],
+				'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
+				'dev-to'         => [ 'Dev.to', 'fab fa-dev' ],
+				'digg'           => [ 'Digg', 'fab fa-digg' ],
+				'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
+				'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
+				'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
+				'github'         => [ 'GitHub', 'fab fa-github' ],
+				'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
+				'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
+				'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
+				'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
+				'medium'         => [ 'Medium', 'fab fa-medium-m' ],
+				'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
+				'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
+				'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
+				'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
+				'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
+				'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
+				'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
+				'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
+				'xing'           => [ 'Xing', 'fab fa-xing' ],
+				'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
+				'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
+			]
+		);
+	}
+
+	/**
+	 * @depends test_version_numbers_active
+	 */
 	function test_list_column_output() {
 		$plugin = new UtmDotCodes();
 

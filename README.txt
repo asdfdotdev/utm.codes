@@ -94,7 +94,9 @@ That isn't a question. But thank you.
 
 = 1.5.0 =
 
-- New API filter for custom social network options
+- New API filter for custom social network options (examples in the wiki)
+- New unit tests
+- Code quality updates
 
 = 1.4.0 =
 

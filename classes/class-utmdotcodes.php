@@ -377,38 +377,7 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 */
 	public function render_settings_options() {
-		$networks = apply_filters(
-			'utmdc_social_sources',
-			[
-				'behance'        => [ 'Behance', 'fab fa-behance' ],
-				'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
-				'digg'           => [ 'Digg', 'fab fa-digg' ],
-				'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
-				'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
-				'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
-				'github'         => [ 'GitHub', 'fab fa-github' ],
-				'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
-				'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
-				'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
-				'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
-				'medium'         => [ 'Medium', 'fab fa-medium-m' ],
-				'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
-				'mix'            => [ 'Mix', 'fab fa-mix' ],
-				'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
-				'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
-				'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
-				'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
-				'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
-				'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
-				'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
-				'xing'           => [ 'Xing', 'fab fa-xing' ],
-				'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
-				'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
-			]
-		);
-
-		ksort( $networks );
-
+		$networks      = $this->get_social_networks();
 		$lowercase     = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
 		$alphanumeric  = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
 		$nospaces      = ( 'on' === get_option( self::POST_TYPE . '_nospaces' ) );
@@ -1549,6 +1518,49 @@ class UtmDotCodes {
 		}
 
 		return $months;
+	}
+
+	/**
+	 * Retrieve list of filtered social networks for batch link creation.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return mixed|void
+	 */
+	public function get_social_networks() {
+		$networks = apply_filters(
+			'utmdc_social_sources',
+			[
+				'behance'        => [ 'Behance', 'fab fa-behance' ],
+				'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
+				'digg'           => [ 'Digg', 'fab fa-digg' ],
+				'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
+				'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
+				'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
+				'github'         => [ 'GitHub', 'fab fa-github' ],
+				'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
+				'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
+				'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
+				'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
+				'medium'         => [ 'Medium', 'fab fa-medium-m' ],
+				'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
+				'mix'            => [ 'Mix', 'fab fa-mix' ],
+				'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
+				'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
+				'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
+				'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
+				'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
+				'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
+				'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
+				'xing'           => [ 'Xing', 'fab fa-xing' ],
+				'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
+				'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
+			]
+		);
+
+		ksort( $networks );
+
+		return $networks;
 	}
 
 	/**
