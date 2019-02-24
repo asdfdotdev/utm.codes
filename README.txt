@@ -1,7 +1,7 @@
 === utm.codes ===
 Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
-Tags: analytics, utm codes, google analytics, tracking links, campaign marketing, link generator
+Tags: analytics, utm codes, analytics, google analytics, campaign marketing, link generator
 Requires at least: 4.7.0
 Tested up to: 5.1.0
 Requires PHP: 5.6.0
@@ -13,22 +13,25 @@ Easily create and manage your marketing tracking links in WordPress for better a
 
 == Description ==
 
-Make your campaign marketing easier and more effective with WordPress. utm.codes turns your WordPress admin into your marketing links repository by making it easier to create, organize, and use your links.
+It's time to ditch the spreadsheets for a better way to create and manage your campaign marketing links.
+
+utm.codes turns your WordPress admin into a link building powerhouse by making it easier to create, organize, and use your links.
 
 For more information, videos, and helpful tips [visit the utm.codes website](https://utm.codes).
 
 = Features =
 
-- Easily create marketing links with UTM codes for better campaign analytics
+- Easily create campaign marketing links with UTM codes for better campaign analytics
 - Automatically format links in lowercase, remove spaces, and remove non alphanumeric characters for more consistent reporting
 - Batch create links for all your social networks with just a click
 - Search, filter, and easily find existing links using familiar WordPress admin controls
 - Link builder automatically detects url error responses to prevent creating bad links
 - One click shortening with Bitly for easier link sharing
 - Save notes with link for team communication, usage context, future reference, and more
-- Link element API for custom utm code formatting
+- Link element API filter for custom utm code formatting
+- Social network options API filter for custom batch link options
 - Supports adding additional custom parameters to links for improved versatility
-- Multi-user access to share creation and management responsibilities
+- Multi-user access within WordPress to share creation and management responsibilities
 - See your current link count in the admin dashboard "At a Glance"
 - Works with PHP 5.6, 7.0, 7.1, and 7.2
 - 100% Free and Open Source
@@ -39,11 +42,11 @@ Upload the utm.codes plugin to your WordPress site, activate it, and start creat
 
 = Settings =
 
-Configure your targeted social networks, and shortening API key, under Settings / utm.codes to enable batch creation and auto shorten when saving links.
+Configure your formatting preferences, targeted social networks, link notes, and shortening API key, under Settings / utm.codes to enable batch creation and auto shorten when saving links.
 
 = Documentation =
 
-For additional details about installing, configuring, and using utm.codes [visit our GitHub wiki](https://github.com/christopherldotcom/utm.codes/wiki)
+For additional details about installing, configuring, customizing, and using utm.codes [visit our GitHub wiki](https://github.com/christopherldotcom/utm.codes/wiki)
 
 = Development Resources =
 
@@ -66,6 +69,18 @@ Batch social link creation requires selection of social networks. Select network
 = What if I need custom parameters in my links? =
 
 Simply add the parameter to your Link URL (e.g. https://example.com/?param=value) and utm.codes will append your utm code values to the end of the url when you save the link.
+
+= What if I need custom parameter formats? =
+
+Adding your own custom formatting is easy with an API filter. Visit our GitHub wiki for examples and more details.
+
+= What if I want to share links on a social network your settings don't support? =
+
+Adding your own custom social network options is easy with an API filter.  Visit our GitHub wiki for examples and more details.
+
+= I love this plugin. =
+
+That isn't a question. But thank you.
 
 == Screenshots ==
 

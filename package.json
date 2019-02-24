@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chrislarrycarl/utm.codes.git"
+    "url": "git+https://github.com/christopherldotcom/utm.codes.git"
   },
   "author": "ChristopherL",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/chrislarrycarl/utm.codes/issues"
+    "url": "https://github.com/christopherldotcom/utm.codes/issues"
   },
   "homepage": "https://utm.codes",
   "devDependencies": {
