@@ -51,18 +51,13 @@ class UtmDotCodes {
 		add_filter( 'wp_insert_post_data', [ &$this, 'insert_post_data' ], 10, 2 );
 
 		$is_post_list = ( 'edit.php' === $pagenow );
-		$is_link_list = (
-			isset( $_GET['post_type'] )
-			&& self::POST_TYPE === sanitize_text_field( wp_unslash( $_GET['post_type'] ) )
-		);
 
-		if ( ( is_admin() && $is_post_list && $is_link_list ) || $this->is_test() ) {
+		if ( ( is_admin() && $is_post_list ) || $this->is_test() ) {
 			add_action( 'restrict_manage_posts', [ &$this, 'filter_ui' ], 5, 1 );
 			add_action( 'pre_get_posts', [ &$this, 'apply_filters' ], 5, 1 );
-
-			add_filter( 'manage_posts_columns', [ &$this, 'post_list_header' ], 10, 1 );
-			add_filter( 'manage_posts_custom_column', [ &$this, 'post_list_columns' ], 10, 2 );
-			add_filter( 'months_dropdown_results', '__return_empty_array' );
+			add_filter( 'manage_' . self::POST_TYPE . '_posts_columns', [ &$this, 'post_list_header' ], 10, 1 );
+			add_filter( 'manage_' . self::POST_TYPE . '_posts_custom_column', [ &$this, 'post_list_columns' ], 10, 2 );
+			add_filter( 'months_dropdown_results', [ &$this, 'months_dropdown_results' ], 10, 2 );
 			add_filter( 'bulk_actions-edit-' . self::POST_TYPE, [ &$this, 'bulk_actions' ] );
 		}
 	}
@@ -228,10 +223,11 @@ class UtmDotCodes {
 	public function meta_box_contents() {
 		global $post;
 
-		$contents = [];
+		$contents   = [];
+		$error_code = filter_input( INPUT_GET, 'utmdc-error', FILTER_VALIDATE_INT );
 
-		if ( isset( $_GET['utmdc-error'] ) ) {
-			switch ( intval( $_GET['utmdc-error'] ) ) {
+		if ( isset( $error_code ) ) {
+			switch ( intval( $error_code ) ) {
 				case 1:
 					$contents[] = sprintf(
 						'<div class="notice notice-warning"><p>%s</p></div>',
@@ -1099,27 +1095,34 @@ class UtmDotCodes {
 	 * @return object Updated query with filtered query vars.
 	 */
 	public function apply_filters( $query ) {
-		$filters = array_keys( $this->link_elements );
-		unset( $filters['url'] );
 
-		$meta_query = array_filter(
-			array_map(
-				function( $filter ) {
-					$filter = self::POST_TYPE . '_' . $filter;
+		if ( self::POST_TYPE === $query->query['post_type'] ) {
 
-					if ( isset( $_GET[ $filter ] ) && '' !== sanitize_text_field( wp_unslash( $_GET[ $filter ] ) ) ) {
-						return [
-							'key'     => $filter,
-							'value'   => rawurldecode( filter_input( INPUT_GET, $filter, FILTER_SANITIZE_STRING ) ),
-							'compare' => '=',
-						];
-					}
-				},
-				$filters
-			)
-		);
+			$filters = array_keys( $this->link_elements );
+			unset( $filters['url'] );
 
-		$query->set( 'meta_query', $meta_query );
+			$meta_query = array_filter(
+				array_map(
+					function( $filter ) {
+						$filter_name            = self::POST_TYPE . '_' . $filter;
+						$filter_value           = rawurldecode( filter_input( INPUT_GET, $filter_name, FILTER_SANITIZE_STRING ) );
+						$sanitized_filter_value = sanitize_text_field( wp_unslash( $filter_value ) );
+
+						if ( ! empty( $sanitized_filter_value ) ) {
+							return [
+								'key'     => $filter_name,
+								'value'   => $sanitized_filter_value,
+								'compare' => '=',
+							];
+						}
+					},
+					$filters
+				)
+			);
+
+			$query->set( 'meta_query', $meta_query );
+
+		}
 
 		return $query;
 	}
@@ -1166,10 +1169,11 @@ class UtmDotCodes {
 
 					$options = array_map(
 						function ( $value ) use ( $key ) {
-							$key_value = '';
+							$key_value        = '';
+							$active_key_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $key, FILTER_SANITIZE_STRING );
 
-							if ( isset( $_GET[ self::POST_TYPE . '_' . $key ] ) ) {
-								$key_value = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '_' . $key ] ) );
+							if ( isset( $active_key_value ) ) {
+								$key_value = sanitize_text_field( wp_unslash( $active_key_value ) );
 							}
 
 							return sprintf(
@@ -1210,9 +1214,11 @@ class UtmDotCodes {
 
 				$term_options = array_map(
 					function( $key, $value ) {
-						$label = '';
-						if ( isset( $_GET[ self::POST_TYPE . '-label' ] ) ) {
-							$label = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '-label' ] ) );
+						$label              = '';
+						$active_label_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $label, FILTER_SANITIZE_STRING );
+
+						if ( isset( $active_label_value ) ) {
+							$label = sanitize_text_field( wp_unslash( $active_label_value ) );
 						}
 
 						return sprintf(
@@ -1473,42 +1479,47 @@ class UtmDotCodes {
 	 * @since 1.2.0
 	 */
 	public function check_url_response() {
-		if ( isset( $_REQUEST['action'] ) && 'utmdc_check_url_response' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) ) {
-			$request_url = '';
-			$response    = [
-				'message' => 'Could not process request.',
-				'status'  => 500,
-			];
+		$response = [
+			'message' => 'Could not process request.',
+			'status'  => 500,
+		];
 
-			if ( isset( $_REQUEST['url'] ) ) {
-				$request_url = sanitize_text_field( wp_unslash( $_REQUEST['url'] ) );
-			}
+		if ( check_ajax_referer( self::REST_NONCE_LABEL, 'key', false ) ) {
+			if ( isset( $_REQUEST['action'] ) && 'utmdc_check_url_response' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) ) {
+				$request_url = '';
 
-			$is_valid_referer = ( false !== check_ajax_referer( self::REST_NONCE_LABEL, 'key', false ) );
-			$is_valid_url     = ( filter_var( $request_url, FILTER_VALIDATE_URL ) === $request_url );
-
-			if ( $is_valid_referer && $is_valid_url ) {
-				$args = [];
-				if ( $this->is_test() ) {
-					$args = [ 'sslverify' => false ];
+				if ( isset( $_REQUEST['url'] ) ) {
+					$request_url = sanitize_text_field( wp_unslash( $_REQUEST['url'] ) );
 				}
 
-				$url_check = wp_remote_get( $request_url, $args );
+				$is_valid_referer = ( false !== check_ajax_referer( self::REST_NONCE_LABEL, 'key', false ) );
+				$is_valid_url     = ( filter_var( $request_url, FILTER_VALIDATE_URL ) === $request_url );
 
-				if ( is_wp_error( $url_check ) ) {
-					$response['message'] = $url_check->get_error_messages();
-				} else {
-					$response['status']  = $url_check['response']['code'];
-					$response['message'] = $url_check['response']['message'];
+				if ( $is_valid_referer && $is_valid_url ) {
+					$args = [];
+					if ( $this->is_test() ) {
+						$args = [ 'sslverify' => false ];
+					}
+
+					$url_check = wp_remote_get( $request_url, $args );
+
+					if ( is_wp_error( $url_check ) ) {
+						$response['message'] = $url_check->get_error_messages();
+					} else {
+						$response['status']  = $url_check['response']['code'];
+						$response['message'] = $url_check['response']['message'];
+					}
 				}
 			}
-
-			wp_send_json( $response );
 		}
+
+		wp_send_json( $response );
 	}
 
 	/**
 	 * Delete cache entries we create.
+	 *
+	 * @since 1.4.0
 	 */
 	private function delete_cache() {
 		/**
@@ -1520,6 +1531,25 @@ class UtmDotCodes {
 				wp_cache_delete( self::POST_TYPE . '_options_' . $element['type'] );
 			}
 		);
+	}
+
+	/**
+	 * Remove the months dropdown from our links post list.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $months options for the month dropdown.
+	 * @param string $post_type post type value.
+	 *
+	 * @return array
+	 */
+	public function months_dropdown_results( $months, $post_type ) {
+
+		if ( self::POST_TYPE === $post_type ) {
+			$months = [];
+		}
+
+		return $months;
 	}
 
 	/**

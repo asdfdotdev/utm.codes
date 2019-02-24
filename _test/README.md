@@ -63,11 +63,11 @@ Not running ms-files tests. To execute these, use --group ms-files.
 Not running external-http tests. To execute these, use --group external-http.
 PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
 
-.........................................                         41 / 41 (100%)
+........................................                          40 / 40 (100%)
 
-Time: 20.39 seconds, Memory: 40.00MB
+Time: 20.76 seconds, Memory: 40.00MB
 
-OK (41 tests, 401 assertions)
+OK (40 tests, 396 assertions)
 
 Generating code coverage report in Clover XML format ... done
 ```
