@@ -1,8 +1,8 @@
-;(function ($) {
+(function ($) {
 
 	$(function () {
 
-		$('.utmdclinks-copy').on('click', function(event){
+		$(".utmdclinks-copy").on("click", function(event){
 			$(this).select();
 		});
 

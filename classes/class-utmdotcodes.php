@@ -1300,9 +1300,9 @@ class UtmDotCodes {
 
 		wp_localize_script(
 			'utm-dot-codes',
-			'utmdc_rest_api',
+			'utmdcRestApi',
 			[
-				'action_key' => wp_create_nonce( self::REST_NONCE_LABEL ),
+				'actionKey' => wp_create_nonce( self::REST_NONCE_LABEL ),
 			]
 		);
 	}
