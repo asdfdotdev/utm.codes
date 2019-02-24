@@ -6,7 +6,7 @@
 		$('#utmdclink_url').on('blur', function(event){
 			feedback_ele.removeClass();
 
-			if ($(this).val() != '') {
+			if ($(this).val() !== '') {
 				$.ajax({
 					url: ajaxurl,
 					data: {

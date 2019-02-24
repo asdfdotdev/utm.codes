@@ -6,5 +6,7 @@
 	<file>classes/</file>
 
 	<rule ref="WordPress"/>
-
+	<rule ref="WordPress-Core"/>
+	<rule ref="WordPress-Docs"/>
+	<rule ref="WordPress-Extra"/>
 </ruleset>

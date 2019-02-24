@@ -13,7 +13,7 @@
     });
 
     $('#utmdclink_notes_show').on('change', function(event){
-      if( $(this).attr('checked') == 'checked' ) {
+      if( $(this).attr('checked') === 'checked' ) {
         $('#utmdclinks_notes_preview_row').removeClass('hidden');
       } else {
         $('#utmdclinks_notes_preview_row').addClass('hidden');
