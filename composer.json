@@ -1,5 +1,5 @@
 {
-    "name": "christopherl/utm.codes",
+    "name": "asdfdotdev/utm.codes",
     "version": "1.5.0",
     "description": "Easily create and manage your marketing tracking links in WordPress for better analytics.",
     "type": "wordpress-plugin",
@@ -14,7 +14,7 @@
     "authors": [
         {
             "name": "Chris Carlevato",
-            "email": "chris@christopherl.com"
+            "email": "hello@asdf.dev"
         }
     ],
     "minimum-stability": "stable"

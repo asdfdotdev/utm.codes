@@ -1,6 +1,6 @@
 <p align="center" style="padding-bottom:20px"><img src="img/utm-dot-codes-logo.png" width="400"></p><p>&nbsp;</p>
 
-[![Build Status](https://travis-ci.org/christopherldotcom/utm.codes.svg?branch=master)](https://travis-ci.org/christopherldotcom/utm.codes) [![codecov](https://codecov.io/gh/christopherldotcom/utm.codes/branch/master/graph/badge.svg)](https://codecov.io/gh/christopherldotcom/utm.codes) [![RIPS CodeRisk](https://coderisk.com/wp/plugin/utm-dot-codes/badge "RIPS CodeRisk")](https://coderisk.com/wp/plugin/utm-dot-codes) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7a27b9c7c7dd41cc8a2560f3902ac52d)](https://www.codacy.com/app/chrislarrycarl/utm.codes) [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/christopherl/utm-codes)
+[![Build Status](https://travis-ci.org/asdfdotdev/utm.codes.svg?branch=master)](https://travis-ci.org/asdfdotdev/utm.codes) [![codecov](https://codecov.io/gh/asdfdotdev/utm.codes/branch/master/graph/badge.svg)](https://codecov.io/gh/asdfdotdev/utm.codes) [![RIPS CodeRisk](https://coderisk.com/wp/plugin/utm-dot-codes/badge "RIPS CodeRisk")](https://coderisk.com/wp/plugin/utm-dot-codes) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ed065c06159462cbd425fb39f9b7fd0)](https://app.codacy.com/app/chrislarrycarl/utm.codes)
 
 Welcome to the developer repository for utm.codes, a WordPress plugin that makes creating analytics friendly marketing links quick and easy.
 

@@ -46,15 +46,15 @@ Configure your formatting preferences, targeted social networks, link notes, and
 
 = Documentation =
 
-For additional details about installing, configuring, customizing, and using utm.codes [visit our GitHub wiki](https://github.com/christopherldotcom/utm.codes/wiki)
+For additional details about installing, configuring, customizing, and using utm.codes [visit our GitHub wiki](https://github.com/asdfdotdev/utm.codes/wiki)
 
 = Development Resources =
 
 utm.codes is built using development code not included in the WordPress.org download because it isn't required for use. This code includes the webpack build used to create our minified CSS and JavaScript as well as PHPUnit tests to ensure support of new WordPress releases.
 
-All source code associated with utm.codes is open source, free to use for any purpose, and released under the GPL v2.0 license. Development code, including instructions for running both the build and tests, is available at the [utm.codes GitHub repository](https://github.com/christopherldotcom/utm.codes).
+All source code associated with utm.codes is open source, free to use for any purpose, and released under the GPL v2.0 license. Development code, including instructions for running both the build and tests, is available at the [utm.codes GitHub repository](https://github.com/asdfdotdev/utm.codes).
 
-You can also [browse our build history at travis-ci.org](https://travis-ci.org/christopherldotcom/utm.codes).
+You can also [browse our build history at travis-ci.org](https://travis-ci.org/asdfdotdev/utm.codes).
 
 == Frequently Asked Questions ==
 
@@ -97,6 +97,7 @@ That isn't a question. But thank you.
 - New API filter for custom social network options (examples in the wiki)
 - New unit tests
 - Code quality updates
+- Changes Publish button text to Save, remove quick edit (GitHub Issue #28)
 
 = 1.4.0 =
 

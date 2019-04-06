@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/christopherldotcom/utm.codes.git"
+    "url": "git+https://github.com/asdfdotdev/utm.codes.git"
   },
-  "author": "ChristopherL",
+  "author": "Chris Carlevato",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/christopherldotcom/utm.codes/issues"
+    "url": "https://github.com/asdfdotdev/utm.codes/issues"
   },
   "homepage": "https://utm.codes",
   "devDependencies": {

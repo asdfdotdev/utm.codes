@@ -330,7 +330,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 					__( 'Settings', 'utm-dot-codes' )
 				),
 				sprintf(
-					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
+					'<a href="https://github.com/asdfdotdev/utm.codes" target="_blank">%s</a>',
 					__( 'Code', 'utm-dot-codes' )
 				),
 			],
@@ -347,7 +347,7 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 					__( 'Settings', 'utm-dot-codes' )
 				),
 				sprintf(
-					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
+					'<a href="https://github.com/asdfdotdev/utm.codes" target="_blank">%s</a>',
 					__( 'Code', 'utm-dot-codes' )
 				),
 				'<a href="https://blah.edu">This is a test</a>',

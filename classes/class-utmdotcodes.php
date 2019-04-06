@@ -49,6 +49,7 @@ class UtmDotCodes {
 
 		add_filter( 'plugin_action_links_' . UTMDC_PLUGIN_FILE, [ &$this, 'add_links' ], 10, 1 );
 		add_filter( 'wp_insert_post_data', [ &$this, 'insert_post_data' ], 10, 2 );
+		add_filter( 'gettext', [ &$this, 'change_publish_button' ], 10, 2 );
 
 		$is_post_list = ( 'edit.php' === $pagenow );
 
@@ -59,6 +60,7 @@ class UtmDotCodes {
 			add_filter( 'manage_' . self::POST_TYPE . '_posts_custom_column', [ &$this, 'post_list_columns' ], 10, 2 );
 			add_filter( 'months_dropdown_results', [ &$this, 'months_dropdown_results' ], 10, 2 );
 			add_filter( 'bulk_actions-edit-' . self::POST_TYPE, [ &$this, 'bulk_actions' ] );
+			add_filter( 'post_row_actions', [ &$this, 'remove_quick_edit' ], 10, 1 );
 		}
 	}
 
@@ -448,7 +450,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 						printf(
-							'%s <a href="https://github.com/christopherldotcom/utm.codes/wiki" target="_blank">%s</a>',
+							'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
 							esc_html__( 'Adding your own custom link formatting is easy with an API filter.', 'utm-dot-codes' ),
 							esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 						);
@@ -539,7 +541,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 					printf(
-						'%s <a href="https://github.com/christopherldotcom/utm.codes/wiki" target="_blank">%s</a>',
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
 						esc_html__( 'Adding your own custom network options is easy with an API filter.', 'utm-dot-codes' ),
 						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 					);
@@ -565,7 +567,7 @@ class UtmDotCodes {
 							);
 
 							printf(
-								'<br><sup>[ %s <a href="https://github.com/christopherldotcom/utm.codes/wiki/Bitly-API-Integration" target="_blank">%s</a> ]</sup>',
+								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Bitly-API-Integration" target="_blank">%s</a> ]</sup>',
 								esc_html__( 'Questions?', 'utm-dot-codes' ),
 								esc_html__( 'Click here for more details.', 'utm-dot-codes' )
 							);
@@ -614,7 +616,7 @@ class UtmDotCodes {
 					esc_html__( 'Settings', 'utm-dot-codes' )
 				),
 				sprintf(
-					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
+					'<a href="https://github.com/asdfdotdev/utm.codes" target="_blank">%s</a>',
 					esc_html__( 'Code', 'utm-dot-codes' )
 				),
 			],
@@ -1583,5 +1585,42 @@ class UtmDotCodes {
 	 */
 	public function is_test() {
 		return defined( 'UTMDC_IS_TEST' ) && constant( 'UTMDC_IS_TEST' );
+	}
+
+	/**
+	 * Remove quick edit from post row action.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $actions array of row action links.
+	 *
+	 * @return mixed
+	 */
+	public function remove_quick_edit( $actions ) {
+		unset( $actions['inline hide-if-no-js'] );
+		return $actions;
+	}
+
+	/**
+	 * Change button text for better clarity.
+	 *
+	 * @param string $translation text to translate.
+	 * @param string $text text domain.
+	 *
+	 * @return string changed text.
+	 */
+	public function change_publish_button( $translation, $text ) {
+		global $pagenow;
+
+		$is_new_post_page = ( 'post-new.php' === $pagenow );
+		$is_utmdc_post    = ( 'utmdclink' === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+
+		if ( $is_new_post_page && $is_utmdc_post ) {
+			if ( 'Publish' === $text ) {
+				$translation = esc_html__( 'Save', 'utm-dot-codes' );
+			}
+		}
+
+		return $translation;
 	}
 }

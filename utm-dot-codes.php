@@ -3,7 +3,7 @@
  * Utm.codes - Marketing Campaign Link Builder
  *
  * @package UtmDotCodes
- * @copyright 2018-2019 ChristopherL (https://christopherl.com)
+ * @copyright 2018-2019 Chris Carlevato (https://asdf.dev)
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  * @link https://utm.codes
  *
@@ -12,8 +12,8 @@
  * Plugin URI: https://utm.codes
  * Description: Create and manage your marketing campaign links in WordPress.
  * Version: 1.5.0
- * Author: ChristopherL
- * Author URI: https://christopherl.com
+ * Author: Chris Carlevato
+ * Author URI: https://asdf.dev
  * License: GPL v2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: utm-dot-codes
