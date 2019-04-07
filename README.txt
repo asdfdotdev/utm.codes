@@ -9,7 +9,7 @@ Stable tag: 1.5.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily create and manage your marketing tracking links in WordPress for better analytics.
+Easily create and manage your campaign marketing links in WordPress for better analytics.
 
 == Description ==
 

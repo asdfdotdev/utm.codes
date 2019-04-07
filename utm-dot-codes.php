@@ -1,6 +1,6 @@
 <?php
 /**
- * Utm.codes - Marketing Campaign Link Builder
+ * Utm.codes - Marketing Link Builder
  *
  * @package UtmDotCodes
  * @copyright 2018-2019 Chris Carlevato (https://asdf.dev)
@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name: utm.codes
  * Plugin URI: https://utm.codes
- * Description: Create and manage your marketing campaign links in WordPress.
+ * Description: Create and manage your campaign marketing links in WordPress.
  * Version: 1.5.0
  * Author: Chris Carlevato
  * Author URI: https://asdf.dev
