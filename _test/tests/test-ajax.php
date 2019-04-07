@@ -2,7 +2,7 @@
 /**
  * Class TestUtmDotCodesAjax
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 /**

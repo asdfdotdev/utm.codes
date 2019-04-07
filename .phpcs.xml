@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="utm-dot-codes" xsi:noNamespaceSchemaLocation="phpcs.xsd">
+
+	<file>index.php</file>
+	<file>utm-dot-codes.php</file>
+	<file>classes/</file>
+
+	<rule ref="WordPress"/>
+	<rule ref="WordPress-Core"/>
+	<rule ref="WordPress-Docs"/>
+	<rule ref="WordPress-Extra"/>
+</ruleset>

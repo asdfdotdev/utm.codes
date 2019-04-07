@@ -2,7 +2,7 @@
 /**
  * Utm.codes plugin class
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 /**
@@ -49,21 +49,18 @@ class UtmDotCodes {
 
 		add_filter( 'plugin_action_links_' . UTMDC_PLUGIN_FILE, [ &$this, 'add_links' ], 10, 1 );
 		add_filter( 'wp_insert_post_data', [ &$this, 'insert_post_data' ], 10, 2 );
+		add_filter( 'gettext', [ &$this, 'change_publish_button' ], 10, 2 );
 
 		$is_post_list = ( 'edit.php' === $pagenow );
-		$is_link_list = (
-			isset( $_GET['post_type'] )
-			&& self::POST_TYPE === sanitize_text_field( wp_unslash( $_GET['post_type'] ) )
-		);
 
-		if ( ( is_admin() && $is_post_list && $is_link_list ) || $this->is_test() ) {
+		if ( ( is_admin() && $is_post_list ) || $this->is_test() ) {
 			add_action( 'restrict_manage_posts', [ &$this, 'filter_ui' ], 5, 1 );
 			add_action( 'pre_get_posts', [ &$this, 'apply_filters' ], 5, 1 );
-
-			add_filter( 'manage_posts_columns', [ &$this, 'post_list_header' ], 10, 1 );
-			add_filter( 'manage_posts_custom_column', [ &$this, 'post_list_columns' ], 10, 2 );
-			add_filter( 'months_dropdown_results', '__return_empty_array' );
+			add_filter( 'manage_' . self::POST_TYPE . '_posts_columns', [ &$this, 'post_list_header' ], 10, 1 );
+			add_filter( 'manage_' . self::POST_TYPE . '_posts_custom_column', [ &$this, 'post_list_columns' ], 10, 2 );
+			add_filter( 'months_dropdown_results', [ &$this, 'months_dropdown_results' ], 10, 2 );
 			add_filter( 'bulk_actions-edit-' . self::POST_TYPE, [ &$this, 'bulk_actions' ] );
+			add_filter( 'post_row_actions', [ &$this, 'remove_quick_edit' ], 10, 1 );
 		}
 	}
 
@@ -382,34 +379,7 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 */
 	public function render_settings_options() {
-		$networks = [
-			'behance'        => [ 'Behance', 'fab fa-behance' ],
-			'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
-			'digg'           => [ 'Digg', 'fab fa-digg' ],
-			'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
-			'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
-			'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
-			'github'         => [ 'GitHub', 'fab fa-github' ],
-			'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
-			'googleplus'     => [ 'Google+', 'fab fa-google-plus-g' ],
-			'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
-			'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
-			'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
-			'medium'         => [ 'Medium', 'fab fa-medium-m' ],
-			'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
-			'mix'            => [ 'Mix', 'fab fa-mix' ],
-			'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
-			'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
-			'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
-			'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
-			'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
-			'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
-			'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
-			'xing'           => [ 'Xing', 'fab fa-xing' ],
-			'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
-			'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
-		];
-
+		$networks      = $this->get_social_networks();
 		$lowercase     = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
 		$alphanumeric  = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
 		$nospaces      = ( 'on' === get_option( self::POST_TYPE . '_nospaces' ) );
@@ -480,7 +450,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 						printf(
-							'%s <a href="https://github.com/christopherldotcom/utm.codes/wiki" target="_blank">%s</a>',
+							'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
 							esc_html__( 'Adding your own custom link formatting is easy with an API filter.', 'utm-dot-codes' ),
 							esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 						);
@@ -568,6 +538,15 @@ class UtmDotCodes {
 					);
 					?>
 				</div>
+				<p>
+					<?php
+					printf(
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+						esc_html__( 'Adding your own custom network options is easy with an API filter.', 'utm-dot-codes' ),
+						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
+					);
+					?>
+				</p>
 				<h1 class="title">
 					<?php esc_html_e( 'URL Shortener', 'utm-dot-codes' ); ?>
 				</h1>
@@ -588,7 +567,7 @@ class UtmDotCodes {
 							);
 
 							printf(
-								'<br><sup>[ %s <a href="https://github.com/christopherldotcom/utm.codes/wiki/Bitly-API-Integration" target="_blank">%s</a> ]</sup>',
+								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Bitly-API-Integration" target="_blank">%s</a> ]</sup>',
 								esc_html__( 'Questions?', 'utm-dot-codes' ),
 								esc_html__( 'Click here for more details.', 'utm-dot-codes' )
 							);
@@ -637,7 +616,7 @@ class UtmDotCodes {
 					esc_html__( 'Settings', 'utm-dot-codes' )
 				),
 				sprintf(
-					'<a href="https://github.com/christopherldotcom/utm.codes" target="_blank">%s</a>',
+					'<a href="https://github.com/asdfdotdev/utm.codes" target="_blank">%s</a>',
 					esc_html__( 'Code', 'utm-dot-codes' )
 				),
 			],
@@ -1086,27 +1065,34 @@ class UtmDotCodes {
 	 * @return object Updated query with filtered query vars.
 	 */
 	public function apply_filters( $query ) {
-		$filters = array_keys( $this->link_elements );
-		unset( $filters['url'] );
 
-		$meta_query = array_filter(
-			array_map(
-				function( $filter ) {
-					$filter = self::POST_TYPE . '_' . $filter;
+		if ( self::POST_TYPE === $query->query['post_type'] ) {
 
-					if ( isset( $_GET[ $filter ] ) && '' !== sanitize_text_field( wp_unslash( $_GET[ $filter ] ) ) ) {
-						return [
-							'key'     => $filter,
-							'value'   => rawurldecode( filter_input( INPUT_GET, $filter, FILTER_SANITIZE_STRING ) ),
-							'compare' => '=',
-						];
-					}
-				},
-				$filters
-			)
-		);
+			$filters = array_keys( $this->link_elements );
+			unset( $filters['url'] );
 
-		$query->set( 'meta_query', $meta_query );
+			$meta_query = array_filter(
+				array_map(
+					function( $filter ) {
+						$filter_name            = self::POST_TYPE . '_' . $filter;
+						$filter_value           = rawurldecode( filter_input( INPUT_GET, $filter_name, FILTER_SANITIZE_STRING ) );
+						$sanitized_filter_value = sanitize_text_field( wp_unslash( $filter_value ) );
+
+						if ( ! empty( $sanitized_filter_value ) ) {
+							return [
+								'key'     => $filter_name,
+								'value'   => $sanitized_filter_value,
+								'compare' => '=',
+							];
+						}
+					},
+					$filters
+				)
+			);
+
+			$query->set( 'meta_query', $meta_query );
+
+		}
 
 		return $query;
 	}
@@ -1117,116 +1103,125 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 *
 	 * @param string $post_type Post type slug.
+	 *
+	 * @return array|void
 	 */
 	public function filter_ui( $post_type ) {
 		global $wpdb;
 
-		$filter_options = $this->link_elements;
-		unset( $filter_options['url'] );
-		unset( $filter_options['shorturl'] );
+		if ( self::POST_TYPE === $post_type ) {
 
-		$markup = array_map(
-			function( $key, $filter ) use ( $wpdb ) {
-				$cached_key    = self::POST_TYPE . '_options_' . $key;
-				$cached_values = wp_cache_get( $cached_key );
+			$filter_options = $this->link_elements;
+			unset( $filter_options['url'] );
+			unset( $filter_options['shorturl'] );
 
-				if ( false === $cached_values ) {
-					$cached_values = $wpdb->get_results(
-						$wpdb->prepare(
-							"SELECT DISTINCT(meta_value)
+			$markup = array_map(
+				function( $key, $filter ) use ( $wpdb ) {
+					$cached_key    = self::POST_TYPE . '_options_' . $key;
+					$cached_values = wp_cache_get( $cached_key );
+
+					if ( false === $cached_values ) {
+						$cached_values = $wpdb->get_results(
+							$wpdb->prepare(
+								"SELECT DISTINCT(meta_value)
 						FROM $wpdb->postmeta
 						WHERE meta_key = %s
 							AND meta_value != ''
 							AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status != 'trash' )
 						ORDER BY meta_value",
-							self::POST_TYPE . '_' . $key,
-							self::POST_TYPE
-						)
+								self::POST_TYPE . '_' . $key,
+								self::POST_TYPE
+							)
+						);
+
+						wp_cache_set( $cached_key, $cached_values );
+					}
+
+					$options = array_map(
+						function ( $value ) use ( $key ) {
+							$key_value        = '';
+							$active_key_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $key, FILTER_SANITIZE_STRING );
+
+							if ( isset( $active_key_value ) ) {
+								$key_value = sanitize_text_field( wp_unslash( $active_key_value ) );
+							}
+
+							return sprintf(
+								'<option value="%s"%s>%s</option>',
+								rawurlencode( $value->meta_value ),
+								selected(
+									$value->meta_value,
+									rawurldecode( $key_value ),
+									false
+								),
+								$value->meta_value
+							);
+						},
+						$cached_values
 					);
 
-					wp_cache_set( $cached_key, $cached_values );
-				}
+					return sprintf(
+						'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s %3$s</option>%4$s</select>',
+						self::POST_TYPE . '_' . $key,
+						esc_html__( 'Any', 'utm-dot-codes' ),
+						$filter['short_label'],
+						implode( PHP_EOL, $options )
+					);
 
-				$options = array_map(
-					function ( $value ) use ( $key ) {
-						$key_value = '';
+				},
+				array_keys( $filter_options ),
+				$filter_options
+			);
 
-						if ( isset( $_GET[ self::POST_TYPE . '_' . $key ] ) ) {
-							$key_value = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '_' . $key ] ) );
+			if ( 'on' === get_option( self::POST_TYPE . '_labels' ) ) {
+
+				$terms = get_terms(
+					[
+						'taxonomy'   => self::POST_TYPE . '-label',
+						'hide_empty' => true,
+					]
+				);
+
+				$term_options = array_map(
+					function( $key, $value ) {
+						$label              = '';
+						$active_label_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $label, FILTER_SANITIZE_STRING );
+
+						if ( isset( $active_label_value ) ) {
+							$label = sanitize_text_field( wp_unslash( $active_label_value ) );
 						}
 
 						return sprintf(
-							'<option value="%s"%s>%s</option>',
-							rawurlencode( $value->meta_value ),
+							'<option value="%s"%s>%s (%s)</option>',
+							rawurlencode( str_replace( ' ', '-', $value->name ) ),
 							selected(
-								$value->meta_value,
-								rawurldecode( $key_value ),
+								str_replace( ' ', '-', $value->name ),
+								rawurldecode( $label ),
 								false
 							),
-							$value->meta_value
+							$value->name,
+							$value->count
 						);
 					},
-					$cached_values
+					array_keys( $terms ),
+					$terms
 				);
 
-				return sprintf(
-					'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s %3$s</option>%4$s</select>',
-					self::POST_TYPE . '_' . $key,
-					esc_html__( 'Any', 'utm-dot-codes' ),
-					$filter['short_label'],
-					implode( PHP_EOL, $options )
+				$markup[] = sprintf(
+					'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
+					self::POST_TYPE . '-label',
+					esc_html__( 'Any Label', 'utm-dot-codes' ),
+					implode( PHP_EOL, $term_options )
 				);
+			}
 
-			},
-			array_keys( $filter_options ),
-			$filter_options
-		);
-
-		if ( 'on' === get_option( self::POST_TYPE . '_labels' ) ) {
-
-			$terms = get_terms(
-				[
-					'taxonomy'   => self::POST_TYPE . '-label',
-					'hide_empty' => true,
-				]
-			);
-
-			$term_options = array_map(
-				function( $key, $value ) {
-					$label = '';
-					if ( isset( $_GET[ self::POST_TYPE . '-label' ] ) ) {
-						$label = sanitize_text_field( wp_unslash( $_GET[ self::POST_TYPE . '-label' ] ) );
-					}
-
-					return sprintf(
-						'<option value="%s"%s>%s (%s)</option>',
-						rawurlencode( str_replace( ' ', '-', $value->name ) ),
-						selected(
-							str_replace( ' ', '-', $value->name ),
-							rawurldecode( $label ),
-							false
-						),
-						$value->name,
-						$value->count
-					);
-				},
-				array_keys( $terms ),
-				$terms
-			);
-
-			$markup[] = sprintf(
-				'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
-				self::POST_TYPE . '-label',
-				esc_html__( 'Any Label', 'utm-dot-codes' ),
-				implode( PHP_EOL, $term_options )
-			);
+			if ( $this->is_test() ) {
+				return $markup;
+			} else {
+				echo implode( PHP_EOL, $markup );
+			}
 		}
 
-		if ( $this->is_test() ) {
-			return $markup;
-		} else {
-			echo implode( PHP_EOL, $markup );
-		}
 	}
 
 	/**
@@ -1251,7 +1246,7 @@ class UtmDotCodes {
 	public function add_css() {
 		wp_enqueue_style(
 			'font-awesome',
-			'https://use.fontawesome.com/releases/v5.6.1/css/all.css',
+			'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
 			[],
 			UTMDC_VERSION,
 			'all'
@@ -1281,9 +1276,9 @@ class UtmDotCodes {
 
 		wp_localize_script(
 			'utm-dot-codes',
-			'utmdc_rest_api',
+			'utmdcRestApi',
 			[
-				'action_key' => wp_create_nonce( self::REST_NONCE_LABEL ),
+				'actionKey' => wp_create_nonce( self::REST_NONCE_LABEL ),
 			]
 		);
 	}
@@ -1454,42 +1449,47 @@ class UtmDotCodes {
 	 * @since 1.2.0
 	 */
 	public function check_url_response() {
-		if ( isset( $_REQUEST['action'] ) && 'utmdc_check_url_response' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) ) {
-			$request_url = '';
-			$response    = [
-				'message' => 'Could not process request.',
-				'status'  => 500,
-			];
+		$response = [
+			'message' => 'Could not process request.',
+			'status'  => 500,
+		];
 
-			if ( isset( $_REQUEST['url'] ) ) {
-				$request_url = sanitize_text_field( wp_unslash( $_REQUEST['url'] ) );
-			}
+		if ( check_ajax_referer( self::REST_NONCE_LABEL, 'key', false ) ) {
+			if ( isset( $_REQUEST['action'] ) && 'utmdc_check_url_response' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) ) {
+				$request_url = '';
 
-			$is_valid_referer = ( false !== check_ajax_referer( self::REST_NONCE_LABEL, 'key', false ) );
-			$is_valid_url     = ( filter_var( $request_url, FILTER_VALIDATE_URL ) === $request_url );
-
-			if ( $is_valid_referer && $is_valid_url ) {
-				$args = [];
-				if ( $this->is_test() ) {
-					$args = [ 'sslverify' => false ];
+				if ( isset( $_REQUEST['url'] ) ) {
+					$request_url = sanitize_text_field( wp_unslash( $_REQUEST['url'] ) );
 				}
 
-				$url_check = wp_remote_get( $request_url, $args );
+				$is_valid_referer = ( false !== check_ajax_referer( self::REST_NONCE_LABEL, 'key', false ) );
+				$is_valid_url     = ( filter_var( $request_url, FILTER_VALIDATE_URL ) === $request_url );
 
-				if ( is_wp_error( $url_check ) ) {
-					$response['message'] = $url_check->get_error_messages();
-				} else {
-					$response['status']  = $url_check['response']['code'];
-					$response['message'] = $url_check['response']['message'];
+				if ( $is_valid_referer && $is_valid_url ) {
+					$args = [];
+					if ( $this->is_test() ) {
+						$args = [ 'sslverify' => false ];
+					}
+
+					$url_check = wp_remote_get( $request_url, $args );
+
+					if ( is_wp_error( $url_check ) ) {
+						$response['message'] = $url_check->get_error_messages();
+					} else {
+						$response['status']  = $url_check['response']['code'];
+						$response['message'] = $url_check['response']['message'];
+					}
 				}
 			}
-
-			wp_send_json( $response );
 		}
+
+		wp_send_json( $response );
 	}
 
 	/**
 	 * Delete cache entries we create.
+	 *
+	 * @since 1.4.0
 	 */
 	private function delete_cache() {
 		/**
@@ -1501,6 +1501,68 @@ class UtmDotCodes {
 				wp_cache_delete( self::POST_TYPE . '_options_' . $element['type'] );
 			}
 		);
+	}
+
+	/**
+	 * Remove the months dropdown from our links post list.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $months options for the month dropdown.
+	 * @param string $post_type post type value.
+	 *
+	 * @return array
+	 */
+	public function months_dropdown_results( $months, $post_type ) {
+
+		if ( self::POST_TYPE === $post_type ) {
+			$months = [];
+		}
+
+		return $months;
+	}
+
+	/**
+	 * Retrieve list of filtered social networks for batch link creation.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return mixed|void
+	 */
+	public function get_social_networks() {
+		$networks = apply_filters(
+			'utmdc_social_sources',
+			[
+				'behance'        => [ 'Behance', 'fab fa-behance' ],
+				'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
+				'digg'           => [ 'Digg', 'fab fa-digg' ],
+				'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
+				'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
+				'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
+				'github'         => [ 'GitHub', 'fab fa-github' ],
+				'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
+				'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
+				'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
+				'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
+				'medium'         => [ 'Medium', 'fab fa-medium-m' ],
+				'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
+				'mix'            => [ 'Mix', 'fab fa-mix' ],
+				'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
+				'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
+				'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
+				'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
+				'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
+				'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
+				'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
+				'xing'           => [ 'Xing', 'fab fa-xing' ],
+				'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
+				'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
+			]
+		);
+
+		ksort( $networks );
+
+		return $networks;
 	}
 
 	/**
@@ -1523,5 +1585,42 @@ class UtmDotCodes {
 	 */
 	public function is_test() {
 		return defined( 'UTMDC_IS_TEST' ) && constant( 'UTMDC_IS_TEST' );
+	}
+
+	/**
+	 * Remove quick edit from post row action.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $actions array of row action links.
+	 *
+	 * @return mixed
+	 */
+	public function remove_quick_edit( $actions ) {
+		unset( $actions['inline hide-if-no-js'] );
+		return $actions;
+	}
+
+	/**
+	 * Change button text for better clarity.
+	 *
+	 * @param string $translation text to translate.
+	 * @param string $text text domain.
+	 *
+	 * @return string changed text.
+	 */
+	public function change_publish_button( $translation, $text ) {
+		global $pagenow;
+
+		$is_new_post_page = ( 'post-new.php' === $pagenow );
+		$is_utmdc_post    = ( 'utmdclink' === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+
+		if ( $is_new_post_page && $is_utmdc_post ) {
+			if ( 'Publish' === $text ) {
+				$translation = esc_html__( 'Save', 'utm-dot-codes' );
+			}
+		}
+
+		return $translation;
 	}
 }

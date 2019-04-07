@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package utm.codes
+ * @package UtmDotCodes
  */
 
 define( 'UTMDC_IS_TEST', true );

@@ -1,18 +1,19 @@
 <?php
 /**
- * Utm.codes - Marketing Campaign Link Builder
+ * Utm.codes - Marketing Link Builder
  *
- * @package utm.codes
- * @copyright 2018-2019 ChristopherL (https://christopherl.com)
+ * @package UtmDotCodes
+ * @copyright 2018-2019 Chris Carlevato (https://asdf.dev)
  * @license http://www.gnu.org/licenses/gpl-2.0.html
+ * @link https://utm.codes
  *
  * @wordpress-plugin
  * Plugin Name: utm.codes
  * Plugin URI: https://utm.codes
- * Description: Create and manage your marketing campaign links in WordPress.
- * Version: 1.4.0
- * Author: ChristopherL
- * Author URI: https://christopherl.com
+ * Description: Create and manage your campaign marketing links in WordPress.
+ * Version: 1.5.0
+ * Author: Chris Carlevato
+ * Author URI: https://asdf.dev
  * License: GPL v2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: utm-dot-codes
@@ -25,7 +26,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	die( '-1' );
 }
 
-define( 'UTMDC_VERSION', '1.4.0' );
+define( 'UTMDC_VERSION', '1.5.0' );
 define( 'UTMDC_MINIMUM_WP_VERSION', '4.7' );
 define( 'UTMDC_MINIMUM_PHP_VERSION', '5.6' );
 define( 'UTMDC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
