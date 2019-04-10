@@ -168,7 +168,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_shorten() {
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
+		$this->enable_test_shortener();
 
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
@@ -223,7 +223,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertEquals( $test_meta['utmdclink_campaign'][0], $test_data[ UtmDotCodes::POST_TYPE . '_campaign' ] );
 		$this->assertEquals( $test_meta['utmdclink_term'][0], $test_data[ UtmDotCodes::POST_TYPE . '_term' ] );
 		$this->assertEquals( $test_meta['utmdclink_content'][0], $test_data[ UtmDotCodes::POST_TYPE . '_content' ] );
-		$this->assertTrue( strpos( $test_meta['utmdclink_shorturl'][0], 'http://bit.ly/' ) !== false );
+		$this->assertEquals( $test_meta[ UtmDotCodes::POST_TYPE . '_shorturl' ][0], 'https://short.ly' );
 	}
 
 	/**
@@ -333,7 +333,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 	 * @depends test_version_numbers_active
 	 */
 	function test_post_create_batch_shorten() {
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
+		$this->enable_test_shortener();
 
 		$post = $this->factory->post->create_and_get( [ 'post_type' => UtmDotCodes::POST_TYPE ] );
 
@@ -414,7 +414,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 					$this->assertEquals( $test_meta['utmdclink_campaign'][ $x ], $_POST[ UtmDotCodes::POST_TYPE . '_campaign' ] );
 					$this->assertEquals( $test_meta['utmdclink_term'][ $x ], $_POST[ UtmDotCodes::POST_TYPE . '_term' ] );
 					$this->assertEquals( $test_meta['utmdclink_content'][ $x ], $_POST[ UtmDotCodes::POST_TYPE . '_content' ] );
-					$this->assertTrue( strpos( $test_meta['utmdclink_shorturl'][ $x ], 'http://bit.ly/' ) !== false );
+					$this->assertEquals( 'https://short.ly', $_POST[ UtmDotCodes::POST_TYPE . '_shorturl' ] );
 					$this->assertEquals(
 						$test_post->post_content,
 						sprintf(
@@ -840,7 +840,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 	function test_editor_meta_box_contents_editing() {
 		global $post;
 
-		update_option( UtmDotCodes::POST_TYPE . '_apikey', getenv( 'UTMDC_BITLY_API' ) );
+		$this->enable_test_shortener();
 
 		$plugin = new UtmDotCodes();
 		$plugin->create_post_type();
@@ -965,7 +965,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 
 		$this->assertEquals(
 			count( $wp_registered_settings ),
-			8
+			9
 		);
 
 		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_social'] ) );
@@ -997,6 +997,10 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertEquals( $wp_registered_settings['utmdclink_notes_show']['group'], UtmDotCodes::SETTINGS_GROUP );
 
 		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_notes_preview'] ) );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['type'], 'string' );
+		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['group'], UtmDotCodes::SETTINGS_GROUP );
+
+		$this->assertTrue( is_array( $wp_registered_settings['utmdclink_shortener'] ) );
 		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['type'], 'string' );
 		$this->assertEquals( $wp_registered_settings['utmdclink_notes_preview']['group'], UtmDotCodes::SETTINGS_GROUP );
 	}
@@ -1355,7 +1359,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 			'utmdc_content' => $_POST[ UtmDotCodes::POST_TYPE . '_content' ],
 			'utmdc_notes' => 'Lorem ipsum dolor sit amet,&hellip;',
 			'copy_utmdc_link' => sprintf(
-				'Full: <input type="text" value="%1$s?utm_source=%2$s&utm_medium=%3$s&utm_campaign=%4$s&utm_term=%5$s&utm_content=%6$s&utm_gen=utmdc" readonly="readonly" class="utmdclinks-copy">Short: <input type="text" value="%7$s" readonly="readonly" class="utmdclinks-copy"><a href="%7$s+" target="_blank"><i class="fas fa-chart-line"></i> View Report</a>',
+				'Full: <input type="text" value="%1$s?utm_source=%2$s&utm_medium=%3$s&utm_campaign=%4$s&utm_term=%5$s&utm_content=%6$s&utm_gen=utmdc" readonly="readonly" class="utmdclinks-copy">Short: <input type="text" value="%7$s" readonly="readonly" class="utmdclinks-copy">',
 				$_POST[ UtmDotCodes::POST_TYPE . '_url' ],
 				$_POST[ UtmDotCodes::POST_TYPE . '_source' ],
 				$_POST[ UtmDotCodes::POST_TYPE . '_medium' ],
@@ -1495,6 +1499,15 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 			preg_replace( '/[\r\n\t]+/', '', $output[5] ),
 			'<select id="filter-by-utmdclink-label" name="utmdclink-label"><option value="">Any Label</option>' . implode('', $label_options) . '</select>'
 		);
+
+	}
+
+	function enable_test_shortener() {
+
+		add_filter('utmdc_shorten_object', function( $shortener ){
+			include_once 'mock/shortener.php';
+			return new MockShortener( 'TEST_API_KEY' );
+		});
 
 	}
 
