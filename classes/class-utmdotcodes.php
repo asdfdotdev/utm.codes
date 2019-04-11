@@ -1689,13 +1689,13 @@ class UtmDotCodes {
 			case 403:
 				$error_message = sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
-					esc_html__( 'Bitly API rate limit exceeded, could not shorten url.', 'utm-dot-codes' )
+					esc_html__( 'Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' )
 				);
 				break;
 			case 500:
 				$error_message = sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
-					esc_html__( 'Invalid Bitly API token, please update settings to create short urls.', 'utm-dot-codes' )
+					esc_html__( 'Bitly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' )
 				);
 				break;
 

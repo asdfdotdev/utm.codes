@@ -8,7 +8,7 @@ namespace UtmDotCodes;
  */
 class Bitly implements \UtmDotCodes\Shorten {
 
-	const API_URL = 'https://api-ssl.bitly.com/v3';
+	const API_URL = 'https://api-ssl.bitly.com/v4';
 
 	/**
 	 * API credentials for Bitly API.
@@ -56,33 +56,42 @@ class Bitly implements \UtmDotCodes\Shorten {
 		}
 
 		if ( '' !== $this->api_key ) {
-			$response = wp_remote_get(
-				self::API_URL . '/shorten?' . http_build_query(
-					[
-						'access_token' => $this->api_key,
-						'longUrl'      => $data['utmdclink_url'] . $query_string,
-					]
-				)
+			$response = wp_remote_post(
+				self::API_URL . '/shorten',
+				// Selective overrides of WP_Http() defaults.
+				[
+					'method'      => 'POST',
+					'timeout'     => 15,
+					'redirection' => 5,
+					'httpversion' => '1.1',
+					'blocking'    => true,
+					'headers'     => [
+						'Authorization' => 'Bearer ' . $this->api_key,
+						'Content-Type'  => 'application/json',
+					],
+					'body'        => wp_json_encode( [ 'long_url' => $data['utmdclink_url'] . $query_string ] ),
+				]
 			);
 
 			if ( isset( $response->errors ) ) {
 				$this->error_code = 100;
 			} else {
 				$body = json_decode( $response['body'] );
+				$response_code = intval( $response['response']['code'] );
 
-				if ( 200 === $body->status_code ) {
+				if ( 200 === $response_code || 201 === $response_code ) {
 					$response_url = '';
 
-					if ( isset( $body->data->url ) ) {
-						$response_url = $body->data->url;
+					if ( isset( $body->link ) ) {
+						$response_url = $body->link;
 					}
 
 					if ( filter_var( $response_url, FILTER_VALIDATE_URL ) ) {
-						$this->response = esc_url( wp_unslash( $body->data->url ) );
+						$this->response = esc_url( wp_unslash( $body->link ) );
 					}
-				} elseif ( 500 === $body->status_code ) {
-					$this->error_code = 500;
-				} elseif ( 403 === $body->status_code ) {
+				} elseif ( 403 === $response_code ) {
+					$this->error_code = 403;
+				} else {
 					$this->error_code = 500;
 				}
 			}
