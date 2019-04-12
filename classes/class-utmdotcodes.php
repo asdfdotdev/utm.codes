@@ -270,8 +270,8 @@ class UtmDotCodes {
 			)
 		);
 
-		$is_default_shortener = ( 'none' !== get_option( self::POST_TYPE . '_shortener' ) );
-		$is_api_key_set = ( '' !== get_option( self::POST_TYPE . '_apikey' ) );
+		$is_default_shortener      = ( 'none' !== get_option( self::POST_TYPE . '_shortener' ) );
+		$is_api_key_set            = ( '' !== get_option( self::POST_TYPE . '_apikey' ) );
 		$is_using_custom_shortener = ( false !== apply_filters( 'utmdc_shorten_object', false ) );
 
 		if ( $is_using_custom_shortener || ( $is_default_shortener && $is_api_key_set ) ) {
@@ -920,14 +920,14 @@ class UtmDotCodes {
 
 		switch ( get_option( self::POST_TYPE . '_shortener' ) ) {
 			case 'bitly':
-				require_once 'shorten/bitly.php';
+				require_once 'shorten/class-bitly.php';
 				$shortener = new \UtmDotCodes\Bitly(
 					get_option( self::POST_TYPE . '_apikey' )
 				);
 				break;
 
 			case 'rebrandly':
-				require_once 'shorten/rebrandly.php';
+				require_once 'shorten/class-rebrandly.php';
 				$shortener = new \UtmDotCodes\Rebrandly(
 					get_option( self::POST_TYPE . '_apikey' )
 				);
@@ -1064,7 +1064,7 @@ class UtmDotCodes {
 					esc_url_raw( $short_url )
 				);
 
-				if ( 'bit.ly' === parse_url( $short_url, PHP_URL_HOST ) ) {
+				if ( 'bit.ly' === wp_parse_url( $short_url, PHP_URL_HOST ) ) {
 					printf(
 						'<a href="%s+" target="_blank"><i class="fas fa-chart-line"></i> %s</a>',
 						esc_url_raw( $short_url ),
@@ -1654,7 +1654,10 @@ class UtmDotCodes {
 	 * @return array error message elements: style & message text.
 	 */
 	public function get_error_message( $error_code ) {
-		$error_message = [ 'style' => '', 'message' => '' ];
+		$error_message = [
+			'style'   => '',
+			'message' => '',
+		];
 
 		switch ( $error_code ) {
 			/**
@@ -1664,7 +1667,7 @@ class UtmDotCodes {
 			// Invalid URL String.
 			case 1:
 				$error_message = [
-					'style' => 'notice-warning',
+					'style'   => 'notice-warning',
 					'message' => esc_html__( 'Invalid URL format. Replaced with site URL. Please update as needed.', 'utm-dot-codes' ),
 				];
 				break;
@@ -1672,7 +1675,7 @@ class UtmDotCodes {
 			// Invalid Post ID.
 			case 2:
 				$error_message = [
-					'style' => 'notice-error',
+					'style'   => 'notice-error',
 					'message' => esc_html__( 'Unable to save link. Please try again, your changes were not saved.', 'utm-dot-codes' ),
 				];
 				break;
@@ -1680,7 +1683,7 @@ class UtmDotCodes {
 			// Shortener Object Error.
 			case 1000:
 				$error_message = [
-					'style' => 'notice-error',
+					'style'   => 'notice-error',
 					'message' => esc_html__( 'Invalid URL shortener config.', 'utm-dot-codes' ),
 				];
 				break;
@@ -1690,19 +1693,19 @@ class UtmDotCodes {
 			 */
 			case 100:
 				$error_message = [
-					'style' => 'notice-error',
+					'style'   => 'notice-error',
 					'message' => esc_html__( 'Unable to connect to Bitly API to shorten url. Please try again later.', 'utm-dot-codes' ),
 				];
 				break;
 			case 4030:
 				$error_message = [
-					'style' => 'notice-error',
+					'style'   => 'notice-error',
 					'message' => esc_html__( 'Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
 				];
 				break;
 			case 500:
 				$error_message = [
-					'style' => 'notice-error',
+					'style'   => 'notice-error',
 					'message' => esc_html__( 'Bitly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
 				];
 				break;
@@ -1712,13 +1715,13 @@ class UtmDotCodes {
 			 */
 			case 401:
 				$error_message = [
-					'style' => 'notice-error',
+					'style'   => 'notice-error',
 					'message' => esc_html__( 'Rebrandly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
 				];
 				break;
 			case 4031:
 				$error_message = [
-					'style' => 'notice-error',
+					'style'   => 'notice-error',
 					'message' => esc_html__( 'Rebrandly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
 				];
 				break;

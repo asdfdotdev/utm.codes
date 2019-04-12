@@ -49,7 +49,7 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 	 */
 	function test_bitly_request() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
-		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/bitly.php';
+		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-bitly.php';
 
 		$shortener = new \UtmDotCodes\Bitly(
 			getenv( 'UTMDC_BITLY_API' )
@@ -72,7 +72,7 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 	 */
 	function test_bitly_request_no_api_key() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
-		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/bitly.php';
+		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-bitly.php';
 
 		$shortener = new \UtmDotCodes\Bitly(
 			'this_wont_work'
@@ -95,7 +95,7 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 	 */
 	function test_bitly_request_no_link() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
-		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/bitly.php';
+		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-bitly.php';
 
 		$shortener = new \UtmDotCodes\Bitly(
 			getenv( 'UTMDC_BITLY_API' )

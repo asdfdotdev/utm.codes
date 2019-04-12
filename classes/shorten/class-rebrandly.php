@@ -1,14 +1,18 @@
 <?php
-namespace UtmDotCodes;
-
 /**
- * Bitly shortener class.
+ * Rebrandly API shortener class.
  *
  * @package UtmDotCodes
  */
-class Bitly implements \UtmDotCodes\Shorten {
 
-	const API_URL = 'https://api-ssl.bitly.com/v4';
+namespace UtmDotCodes;
+
+/**
+ * Class Rebrandly.
+ */
+class Rebrandly implements \UtmDotCodes\Shorten {
+
+	const API_URL = 'https://api.rebrandly.com/v1';
 
 	/**
 	 * API credentials for Bitly API.
@@ -56,8 +60,9 @@ class Bitly implements \UtmDotCodes\Shorten {
 		}
 
 		if ( '' !== $this->api_key ) {
+
 			$response = wp_remote_post(
-				self::API_URL . '/shorten',
+				self::API_URL . '/links',
 				// Selective overrides of WP_Http() defaults.
 				[
 					'method'      => 'POST',
@@ -66,33 +71,36 @@ class Bitly implements \UtmDotCodes\Shorten {
 					'httpversion' => '1.1',
 					'blocking'    => true,
 					'headers'     => [
-						'Authorization' => 'Bearer ' . $this->api_key,
-						'Content-Type'  => 'application/json',
+						'apikey'       => $this->api_key,
+						'Content-Type' => 'application/json',
 					],
-					'body'        => wp_json_encode( [ 'long_url' => $data['utmdclink_url'] . $query_string ] ),
+					'body'        => wp_json_encode( [ 'destination' => $data['utmdclink_url'] . $query_string ] ),
 				]
 			);
 
 			if ( isset( $response->errors ) ) {
-				$this->error_code = 100;
+				$this->error_code = 101;
 			} else {
 				$body = json_decode( $response['body'] );
-				$response_code = intval( $response['response']['code'] );
 
-				if ( 200 === $response_code || 201 === $response_code ) {
+				if ( 200 === $response['response']['code'] ) {
 					$response_url = '';
 
-					if ( isset( $body->link ) ) {
-						$response_url = $body->link;
+					if ( isset( $body->shortUrl ) ) {
+						$response_url = $body->shortUrl;
+
+						if ( ! preg_match( '/^https?:\/\//', $response_url ) ) {
+							$response_url = 'https://' . $response_url;
+						}
 					}
 
 					if ( filter_var( $response_url, FILTER_VALIDATE_URL ) ) {
-						$this->response = esc_url( wp_unslash( $body->link ) );
+						$this->response = esc_url( wp_unslash( $response_url ) );
 					}
-				} elseif ( 403 === $response_code ) {
-					$this->error_code = 4030;
-				} else {
-					$this->error_code = 500;
+				} elseif ( 401 === $response['response']['code'] ) {
+					$this->error_code = 401;
+				} elseif ( 403 === $response['response']['code'] ) {
+					$this->error_code = 4031;
 				}
 			}
 		}

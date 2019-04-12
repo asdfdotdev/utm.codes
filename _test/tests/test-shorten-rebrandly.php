@@ -49,7 +49,7 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 	 */
 	function test_rebrandly_request() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
-		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/rebrandly.php';
+		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-rebrandly.php';
 
 		$shortener = new \UtmDotCodes\Rebrandly(
 			getenv( 'UTMDC_REBRANDLY_API' )
@@ -72,7 +72,7 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 	 */
 	function test_rebrandly_request_no_api_key() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
-		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/rebrandly.php';
+		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-rebrandly.php';
 
 		$shortener = new \UtmDotCodes\Rebrandly(
 			'this_wont_work'
@@ -95,7 +95,7 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 	 */
 	function test_rebrandly_request_no_link() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
-		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/rebrandly.php';
+		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-rebrandly.php';
 
 		$shortener = new \UtmDotCodes\Rebrandly(
 			getenv( 'UTMDC_REBRANDLY_API' )

@@ -1,6 +1,15 @@
 <?php
+/**
+ * Shortener Interface, outlines methods required for a valid shorten object.
+ *
+ * @package UtmDotCodes
+ */
+
 namespace UtmDotCodes;
 
+/**
+ * Interface Shorten.
+ */
 interface Shorten {
 
 	/**

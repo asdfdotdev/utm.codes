@@ -9,8 +9,6 @@
  * Class UtmDotCodes_Activation
  *
  * Implements activation and deactivation hooks for the utm.codes plugin
- *
- * @package UtmDotCodes
  */
 class UtmDotCodesActivation {
 
