@@ -90,7 +90,7 @@ class Bitly implements \UtmDotCodes\Shorten {
 						$this->response = esc_url( wp_unslash( $body->link ) );
 					}
 				} elseif ( 403 === $response_code ) {
-					$this->error_code = 403;
+					$this->error_code = 4030;
 				} else {
 					$this->error_code = 500;
 				}

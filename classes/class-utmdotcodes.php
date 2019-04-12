@@ -227,7 +227,15 @@ class UtmDotCodes {
 		$contents = [];
 
 		if ( isset( $_GET['utmdc-error'] ) ) {
-			$contents[] = $this->get_error_message( intval( $_GET['utmdc-error'] ) );
+			$error = $this->get_error_message( intval( $_GET['utmdc-error'] ) );
+
+			if ( ! empty( $error['message'] ) ) {
+				$contents[] = sprintf(
+					'<div class="notice %s"><p>%s</p></div>',
+					esc_html( $error['style'] ),
+					esc_html( $error['message'] )
+				);
+			}
 		}
 
 		$contents = array_merge(
@@ -1643,67 +1651,79 @@ class UtmDotCodes {
 	 *
 	 * @param integer $error_code numeric value to convert to message.
 	 *
-	 * @return string error message.
+	 * @return array error message elements: style & message text.
 	 */
 	public function get_error_message( $error_code ) {
-		$error_message = '';
+		$error_message = [ 'style' => '', 'message' => '' ];
 
 		switch ( $error_code ) {
 			/**
-			 * Internal Errors - Invalid URL string
+			 * Internal Errors
 			 */
 
 			// Invalid URL String.
 			case 1:
-				$error_message = sprintf(
-					'<div class="notice notice-warning"><p>%s</p></div>',
-					esc_html__( 'Invalid URL format. Replaced with site URL. Please update as needed.', 'utm-dot-codes' )
-				);
+				$error_message = [
+					'style' => 'notice-warning',
+					'message' => esc_html__( 'Invalid URL format. Replaced with site URL. Please update as needed.', 'utm-dot-codes' ),
+				];
 				break;
 
 			// Invalid Post ID.
 			case 2:
-				$error_message = sprintf(
-					'<div class="notice notice-error"><p>%s</p></div>',
-					esc_html__( 'Unable to save link. Please try again, your changes were not saved.', 'utm-dot-codes' )
-				);
+				$error_message = [
+					'style' => 'notice-error',
+					'message' => esc_html__( 'Unable to save link. Please try again, your changes were not saved.', 'utm-dot-codes' ),
+				];
 				break;
 
 			// Shortener Object Error.
 			case 1000:
-				$error_message = sprintf(
-					'<div class="notice notice-error"><p>%s</p></div>',
-					esc_html__( 'Invalid URL shortener config.', 'utm-dot-codes' )
-				);
+				$error_message = [
+					'style' => 'notice-error',
+					'message' => esc_html__( 'Invalid URL shortener config.', 'utm-dot-codes' ),
+				];
 				break;
 
 			/**
-			 * Bitly Errors
+			 * Bitly
 			 */
 			case 100:
-				$error_message = sprintf(
-					'<div class="notice notice-error"><p>%s</p></div>',
-					esc_html__( 'Unable to connect to Bitly API to shorten url. Please try again later.', 'utm-dot-codes' )
-				);
+				$error_message = [
+					'style' => 'notice-error',
+					'message' => esc_html__( 'Unable to connect to Bitly API to shorten url. Please try again later.', 'utm-dot-codes' ),
+				];
 				break;
-			case 403:
-				$error_message = sprintf(
-					'<div class="notice notice-error"><p>%s</p></div>',
-					esc_html__( 'Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' )
-				);
+			case 4030:
+				$error_message = [
+					'style' => 'notice-error',
+					'message' => esc_html__( 'Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
+				];
 				break;
 			case 500:
-				$error_message = sprintf(
-					'<div class="notice notice-error"><p>%s</p></div>',
-					esc_html__( 'Bitly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' )
-				);
+				$error_message = [
+					'style' => 'notice-error',
+					'message' => esc_html__( 'Bitly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
+				];
 				break;
 
 			/**
-			 * Rebrandly Errors
+			 * Rebrandly
 			 */
+			case 401:
+				$error_message = [
+					'style' => 'notice-error',
+					'message' => esc_html__( 'Rebrandly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
+				];
+				break;
+			case 4031:
+				$error_message = [
+					'style' => 'notice-error',
+					'message' => esc_html__( 'Rebrandly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
+				];
+				break;
 		}
 
-		return $error_message;
+		return apply_filters( 'utmdc_error_message', $error_message, $error_code );
 	}
 }

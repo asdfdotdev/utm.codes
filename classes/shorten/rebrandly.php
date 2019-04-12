@@ -93,10 +93,10 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 					if ( filter_var( $response_url, FILTER_VALIDATE_URL ) ) {
 						$this->response = esc_url( wp_unslash( $response_url ) );
 					}
-				} elseif ( 500 === $body->status_code ) {
-					$this->error_code = 500;
-				} elseif ( 403 === $body->status_code ) {
-					$this->error_code = 500;
+				} elseif ( 401 === $response['response']['code'] ) {
+					$this->error_code = 401;
+				} elseif ( 403 === $response['response']['code'] ) {
+					$this->error_code = 4031;
 				}
 			}
 		}
