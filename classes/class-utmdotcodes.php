@@ -590,6 +590,15 @@ class UtmDotCodes {
 						</td>
 					</tr>
 				</table>
+				<p>
+					<?php
+					printf(
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+						esc_html__( 'Adding your own custom link shortener is easy.', 'utm-dot-codes' ),
+						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
+					);
+					?>
+				</p>
 				<?php submit_button(); ?>
 			</form>
 		</div>
@@ -916,6 +925,7 @@ class UtmDotCodes {
 	public function generate_short_url( $data, $url ) {
 		$short_url = '';
 		$shortener = null;
+		$error     = false;
 		require_once 'shorten/interface.php';
 
 		switch ( get_option( self::POST_TYPE . '_shortener' ) ) {
@@ -955,14 +965,13 @@ class UtmDotCodes {
 					);
 				}
 			} catch ( Exception $exception ) {
-				add_filter(
-					'redirect_post_location',
-					function( $location ) {
-						return add_query_arg( 'utmdc-error', '1000', $location );
-					}
-				);
+				$error = true;
 			}
 		} else {
+			$error = true;
+		}
+
+		if ( $error ) {
 			add_filter(
 				'redirect_post_location',
 				function( $location ) {

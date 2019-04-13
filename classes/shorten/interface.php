@@ -19,7 +19,7 @@ interface Shorten {
 	 * containing meta_input array with associative utm input values.
 	 * @param string $query_string Prepared query string of link being shortened.
 	 *
-	 * @return mixed
+	 * @return void
 	 */
 	public function shorten( $data, $query_string );
 

@@ -52,7 +52,7 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 	 * @param array  $data See interface.
 	 * @param string $query_string See interface.
 	 *
-	 * @return mixed|void
+	 * @return void
 	 */
 	public function shorten( $data, $query_string ) {
 		if ( isset( $data['meta_input'] ) ) {
