@@ -5,7 +5,7 @@ Tags: analytics, utm codes, analytics, google analytics, campaign marketing, lin
 Requires at least: 4.7.0
 Tested up to: 5.1.1
 Requires PHP: 5.6.0
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - Supports adding additional custom parameters to links for improved versatility
 - Multi-user access within WordPress to share creation and management responsibilities
 - See your current link count in the admin dashboard "At a Glance"
-- Works with PHP 5.6, 7.0, 7.1, and 7.2
+- Works with PHP 5.6, 7.0, 7.1, 7.2, and 7.3
 - 100% Free and Open Source
 
 = Installation =
@@ -91,6 +91,15 @@ That isn't a question. But thank you.
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.6.0 =
+- Change Bitly API from v3 to v4
+- New Rebrandly API Support for link shortening
+- New API filter for custom shortener service support (See Wiki for details)
+- New API filter for custom error messages (custom shortener user feedback)
+- New unit tests for Bitly and Rebrandly
+- New mock shortener for integration tests
+- Documentation Updates
 
 = 1.5.0 =
 

@@ -289,13 +289,13 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 			)
 		);
 
-		$_GET['utmdc-error'] = 403;
+		$_GET['utmdc-error'] = 4030;
 		$form_markup         = $plugin->meta_box_contents();
 		$this->assertTrue(
 			in_array(
 				sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
-					__( 'Bitly API rate limit exceeded, could not shorten url.', 'utm-dot-codes' )
+					__( 'Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' )
 				),
 				$form_markup
 			)
@@ -307,7 +307,31 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 			in_array(
 				sprintf(
 					'<div class="notice notice-error"><p>%s</p></div>',
-					__( 'Invalid Bitly API token, please update settings to create short urls.', 'utm-dot-codes' )
+					__( 'Bitly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
+
+		$_GET['utmdc-error'] = 401;
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Rebrandly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
+
+		$_GET['utmdc-error'] = 4031;
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Rebrandly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' )
 				),
 				$form_markup
 			)
