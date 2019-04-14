@@ -1073,7 +1073,10 @@ class UtmDotCodes {
 					esc_url_raw( $short_url )
 				);
 
-				if ( 'bit.ly' === wp_parse_url( $short_url, PHP_URL_HOST ) ) {
+				$is_bitly = 'bit.ly' === wp_parse_url( $short_url, PHP_URL_HOST );
+				$is_rebrandly = 'rebrand.ly' === wp_parse_url( $short_url, PHP_URL_HOST );
+
+				if ( $is_bitly || $is_rebrandly ) {
 					printf(
 						'<a href="%s+" target="_blank"><i class="fas fa-chart-line"></i> %s</a>',
 						esc_url_raw( $short_url ),
