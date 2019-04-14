@@ -16,3 +16,6 @@ putenv( 'UTMDC_PLUGIN_DIR=' );
 
 // A valid Bitly API Generic Access Token.
 putenv( 'UTMDC_BITLY_API=' );
+
+// A valid Rebrandly API Key.
+putenv( 'UTMDC_REBRANDLY_API=' );
