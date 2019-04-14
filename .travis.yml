@@ -62,7 +62,11 @@ before_script:
       ./vendor/bin/phpcs --standard=WordPress --report=summary ./index.php ./utm-dot-codes.php ./classes
       ./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.6- --report=summary ./index.php ./utm-dot-codes.php ./classes
     else
-      composer require phpunit/phpunit:^${PHP_UNIT}
+      if [[ "$PHP_UNIT" == "6" ]] ; then
+        composer require phpunit/phpunit:^6
+      elif [[ "$PHP_UNIT" == "5" ]] ; then
+        composer require phpunit/phpunit:^5
+      fi
     fi
 
 script:
