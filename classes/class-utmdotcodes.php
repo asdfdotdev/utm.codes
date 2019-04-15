@@ -1741,8 +1741,4 @@ class UtmDotCodes {
 
 		return apply_filters( 'utmdc_error_message', $error_message, $error_code );
 	}
-
-	function get_option() {
-
-	}
 }
