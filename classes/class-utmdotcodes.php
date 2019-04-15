@@ -1073,7 +1073,7 @@ class UtmDotCodes {
 					esc_url_raw( $short_url )
 				);
 
-				$is_bitly = 'bit.ly' === wp_parse_url( $short_url, PHP_URL_HOST );
+				$is_bitly     = 'bit.ly' === wp_parse_url( $short_url, PHP_URL_HOST );
 				$is_rebrandly = 'rebrand.ly' === wp_parse_url( $short_url, PHP_URL_HOST );
 
 				if ( $is_bitly || $is_rebrandly ) {
@@ -1740,5 +1740,9 @@ class UtmDotCodes {
 		}
 
 		return apply_filters( 'utmdc_error_message', $error_message, $error_code );
+	}
+
+	function get_option() {
+
 	}
 }

@@ -74,7 +74,6 @@ script:
   - mkdir -p build/logs
   - |
     ../vendor/bin/phpunit
-    WP_MULTISITE=1 ../vendor/bin/phpunit
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
