@@ -277,6 +277,18 @@ class TestUtmDotCodesUnit extends WP_UnitTestCase {
 			)
 		);
 
+		$_GET['utmdc-error'] = 1000;
+		$form_markup         = $plugin->meta_box_contents();
+		$this->assertTrue(
+			in_array(
+				sprintf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					__( 'Invalid URL shortener config.', 'utm-dot-codes' )
+				),
+				$form_markup
+			)
+		);
+
 		$_GET['utmdc-error'] = 100;
 		$form_markup         = $plugin->meta_box_contents();
 		$this->assertTrue(

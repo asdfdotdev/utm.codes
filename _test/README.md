@@ -67,7 +67,7 @@ PHPUnit 7.5.8 by Sebastian Bergmann and contributors.
 
 Time: 42 seconds, Memory: 44.00 MB
 
-OK (61 tests, 515 assertions)
+OK (61 tests, 516 assertions)
 
 Generating code coverage report in Clover XML format ... done
 ```
