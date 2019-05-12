@@ -3,13 +3,13 @@ Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: analytics, utm codes, analytics, google analytics, campaign marketing, link generator
 Requires at least: 4.7.0
-Tested up to: 5.1.1
+Tested up to: 5.2.0
 Requires PHP: 5.6.0
 Stable tag: 1.6.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily create and manage your campaign marketing links in WordPress for better analytics.
+A WordPress plugin that makes building analytics friendly links quick and easy.
 
 == Description ==
 
@@ -25,11 +25,12 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - Automatically format links in lowercase, remove spaces, and remove non alphanumeric characters for more consistent reporting
 - Batch create links for all your social networks with just a click
 - Search, filter, and easily find existing links using familiar WordPress admin controls
-- Link builder automatically detects url error responses to prevent creating bad links
-- One click shortening with Bitly for easier link sharing
+- Automatically detect url error responses to prevent creating bad links
+- One click link shortening with Bitly or Rebrandly for easier link sharing
 - Save notes with link for team communication, usage context, future reference, and more
 - Link element API filter for custom utm code formatting
 - Social network options API filter for custom batch link options
+- Shortener API filter for custom link shortening
 - Supports adding additional custom parameters to links for improved versatility
 - Multi-user access within WordPress to share creation and management responsibilities
 - See your current link count in the admin dashboard "At a Glance"
@@ -42,7 +43,7 @@ Upload the utm.codes plugin to your WordPress site, activate it, and start creat
 
 = Settings =
 
-Configure your formatting preferences, targeted social networks, link notes, and shortening API key, under Settings / utm.codes to enable batch creation and auto shorten when saving links.
+Configure your formatting preferences, targeted social networks, link notes, and shortening preferences, under Settings / utm.codes to enable batch creation and shorten when saving links.
 
 = Documentation =
 
@@ -60,7 +61,7 @@ You can also [browse our build history at travis-ci.org](https://travis-ci.org/a
 
 = Why is the shorten link checkbox missing when I create a link? =
 
-Shortening links requires a valid Bitly API Generic Access Token. Add your key under Settings > utm.codes.
+Shortening links requires a shortener be configured. Configure shortening under Settings > utm.codes.
 
 = Why is the create social links checkbox missing when I create a link?  =
 
@@ -68,7 +69,7 @@ Batch social link creation requires selection of social networks. Select network
 
 = What if I need custom parameters in my links? =
 
-Simply add the parameter to your Link URL (e.g. https://example.com/?param=value) and utm.codes will append your utm code values to the end of the url when you save the link.
+Simply add the parameter to your Link URL (e.g. https://example.com/?param=value) and utm.codes will append the generated utm code values to the end of the url when you save the link.
 
 = What if I need custom parameter formats? =
 
@@ -76,7 +77,11 @@ Adding your own custom formatting is easy with an API filter. Visit our GitHub w
 
 = What if I want to share links on a social network your settings don't support? =
 
-Adding your own custom social network options is easy with an API filter.  Visit our GitHub wiki for examples and more details.
+Adding your own custom social network options is easy with an API filter. Visit our GitHub wiki for examples and more details.
+
+= What if I want to shorten my links using a service other than Bitly or Rebrandly? =
+
+Adding your own shortener support is easy with a custom shortener class and API filter. Visit our GitHub wiki for examples and more details.
 
 = I love this plugin. =
 
