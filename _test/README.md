@@ -61,7 +61,7 @@ Running as single site... To run multisite, use -c tests/phpunit/multisite.xml
 Not running ajax tests. To execute these, use --group ajax.
 Not running ms-files tests. To execute these, use --group ms-files.
 Not running external-http tests. To execute these, use --group external-http.
-PHPUnit 7.5.8 by Sebastian Bergmann and contributors.
+PHPUnit 7.5.10 by Sebastian Bergmann and contributors.
 
 .............................................................     61 / 61 (100%)
 
