@@ -9,8 +9,6 @@
  * Class UtmDotCodes_Activation
  *
  * Implements activation and deactivation hooks for the utm.codes plugin
- *
- * @package UtmDotCodes
  */
 class UtmDotCodesActivation {
 
@@ -25,12 +23,16 @@ class UtmDotCodesActivation {
 	}
 
 	/**
-	 * Processes plugin activation, including version checks
+	 * Activation hook callback, verify suitable WordPress version, add settings
 	 *
 	 * @since 1.0
 	 */
 	public function activation() {
 		global $wp_version;
+
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
 
 		/**
 		 * Check minimum WordPress version to ensure compatibility
@@ -54,12 +56,38 @@ class UtmDotCodesActivation {
 			);
 		}
 
-		update_option( 'utmdc_version', UTMDC_VERSION );
+		add_option( 'utmdc_version', UTMDC_VERSION, '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_social', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_apikey', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_lowercase', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_alphanumeric', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_nospaces', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_labels', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_notes_show', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_notes_preview', '0', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_shortener', 'none', '', 'no' );
 	}
 
 	/**
-	 * Deactivation hook not currently in use
+	 * Deactivation hook callback, remove the settings we created to clean things up.
+	 *
+	 * @since 1.6.0
 	 */
-	public function deactivation() {}
+	public function deactivation() {
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			return;
+		}
+
+		delete_option( 'utmdc_version' );
+		delete_option( UtmDotCodes::POST_TYPE . '_social' );
+		delete_option( UtmDotCodes::POST_TYPE . '_apikey' );
+		delete_option( UtmDotCodes::POST_TYPE . '_lowercase' );
+		delete_option( UtmDotCodes::POST_TYPE . '_alphanumeric' );
+		delete_option( UtmDotCodes::POST_TYPE . '_nospaces' );
+		delete_option( UtmDotCodes::POST_TYPE . '_labels' );
+		delete_option( UtmDotCodes::POST_TYPE . '_notes_show' );
+		delete_option( UtmDotCodes::POST_TYPE . '_notes_preview' );
+		delete_option( UtmDotCodes::POST_TYPE . '_shortener' );
+	}
 
 }

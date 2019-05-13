@@ -61,13 +61,13 @@ Running as single site... To run multisite, use -c tests/phpunit/multisite.xml
 Not running ajax tests. To execute these, use --group ajax.
 Not running ms-files tests. To execute these, use --group ms-files.
 Not running external-http tests. To execute these, use --group external-http.
-PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
+PHPUnit 7.5.10 by Sebastian Bergmann and contributors.
 
-...........................................                       43 / 43 (100%)
+.............................................................     61 / 61 (100%)
 
-Time: 21.13 seconds, Memory: 40.00MB
+Time: 42 seconds, Memory: 44.00 MB
 
-OK (43 tests, 407 assertions)
+OK (61 tests, 516 assertions)
 
 Generating code coverage report in Clover XML format ... done
 ```

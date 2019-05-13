@@ -6,7 +6,7 @@ Fixes # (issue)
 
 ## Type of change
 
-Please delete options that are not relevant.
+Please describe the type of change.
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
@@ -17,9 +17,12 @@ Please delete options that are not relevant.
 
 Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
 
-- [ ] TestUtmDotCodesUnit
-- [ ] TestUtmDotCodesIntegration
+- [ ] TestUtmDotCodesActivation
 - [ ] TestUtmDotCodesAjax
+- [ ] TestUtmDotCodesIntegration
+- [ ] TestUtmDotCodesShortenBitly
+- [ ] TestUtmDotCodesShortenRebrandly
+- [ ] TestUtmDotCodesUnit
 
 **Test Configuration**:
 

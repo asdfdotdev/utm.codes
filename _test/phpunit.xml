@@ -7,13 +7,13 @@
 	convertWarningsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite>
+		<testsuite name="all">
 			<directory prefix="test-" suffix=".php">./tests/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<file>../classes/class-utmdotcodes.php</file>
+		<whitelist processUncoveredFilesFromWhitelist="false">
+			<directory suffix=".php">../classes/</directory>
 		</whitelist>
 	</filter>
 	<logging>

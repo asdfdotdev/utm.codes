@@ -18,34 +18,40 @@ cache:
 
 matrix:
   include:
-    - php: 7.2
-      env: WP_VERSION=4.7 CODE_STYLES=phpcs
-    - php: 7.2
-      env: WP_VERSION=4.8 CODE_STYLES=phpcs
-    - php: 7.2
-      env: WP_VERSION=4.9 CODE_STYLES=phpcs
-    - php: 7.2
-      env: WP_VERSION=5.0 CODE_STYLES=phpcs
-    - php: 7.2
+    - php: 7.3
+      env: WP_VERSION=nightly CODE_STYLES=phpcs
+    - php: 7.3
+      env: WP_VERSION=5.2 CODE_STYLES=phpcs
+    - php: 7.3
       env: WP_VERSION=5.1 CODE_STYLES=phpcs
     - php: 7.2
-      env: WP_VERSION=nightly CODE_STYLES=phpcs
+      env: WP_VERSION=nightly PHP_UNIT=6
+    - php: 7.2
+      env: WP_VERSION=5.0 PHP_UNIT=6
+    - php: 7.2
+      env: WP_VERSION=4.9 PHP_UNIT=6
+    - php: 7.2
+      env: WP_VERSION=4.8 PHP_UNIT=6
+    - php: 7.2
+      env: WP_VERSION=4.7 PHP_UNIT=6
     - php: 7.1
-      env: WP_VERSION=nightly
+      env: WP_VERSION=nightly PHP_UNIT=6
     - php: 7.0
-      env: WP_VERSION=nightly
+      env: WP_VERSION=nightly PHP_UNIT=6
     - php: 5.6
-      env: WP_VERSION=4.7
+      env: WP_VERSION=nightly PHP_UNIT=5
     - php: 5.6
-      env: WP_VERSION=4.8
+      env: WP_VERSION=5.2 PHP_UNIT=5
     - php: 5.6
-      env: WP_VERSION=4.9
+      env: WP_VERSION=5.1 PHP_UNIT=5
     - php: 5.6
-      env: WP_VERSION=5.0
+      env: WP_VERSION=5.0 PHP_UNIT=5
     - php: 5.6
-      env: WP_VERSION=5.1
+      env: WP_VERSION=4.9 PHP_UNIT=5
     - php: 5.6
-      env: WP_VERSION=nightly
+      env: WP_VERSION=4.8 PHP_UNIT=5
+    - php: 5.6
+      env: WP_VERSION=4.7 PHP_UNIT=5
 
 before_script:
   - |
@@ -59,19 +65,19 @@ before_script:
       ./vendor/bin/phpcs -i
       ./vendor/bin/phpcs --standard=WordPress --report=summary ./index.php ./utm-dot-codes.php ./classes
       ./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.6- --report=summary ./index.php ./utm-dot-codes.php ./classes
+    else
+      if [[ "$PHP_UNIT" == "6" ]] ; then
+        composer require phpunit/phpunit:^6 --update-with-dependencies
+      elif [[ "$PHP_UNIT" == "5" ]] ; then
+        composer require phpunit/phpunit:^5 --update-with-dependencies
+      fi
     fi
 
 script:
   - cd _test
   - mkdir -p build/logs
   - |
-    if [[ "$CODE_STYLES" == "phpcs" ]] ; then
-      ../vendor/bin/phpunit
-      WP_MULTISITE=1 ../vendor/bin/phpunit
-    else
-      phpunit
-      WP_MULTISITE=1 phpunit
-    fi
+    ../vendor/bin/phpunit
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -15,7 +15,6 @@ class UtmDotCodes {
 	const REST_NONCE_LABEL = 'UTMDC_REST_nonce';
 	const SETTINGS_PAGE    = 'utm-dot-codes';
 	const SETTINGS_GROUP   = 'UTMDC_settings_group';
-	const API_URL          = 'https://api-ssl.bitly.com/v3';
 
 	/**
 	 * Collection of elements required to construct a link.
@@ -228,41 +227,14 @@ class UtmDotCodes {
 		$contents = [];
 
 		if ( isset( $_GET['utmdc-error'] ) ) {
-			switch ( intval( $_GET['utmdc-error'] ) ) {
-				case 1:
-					$contents[] = sprintf(
-						'<div class="notice notice-warning"><p>%s</p></div>',
-						esc_html__( 'Invalid URL format. Replaced with site URL. Please update as needed.', 'utm-dot-codes' )
-					);
-					break;
+			$error = $this->get_error_message( intval( $_GET['utmdc-error'] ) );
 
-				case 2:
-					$contents[] = sprintf(
-						'<div class="notice notice-error"><p>%s</p></div>',
-						esc_html__( 'Unable to save link. Please try again, your changes were not saved.', 'utm-dot-codes' )
-					);
-					break;
-
-				case 100:
-					$contents[] = sprintf(
-						'<div class="notice notice-error"><p>%s</p></div>',
-						esc_html__( 'Unable to connect to Bitly API to shorten url. Please try again later.', 'utm-dot-codes' )
-					);
-					break;
-
-				case 403:
-					$contents[] = sprintf(
-						'<div class="notice notice-error"><p>%s</p></div>',
-						esc_html__( 'Bitly API rate limit exceeded, could not shorten url.', 'utm-dot-codes' )
-					);
-					break;
-
-				case 500:
-					$contents[] = sprintf(
-						'<div class="notice notice-error"><p>%s</p></div>',
-						esc_html__( 'Invalid Bitly API token, please update settings to create short urls.', 'utm-dot-codes' )
-					);
-					break;
+			if ( ! empty( $error['message'] ) ) {
+				$contents[] = sprintf(
+					'<div class="notice %s"><p>%s</p></div>',
+					esc_html( $error['style'] ),
+					esc_html( $error['message'] )
+				);
 			}
 		}
 
@@ -298,7 +270,11 @@ class UtmDotCodes {
 			)
 		);
 
-		if ( '' !== get_option( self::POST_TYPE . '_apikey' ) ) {
+		$is_default_shortener      = ( 'none' !== get_option( self::POST_TYPE . '_shortener' ) );
+		$is_api_key_set            = ( '' !== get_option( self::POST_TYPE . '_apikey' ) );
+		$is_using_custom_shortener = ( false !== apply_filters( 'utmdc_shorten_object', false ) );
+
+		if ( $is_using_custom_shortener || ( $is_default_shortener && $is_api_key_set ) ) {
 			array_unshift(
 				$contents,
 				sprintf(
@@ -556,7 +532,46 @@ class UtmDotCodes {
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row">
-							<?php esc_html_e( 'Bitly Generic Access Token:', 'utm-dot-codes' ); ?>
+							<?php esc_html_e( 'Shortener Service:', 'utm-dot-codes' ); ?>
+						</th>
+						<td>
+							<?php
+							$active_shortener = 'none';
+
+							if ( false === apply_filters( 'utmdc_shorten_object', false ) ) {
+
+								$active_shortener = get_option( self::POST_TYPE . '_shortener' );
+
+								printf(
+									'<select id="%1$s" name="%1$s" class="utmdclinks-settings-select">',
+									esc_html( self::POST_TYPE . '_shortener' )
+								);
+
+								array_map(
+									function ( $value ) use ( $active_shortener ) {
+										printf(
+											'<option value="%s"%s>%s</option>',
+											esc_html( strtolower( $value ) ),
+											( strtolower( $value ) === $active_shortener ? ' selected="selected"' : '' ),
+											esc_html( $value )
+										);
+									},
+									[ 'None', 'Bitly', 'Rebrandly' ]
+								);
+
+								print( '</select>' );
+
+							} else {
+
+								echo esc_html__( 'Custom shortener in use via API filter. Remove to use default options.', 'utm-dot-codes' );
+
+							}
+							?>
+						</td>
+					</tr>
+					<tr valign="top" id="utmdclink_shortener_api_row" class="<?php echo ( 'none' === $active_shortener ) ? 'hidden' : ''; ?>">
+						<th scope="row">
+							<?php esc_html_e( 'API Key:', 'utm-dot-codes' ); ?>
 						</th>
 						<td>
 							<?php
@@ -567,14 +582,23 @@ class UtmDotCodes {
 							);
 
 							printf(
-								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Bitly-API-Integration" target="_blank">%s</a> ]</sup>',
+								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Shortener-Integration" target="_blank">%s</a> ]</sup>',
 								esc_html__( 'Questions?', 'utm-dot-codes' ),
-								esc_html__( 'Click here for more details.', 'utm-dot-codes' )
+								esc_html__( 'Click here for more additional details.', 'utm-dot-codes' )
 							);
 							?>
 						</td>
 					</tr>
 				</table>
+				<p>
+					<?php
+					printf(
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+						esc_html__( 'Adding your own custom link shortener is easy.', 'utm-dot-codes' ),
+						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
+					);
+					?>
+				</p>
 				<?php submit_button(); ?>
 			</form>
 		</div>
@@ -596,6 +620,7 @@ class UtmDotCodes {
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_labels' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_show' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_preview' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_shortener' );
 	}
 
 	/**
@@ -848,7 +873,7 @@ class UtmDotCodes {
 	 *
 	 * @param array  $data Array of post data containing associative utm input values, or Array of post data.
 	 *  containing meta_input array with associative utm input values.
-	 * @param string $url String url query string is being prepared for.
+	 * @param string $url String url for which query string is being prepared, for handling custom injected params.
 	 *
 	 * @return string Prepared link query string with configured utm parameters.
 	 */
@@ -893,64 +918,66 @@ class UtmDotCodes {
 	 *
 	 * @param array  $data Array of post data containing associative utm input values, or Array of post data
 	 * containing meta_input array with associative utm input values.
-	 * @param string $url Url query string is being prepared for.
+	 * @param string $url Base Url of link being shortened, used for generating query string.
 	 *
 	 * @return string Shortened url if request successful, empty string if not.
 	 */
 	public function generate_short_url( $data, $url ) {
 		$short_url = '';
-		$api_key   = get_option( self::POST_TYPE . '_apikey' );
+		$shortener = null;
+		$error     = false;
+		require_once 'shorten/interface.php';
 
-		if ( isset( $data['meta_input'] ) ) {
-			$data = $data['meta_input'];
+		switch ( get_option( self::POST_TYPE . '_shortener' ) ) {
+			case 'bitly':
+				require_once 'shorten/class-bitly.php';
+				$shortener = new \UtmDotCodes\Bitly(
+					get_option( self::POST_TYPE . '_apikey' )
+				);
+				break;
+
+			case 'rebrandly':
+				require_once 'shorten/class-rebrandly.php';
+				$shortener = new \UtmDotCodes\Rebrandly(
+					get_option( self::POST_TYPE . '_apikey' )
+				);
+				break;
+
+			case 'none':
+			default:
+				break;
 		}
 
-		if ( '' !== $api_key ) {
-			$response = wp_remote_get(
-				self::API_URL . '/shorten?' . http_build_query(
-					[
-						'access_token' => $api_key,
-						'longUrl'      => $data[ self::POST_TYPE . '_url' ] . $this->generate_query_string( $data, $url ),
-					]
-				)
-			);
+		$shortener = apply_filters( 'utmdc_shorten_object', $shortener );
 
-			if ( isset( $response->errors ) ) {
-				add_filter(
-					'redirect_post_location',
-					function( $location ) {
-						return add_query_arg( 'utmdc-error', '100', $location );
-					}
-				);
-			} else {
-				$body = json_decode( $response['body'] );
+		if ( $shortener instanceof \UtmDotCodes\Shorten ) {
+			try {
+				$shortener->shorten( $data, $this->generate_query_string( $data, $url ) );
 
-				if ( 200 === $body->status_code ) {
-					$response_url = '';
-
-					if ( isset( $body->data->url ) ) {
-						$response_url = $body->data->url;
-					}
-
-					if ( filter_var( $response_url, FILTER_VALIDATE_URL ) ) {
-						$short_url = $this->sanitize_url( wp_unslash( $body->data->url ) );
-					}
-				} elseif ( 500 === $body->status_code ) {
+				if ( empty( $shortener->get_error() ) ) {
+					$short_url = $shortener->get_response();
+				} else {
 					add_filter(
 						'redirect_post_location',
-						function( $location ) {
-							return add_query_arg( 'utmdc-error', '500', $location );
-						}
-					);
-				} elseif ( 403 === $body->status_code ) {
-					add_filter(
-						'redirect_post_location',
-						function( $location ) {
-							return add_query_arg( 'utmdc-error', '403', $location );
+						function( $location ) use ( $shortener ) {
+							return add_query_arg( 'utmdc-error', $shortener->get_error(), $location );
 						}
 					);
 				}
+			} catch ( Exception $exception ) {
+				$error = true;
 			}
+		} else {
+			$error = true;
+		}
+
+		if ( $error ) {
+			add_filter(
+				'redirect_post_location',
+				function( $location ) {
+					return add_query_arg( 'utmdc-error', '1000', $location );
+				}
+			);
 		}
 
 		return $short_url;
@@ -1046,11 +1073,16 @@ class UtmDotCodes {
 					esc_url_raw( $short_url )
 				);
 
-				printf(
-					'<a href="%s+" target="_blank"><i class="fas fa-chart-line"></i> %s</a>',
-					esc_url_raw( $short_url ),
-					esc_html_x( 'View Report', 'utm-dot-codes' )
-				);
+				$is_bitly     = 'bit.ly' === wp_parse_url( $short_url, PHP_URL_HOST );
+				$is_rebrandly = 'rebrand.ly' === wp_parse_url( $short_url, PHP_URL_HOST );
+
+				if ( $is_bitly || $is_rebrandly ) {
+					printf(
+						'<a href="%s+" target="_blank"><i class="fas fa-chart-line"></i> %s</a>',
+						esc_url_raw( $short_url ),
+						esc_html_x( 'View Report', 'utm-dot-codes' )
+					);
+				}
 			}
 		}
 	}
@@ -1604,6 +1636,8 @@ class UtmDotCodes {
 	/**
 	 * Change button text for better clarity.
 	 *
+	 * @since 1.5.0
+	 *
 	 * @param string $translation text to translate.
 	 * @param string $text text domain.
 	 *
@@ -1622,5 +1656,89 @@ class UtmDotCodes {
 		}
 
 		return $translation;
+	}
+
+	/**
+	 * Retrieve error message for output based on provided error code.
+	 *
+	 * @param integer $error_code numeric value to convert to message.
+	 *
+	 * @return array error message elements: style & message text.
+	 */
+	public function get_error_message( $error_code ) {
+		$error_message = [
+			'style'   => '',
+			'message' => '',
+		];
+
+		switch ( $error_code ) {
+			/**
+			 * Internal Errors
+			 */
+
+			// Invalid URL String.
+			case 1:
+				$error_message = [
+					'style'   => 'notice-warning',
+					'message' => esc_html__( 'Invalid URL format. Replaced with site URL. Please update as needed.', 'utm-dot-codes' ),
+				];
+				break;
+
+			// Invalid Post ID.
+			case 2:
+				$error_message = [
+					'style'   => 'notice-error',
+					'message' => esc_html__( 'Unable to save link. Please try again, your changes were not saved.', 'utm-dot-codes' ),
+				];
+				break;
+
+			// Shortener Object Error.
+			case 1000:
+				$error_message = [
+					'style'   => 'notice-error',
+					'message' => esc_html__( 'Invalid URL shortener config.', 'utm-dot-codes' ),
+				];
+				break;
+
+			/**
+			 * Bitly
+			 */
+			case 100:
+				$error_message = [
+					'style'   => 'notice-error',
+					'message' => esc_html__( 'Unable to connect to Bitly API to shorten url. Please try again later.', 'utm-dot-codes' ),
+				];
+				break;
+			case 4030:
+				$error_message = [
+					'style'   => 'notice-error',
+					'message' => esc_html__( 'Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
+				];
+				break;
+			case 500:
+				$error_message = [
+					'style'   => 'notice-error',
+					'message' => esc_html__( 'Bitly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
+				];
+				break;
+
+			/**
+			 * Rebrandly
+			 */
+			case 401:
+				$error_message = [
+					'style'   => 'notice-error',
+					'message' => esc_html__( 'Rebrandly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
+				];
+				break;
+			case 4031:
+				$error_message = [
+					'style'   => 'notice-error',
+					'message' => esc_html__( 'Rebrandly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
+				];
+				break;
+		}
+
+		return apply_filters( 'utmdc_error_message', $error_message, $error_code );
 	}
 }
