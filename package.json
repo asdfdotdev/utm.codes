@@ -44,9 +44,9 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "stylelint": "^9.10.1",
-    "webpack": "^4.31.0",
+    "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
-    "webpack-dashboard": "^3.0.6",
+    "webpack-dashboard": "^3.0.7",
     "webpack-notifier": "^1.7.0"
   }
 }
