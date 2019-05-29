@@ -224,6 +224,8 @@ class UtmDotCodes {
 	public function meta_box_contents() {
 		global $post;
 
+		require_once 'shorten/interface.php';
+
 		$contents = [];
 
 		if ( isset( $_GET['utmdc-error'] ) ) {
@@ -355,6 +357,8 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 */
 	public function render_settings_options() {
+		require_once 'shorten/interface.php';
+
 		$networks      = $this->get_social_networks();
 		$lowercase     = ( 'on' === get_option( self::POST_TYPE . '_lowercase' ) );
 		$alphanumeric  = ( 'on' === get_option( self::POST_TYPE . '_alphanumeric' ) );
@@ -923,10 +927,11 @@ class UtmDotCodes {
 	 * @return string Shortened url if request successful, empty string if not.
 	 */
 	public function generate_short_url( $data, $url ) {
+		require_once 'shorten/interface.php';
+
 		$short_url = '';
 		$shortener = null;
 		$error     = false;
-		require_once 'shorten/interface.php';
 
 		switch ( get_option( self::POST_TYPE . '_shortener' ) ) {
 			case 'bitly':
