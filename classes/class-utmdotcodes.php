@@ -50,9 +50,10 @@ class UtmDotCodes {
 		add_filter( 'wp_insert_post_data', [ &$this, 'insert_post_data' ], 10, 2 );
 		add_filter( 'gettext', [ &$this, 'change_publish_button' ], 10, 2 );
 
-		$is_post_list = ( 'edit.php' === $pagenow );
+		$is_post_list  = ( 'edit.php' === $pagenow );
+		$is_utmdc_post = ( 'utmdclink' === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
 
-		if ( ( is_admin() && $is_post_list ) || $this->is_test() ) {
+		if ( ( is_admin() && $is_post_list && $is_utmdc_post ) || $this->is_test() ) {
 			add_action( 'restrict_manage_posts', [ &$this, 'filter_ui' ], 5, 1 );
 			add_action( 'pre_get_posts', [ &$this, 'apply_filters' ], 5, 1 );
 			add_filter( 'manage_' . self::POST_TYPE . '_posts_columns', [ &$this, 'post_list_header' ], 10, 1 );
