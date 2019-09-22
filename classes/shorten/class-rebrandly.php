@@ -15,7 +15,7 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 	const API_URL = 'https://api.rebrandly.com/v1';
 
 	/**
-	 * API credentials for Bitly API.
+	 * API credentials for Rebrandly API.
 	 *
 	 * @var string|null The API key for the shortener.
 	 */
@@ -36,7 +36,7 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 	private $error_code;
 
 	/**
-	 * Bitly constructor.
+	 * Rebrandly constructor.
 	 *
 	 * @param string $api_key Credentials for API.
 	 */
@@ -107,7 +107,7 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 	}
 
 	/**
-	 * Get response from Bitly API for the request.
+	 * Get response from Rebrandly API for the request.
 	 *
 	 * @inheritDoc
 	 */
@@ -116,7 +116,7 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 	}
 
 	/**
-	 * Get error code/message returned by Bitly API for the request.
+	 * Get error code/message returned by Rebrandly API for the request.
 	 *
 	 * @inheritDoc
 	 */
