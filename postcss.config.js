@@ -117,7 +117,7 @@ module.exports = () => ({
             }
         },
         autoprefixer: {
-            "browsers": ["> 0.5%", "last 2 versions", "iOS >= 8", "IE 10", "IE 11"]
+            "overrideBrowserslist": ["> 0.5%", "last 2 versions", "iOS >= 8", "IE 10", "IE 11"]
         },
         cssnano: {
             "autoprefixer": false,
