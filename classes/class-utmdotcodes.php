@@ -51,7 +51,7 @@ class UtmDotCodes {
 		add_filter( 'gettext', [ &$this, 'change_publish_button' ], 10, 2 );
 
 		$is_post_list  = ( 'edit.php' === $pagenow );
-		$is_utmdc_post = ( 'utmdclink' === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
 
 		if ( ( is_admin() && $is_post_list && $is_utmdc_post ) || $this->is_test() ) {
 			add_action( 'restrict_manage_posts', [ &$this, 'filter_ui' ], 5, 1 );
@@ -1653,7 +1653,7 @@ class UtmDotCodes {
 		global $pagenow;
 
 		$is_new_post_page = ( 'post-new.php' === $pagenow );
-		$is_utmdc_post    = ( 'utmdclink' === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+		$is_utmdc_post    = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
 
 		if ( $is_new_post_page && $is_utmdc_post ) {
 			if ( 'Publish' === $text ) {
