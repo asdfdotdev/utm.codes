@@ -140,6 +140,7 @@ class UtmDotCodes {
 					'parent_item_colon'  => __( 'Parent Link:', 'utm-dot-codes' ),
 					'not_found'          => __( 'No marketing links found.', 'utm-dot-codes' ),
 					'not_found_in_trash' => __( 'No marketing links found in Trash.', 'utm-dot-codes' ),
+					'featured_image'     => __( 'Featured Image', 'utm-dot-codes' ),
 				],
 				'description'        => __( 'utm.codes Marketing Links', 'utm-dot-codes' ),
 				'public'             => false,
