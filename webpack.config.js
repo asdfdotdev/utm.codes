@@ -68,7 +68,9 @@ module.exports = (env) => {
               loader: "sass-loader",
               options: {
                 sourceMap: true,
-                importer: globImporter()
+                sassOptions: {
+                  importer: globImporter()
+                }
               }
             },
           ]

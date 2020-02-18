@@ -1,9 +1,9 @@
 <?php
 /**
- * Utm.codes - Marketing Link Builder
+ * Utm.codes - A plugin that makes building analytics friendly links quick and easy.
  *
  * @package UtmDotCodes
- * @copyright 2018-2019 Chris Carlevato (https://asdf.dev)
+ * @copyright 2018-2020 Chris Carlevato (https://asdf.dev)
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  * @link https://utm.codes
  *
@@ -11,7 +11,7 @@
  * Plugin Name: utm.codes
  * Plugin URI: https://utm.codes
  * Description: A plugin that makes building analytics friendly links quick and easy.
- * Version: 1.6.3
+ * Version: 1.7.0
  * Author: Chris Carlevato
  * Author URI: https://asdf.dev
  * License: GPL v2
@@ -26,7 +26,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	die( '-1' );
 }
 
-define( 'UTMDC_VERSION', '1.6.3' );
+define( 'UTMDC_VERSION', '1.7.0' );
 define( 'UTMDC_MINIMUM_WP_VERSION', '4.7' );
 define( 'UTMDC_MINIMUM_PHP_VERSION', '5.6' );
 define( 'UTMDC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
