@@ -18,8 +18,8 @@ class UtmDotCodesActivation {
 	 * @since 1.0
 	 */
 	public function __construct() {
-		register_activation_hook( UTMDC_PLUGIN_FILE, [ &$this, 'activation' ] );
-		register_deactivation_hook( UTMDC_PLUGIN_FILE, [ &$this, 'deactivation' ] );
+		register_activation_hook( UTMDC_PLUGIN_FILE, array( &$this, 'activation' ) );
+		register_deactivation_hook( UTMDC_PLUGIN_FILE, array( &$this, 'deactivation' ) );
 	}
 
 	/**

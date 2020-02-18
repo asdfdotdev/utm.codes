@@ -64,18 +64,18 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 			$response = wp_remote_post(
 				self::API_URL . '/links',
 				// Selective overrides of WP_Http() defaults.
-				[
+				array(
 					'method'      => 'POST',
 					'timeout'     => 15,
 					'redirection' => 5,
 					'httpversion' => '1.1',
 					'blocking'    => true,
-					'headers'     => [
+					'headers'     => array(
 						'apikey'       => $this->api_key,
 						'Content-Type' => 'application/json',
-					],
-					'body'        => wp_json_encode( [ 'destination' => $data['utmdclink_url'] . $query_string ] ),
-				]
+					),
+					'body'        => wp_json_encode( array( 'destination' => $data['utmdclink_url'] . $query_string ) ),
+				)
 			);
 
 			if ( isset( $response->errors ) ) {
