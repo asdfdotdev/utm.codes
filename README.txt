@@ -65,7 +65,7 @@ Shortening links requires a shortener be configured. Configure shortening under 
 
 = Why is the create social links checkbox missing when I create a link?  =
 
-Batch social link creation requires selection of social networks. Select networks under Settings > utm.codes to create links for when batch creating social links.
+Batch social link creation requires selection of social networks. Select networks under Settings > utm.codes to create links for your preferred networks when batch creating social links.
 
 = What if I need custom parameters in my links? =
 
