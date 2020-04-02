@@ -36,12 +36,21 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 	private $error_code;
 
 	/**
+	 * Shorten domain id to use for shortened link.
+	 *
+	 * @var string|null Rebrandly domain ID for the shortened link.
+	 */
+	private $short_domain_id;
+
+	/**
 	 * Rebrandly constructor.
 	 *
 	 * @param string $api_key Credentials for API.
+	 * @param null   $short_domain_id ID of the custom domain to use when shortening.
 	 */
-	public function __construct( $api_key ) {
-		$this->api_key = $api_key;
+	public function __construct( $api_key, $short_domain_id = null ) {
+		$this->api_key         = $api_key;
+		$this->short_domain_id = $short_domain_id;
 	}
 
 	/**
@@ -60,6 +69,14 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 		}
 
 		if ( '' !== $this->api_key ) {
+			$domain_args = array();
+
+			if ( ! empty( $this->short_domain_id ) ) {
+				$domain_args = array(
+					'id'  => esc_html( $this->short_domain_id ),
+					'ref' => printf( '/domains/%s', esc_html( $this->short_domain_id ) ),
+				);
+			}
 
 			$response = wp_remote_post(
 				self::API_URL . '/links',
@@ -74,7 +91,12 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 						'apikey'       => $this->api_key,
 						'Content-Type' => 'application/json',
 					),
-					'body'        => wp_json_encode( array( 'destination' => $data['utmdclink_url'] . $query_string ) ),
+					'body'        => wp_json_encode(
+						array(
+							'destination' => $data['utmdclink_url'] . $query_string,
+							'domain'      => $domain_args,
+						)
+					),
 				)
 			);
 
@@ -104,6 +126,60 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get available custom domain options.
+	 *
+	 * @return array array of domain options
+	 */
+	public function get_domains() {
+		$domains = array();
+
+		if ( '' !== $this->api_key ) {
+
+			$response = wp_remote_get(
+				self::API_URL . '/domains?' . http_build_query(
+					array(
+						'orderBy'  => 'fullName',
+						'orderDir' => 'desc',
+						'limit'    => 50,
+						'active'   => 'true',
+						'type'     => 'user',
+					)
+				),
+				// Selective overrides of WP_Http() defaults.
+				array(
+					'timeout'     => 15,
+					'redirection' => 5,
+					'httpversion' => '1.1',
+					'blocking'    => true,
+					'headers'     => array(
+						'apikey'       => $this->api_key,
+						'Content-Type' => 'application/json',
+					),
+				)
+			);
+
+			if ( ! isset( $response->errors ) ) {
+				$domains = array_map(
+					function( $domain ) {
+						$is_active    = $domain->active;
+						$dns_verified = ( 'verified' === $domain->status->dns );
+
+						if ( $is_active && $dns_verified ) {
+							return array(
+								'id'        => $domain->id,
+								'full_name' => $domain->fullName,
+							);
+						}
+					},
+					json_decode( $response['body'] )
+				);
+			}
+		}
+
+		return $domains;
 	}
 
 	/**

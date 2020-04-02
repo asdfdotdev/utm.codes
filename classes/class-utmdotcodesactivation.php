@@ -66,6 +66,9 @@ class UtmDotCodesActivation {
 		add_option( UtmDotCodes::POST_TYPE . '_notes_show', '', '', 'no' );
 		add_option( UtmDotCodes::POST_TYPE . '_notes_preview', '0', '', 'no' );
 		add_option( UtmDotCodes::POST_TYPE . '_shortener', 'none', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_active', '', '', 'no' );
+		add_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_update', '', '', 'no' );
 	}
 
 	/**
@@ -88,6 +91,9 @@ class UtmDotCodesActivation {
 		delete_option( UtmDotCodes::POST_TYPE . '_notes_show' );
 		delete_option( UtmDotCodes::POST_TYPE . '_notes_preview' );
 		delete_option( UtmDotCodes::POST_TYPE . '_shortener' );
+		delete_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains' );
+		delete_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_active' );
+		delete_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_update' );
 	}
 
 }

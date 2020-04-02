@@ -32,6 +32,8 @@ class UtmDotCodes {
 	public function __construct() {
 		global $pagenow;
 
+		require_once 'shorten/interface.php';
+
 		remove_post_type_support( self::POST_TYPE, 'revisions' );
 
 		add_action( 'plugins_loaded', array( &$this, 'load_languages' ) );
@@ -49,6 +51,12 @@ class UtmDotCodes {
 		add_filter( 'plugin_action_links_' . UTMDC_PLUGIN_FILE, array( &$this, 'add_links' ), 10, 1 );
 		add_filter( 'wp_insert_post_data', array( &$this, 'insert_post_data' ), 10, 2 );
 		add_filter( 'gettext', array( &$this, 'change_publish_button' ), 10, 2 );
+		add_filter(
+			sprintf( 'pre_update_option_%s', self::POST_TYPE . '_rebrandly_domains_update' ),
+			array( &$this, 'pre_rebrandly_domains_update' ),
+			10,
+			3
+		);
 
 		$is_post_list  = ( 'edit.php' === $pagenow );
 		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
@@ -226,8 +234,6 @@ class UtmDotCodes {
 	public function meta_box_contents() {
 		global $post;
 
-		require_once 'shorten/interface.php';
-
 		$contents = array();
 
 		if ( isset( $_GET['utmdc-error'] ) ) {
@@ -310,7 +316,7 @@ class UtmDotCodes {
 			);
 
 			$contents[] = sprintf(
-				'<p><label for="%1$s_%2$s" class="%1$s_%2$s">%3$s<br><textarea type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%4$s</textarea></p>',
+				'<p><label for="%1$s_%2$s" class="%1$s_%2$s">%3$s<br><textarea name="%1$s_%2$s" id="%1$s_%2$s">%4$s</textarea></p>',
 				self::POST_TYPE,
 				'notes',
 				esc_html__( 'Notes', 'utm-dot-codes' ),
@@ -432,7 +438,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 						printf(
-							'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+							'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Link-Formats" target="_blank">%s</a>',
 							esc_html__( 'Adding your own custom link formatting is easy with an API filter.', 'utm-dot-codes' ),
 							esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 						);
@@ -523,7 +529,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 					printf(
-						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Social-Networks" target="_blank">%s</a>',
 						esc_html__( 'Adding your own custom network options is easy with an API filter.', 'utm-dot-codes' ),
 						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 					);
@@ -575,7 +581,7 @@ class UtmDotCodes {
 							?>
 						</td>
 					</tr>
-					<tr valign="top" id="utmdclink_shortener_api_row" class="<?php echo ( 'none' === $active_shortener ) ? 'hidden' : ''; ?>">
+					<tr valign="top" id="utmdclinks_shortener_api_row" class="<?php echo ( 'none' === $active_shortener ) ? 'hidden' : ''; ?>">
 						<th scope="row">
 							<?php esc_html_e( 'API Key:', 'utm-dot-codes' ); ?>
 						</th>
@@ -588,9 +594,60 @@ class UtmDotCodes {
 							);
 
 							printf(
-								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Shortener-Integration" target="_blank">%s</a> ]</sup>',
-								esc_html__( 'Questions?', 'utm-dot-codes' ),
+								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Setup-&-Config" target="_blank">%s</a> ]</sup>',
+								esc_html__( 'API Questions?', 'utm-dot-codes' ),
 								esc_html__( 'Click here for more additional details.', 'utm-dot-codes' )
+							);
+							?>
+						</td>
+					</tr>
+					<tr valign="top" id="utmdclinks_shortener_custom_domain_row" class="<?php echo ( 'rebrandly' !== $active_shortener ) ? 'hidden' : ''; ?>">
+						<th scope="row">
+							<?php esc_html_e( 'Short Domain:', 'utm-dot-codes' ); ?>
+						</th>
+						<td>
+							<?php
+							$rebrandly_domain  = get_option( self::POST_TYPE . '_rebrandly_domains_active' );
+							$rebrandly_domains = json_decode( get_option( self::POST_TYPE . '_rebrandly_domains', true ) );
+							$domains           = array_merge(
+								array(
+									(object) array(
+										'id'        => '',
+										'full_name' => 'rebrand.ly',
+									),
+								),
+								is_array( $rebrandly_domains ) ? $rebrandly_domains : array()
+							);
+
+							printf(
+								'<input id="%1$s" name="%1$s" type="hidden" value="%2$s">',
+								esc_html( self::POST_TYPE . '_rebrandly_domains' ),
+								esc_html( wp_json_encode( $rebrandly_domains ) )
+							);
+
+							printf(
+								'<select id="%1$s" name="%1$s" class="utmdclinks-settings-select">',
+								esc_html( self::POST_TYPE . '_rebrandly_domains_active' )
+							);
+
+							foreach ( $domains as $domain ) {
+								$domain_id = ( ! empty( $domain->id ) ? ' (' . $domain->id . ')' : '' );
+
+								printf(
+									'<option value="%s"%s>%s%s</option>',
+									esc_html( $domain->id ),
+									( $domain->id === $rebrandly_domain ? ' selected="selected"' : '' ),
+									esc_html( $domain->full_name ),
+									esc_html( $domain_id )
+								);
+							}
+
+							print( '</select>' );
+
+							printf(
+								'<label for="%1$s"><input type="checkbox" name="%1$s" id="%1$s">%2$s</label>',
+								esc_html( self::POST_TYPE . '_rebrandly_domains_update' ),
+								esc_html__( 'Update Options from Rebrandly.', 'utm-dot-codes' )
 							);
 							?>
 						</td>
@@ -599,7 +656,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 					printf(
-						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Shortener-Integration" target="_blank">%s</a>',
 						esc_html__( 'Adding your own custom link shortener is easy.', 'utm-dot-codes' ),
 						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 					);
@@ -627,6 +684,9 @@ class UtmDotCodes {
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_show' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_preview' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_shortener' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_rebrandly_domains' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_rebrandly_domains_active' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_rebrandly_domains_update' );
 	}
 
 	/**
@@ -946,7 +1006,8 @@ class UtmDotCodes {
 			case 'rebrandly':
 				require_once 'shorten/class-rebrandly.php';
 				$shortener = new \UtmDotCodes\Rebrandly(
-					get_option( self::POST_TYPE . '_apikey' )
+					get_option( self::POST_TYPE . '_apikey' ),
+					get_option( self::POST_TYPE . '_rebrandly_domains_active' )
 				);
 				break;
 
@@ -1586,13 +1647,18 @@ class UtmDotCodes {
 				'medium'         => array( 'Medium', 'fab fa-medium-m' ),
 				'meetup'         => array( 'Meetup', 'fab fa-meetup' ),
 				'mix'            => array( 'Mix', 'fab fa-mix' ),
+				'odnoklassniki'  => array( 'Odnoklassniki', 'fab fa-odnoklassniki' ),
 				'pinterest'      => array( 'Pinterest', 'fab fa-pinterest-p' ),
 				'reddit'         => array( 'Reddit', 'fab fa-reddit-alien' ),
+				'slack'          => array( 'Slack', 'fab fa-slack' ),
 				'stack-exchange' => array( 'Stack Exchange', 'fab fa-stack-exchange' ),
 				'stack-overflow' => array( 'Stack Overflow', 'fab fa-stack-overflow' ),
 				'tumblr'         => array( 'Tumblr', 'fab fa-tumblr' ),
 				'twitter'        => array( 'Twitter', 'fab fa-twitter' ),
 				'vimeo'          => array( 'Vimeo', 'fab fa-vimeo-v' ),
+				'vk'             => array( 'VK', 'fab fa-vk' ),
+				'weibo'          => array( 'Weibo', 'fab fa-weibo' ),
+				'whatsapp'       => array( 'WhatsApp', 'fab fa-whatsapp' ),
 				'xing'           => array( 'Xing', 'fab fa-xing' ),
 				'yelp'           => array( 'Yelp', 'fab fa-yelp' ),
 				'youtube'        => array( 'YouTube', 'fab fa-youtube' ),
@@ -1667,6 +1733,8 @@ class UtmDotCodes {
 
 	/**
 	 * Retrieve error message for output based on provided error code.
+	 *
+	 * @since 1.6.0
 	 *
 	 * @param integer $error_code numeric value to convert to message.
 	 *
@@ -1747,5 +1815,40 @@ class UtmDotCodes {
 		}
 
 		return apply_filters( 'utmdc_error_message', $error_message, $error_code );
+	}
+
+	/**
+	 * Retrieve updated list of domain options when requested by the user.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param mixed  $value The new value.
+	 * @param mixed  $old_value The old value.
+	 * @param string $option The option being updated.
+	 *
+	 * @return string Empty string to ensure the checkbox remains unchecked.
+	 */
+	public function pre_rebrandly_domains_update( $value, $old_value, $option ) {
+		$update_setting   = ( self::POST_TYPE . '_rebrandly_domains_update' === $option );
+		$update_requested = ( 'on' === $value );
+
+		if ( $update_setting && $update_requested ) {
+			if ( 'rebrandly' === get_option( self::POST_TYPE . '_shortener' ) ) {
+				require_once 'shorten/class-rebrandly.php';
+
+				$rebrandly = new \UtmDotCodes\Rebrandly( get_option( self::POST_TYPE . '_apikey' ) );
+				$options   = $rebrandly->get_domains();
+
+				if ( is_array( $options ) && 0 < count( $options ) ) {
+					update_option(
+						self::POST_TYPE . '_rebrandly_domains',
+						wp_json_encode( $options ),
+						false
+					);
+				}
+			}
+		}
+
+		return '';
 	}
 }
