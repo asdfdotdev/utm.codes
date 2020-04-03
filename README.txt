@@ -3,9 +3,9 @@ Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: analytics, utm codes, analytics, google analytics, campaign marketing, link generator
 Requires at least: 4.7.0
-Tested up to: 5.3
+Tested up to: 5.4.0
 Requires PHP: 5.6.0
-Stable tag: 1.6.3
+Stable tag: 1.7.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,7 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - Supports adding additional custom parameters to links for improved versatility
 - Multi-user access within WordPress to share creation and management responsibilities
 - See your current link count in the admin dashboard "At a Glance"
-- Works with PHP 5.6, 7.0, 7.1, 7.2, and 7.3
+- Works with PHP 5.6, 7.0, 7.1, 7.2, 7.3, and 7.4
 - 100% Free and Open Source
 
 = Installation =
@@ -65,7 +65,7 @@ Shortening links requires a shortener be configured. Configure shortening under 
 
 = Why is the create social links checkbox missing when I create a link?  =
 
-Batch social link creation requires selection of social networks. Select networks under Settings > utm.codes to create links for when batch creating social links.
+Batch social link creation requires selection of social networks. Select networks under Settings > utm.codes to create links for your preferred networks when batch creating social links.
 
 = What if I need custom parameters in my links? =
 
@@ -92,10 +92,15 @@ That isn't a question. But thank you.
 1. The links list provides easy access to search, filter, edit, and copy links
 2. Shorten links just by clicking the checkbox
 3. Create social links in batch just by clicking the checkbox
-4. Configure settings for link format, your favorite social networks, Bitly API key, and more
+4. Configure settings for link format, labels, link notes, your favorite social networks, and shortener
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.7.0 =
+
+- Supports WordPress v5.4
+- New use your custom domain when shortening with Rebrandly
 
 = 1.6.3 =
 

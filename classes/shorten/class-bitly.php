@@ -63,18 +63,18 @@ class Bitly implements \UtmDotCodes\Shorten {
 			$response = wp_remote_post(
 				self::API_URL . '/shorten',
 				// Selective overrides of WP_Http() defaults.
-				[
+				array(
 					'method'      => 'POST',
 					'timeout'     => 15,
 					'redirection' => 5,
 					'httpversion' => '1.1',
 					'blocking'    => true,
-					'headers'     => [
+					'headers'     => array(
 						'Authorization' => 'Bearer ' . $this->api_key,
 						'Content-Type'  => 'application/json',
-					],
-					'body'        => wp_json_encode( [ 'long_url' => $data['utmdclink_url'] . $query_string ] ),
-				]
+					),
+					'body'        => wp_json_encode( array( 'long_url' => $data['utmdclink_url'] . $query_string ) ),
+				)
 			);
 
 			if ( isset( $response->errors ) ) {

@@ -32,35 +32,43 @@ class UtmDotCodes {
 	public function __construct() {
 		global $pagenow;
 
+		require_once 'shorten/interface.php';
+
 		remove_post_type_support( self::POST_TYPE, 'revisions' );
 
-		add_action( 'plugins_loaded', [ &$this, 'load_languages' ] );
-		add_action( 'init', [ &$this, 'create_post_type' ] );
-		add_action( 'admin_menu', [ &$this, 'add_settings_page' ] );
-		add_action( 'admin_init', [ &$this, 'register_plugin_settings' ] );
-		add_action( 'admin_head', [ &$this, 'add_css' ] );
-		add_action( 'admin_footer', [ &$this, 'add_js' ] );
-		add_action( 'add_meta_boxes', [ &$this, 'add_meta_box' ], 10, 2 );
-		add_action( 'add_meta_boxes', [ &$this, 'remove_meta_boxes' ] );
-		add_action( 'save_post', [ &$this, 'save_post' ], 10, 1 );
-		add_action( 'dashboard_glance_items', [ &$this, 'add_glance' ] );
-		add_action( 'wp_ajax_utmdc_check_url_response', [ &$this, 'check_url_response' ] );
+		add_action( 'plugins_loaded', array( &$this, 'load_languages' ) );
+		add_action( 'init', array( &$this, 'create_post_type' ) );
+		add_action( 'admin_menu', array( &$this, 'add_settings_page' ) );
+		add_action( 'admin_init', array( &$this, 'register_plugin_settings' ) );
+		add_action( 'admin_head', array( &$this, 'add_css' ) );
+		add_action( 'admin_footer', array( &$this, 'add_js' ) );
+		add_action( 'add_meta_boxes', array( &$this, 'add_meta_box' ), 10, 2 );
+		add_action( 'add_meta_boxes', array( &$this, 'remove_meta_boxes' ) );
+		add_action( 'save_post', array( &$this, 'save_post' ), 10, 1 );
+		add_action( 'dashboard_glance_items', array( &$this, 'add_glance' ) );
+		add_action( 'wp_ajax_utmdc_check_url_response', array( &$this, 'check_url_response' ) );
 
-		add_filter( 'plugin_action_links_' . UTMDC_PLUGIN_FILE, [ &$this, 'add_links' ], 10, 1 );
-		add_filter( 'wp_insert_post_data', [ &$this, 'insert_post_data' ], 10, 2 );
-		add_filter( 'gettext', [ &$this, 'change_publish_button' ], 10, 2 );
+		add_filter( 'plugin_action_links_' . UTMDC_PLUGIN_FILE, array( &$this, 'add_links' ), 10, 1 );
+		add_filter( 'wp_insert_post_data', array( &$this, 'insert_post_data' ), 10, 2 );
+		add_filter( 'gettext', array( &$this, 'change_publish_button' ), 10, 2 );
+		add_filter(
+			sprintf( 'pre_update_option_%s', self::POST_TYPE . '_rebrandly_domains_update' ),
+			array( &$this, 'pre_rebrandly_domains_update' ),
+			10,
+			3
+		);
 
 		$is_post_list  = ( 'edit.php' === $pagenow );
 		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
 
 		if ( ( is_admin() && $is_post_list && $is_utmdc_post ) || $this->is_test() ) {
-			add_action( 'restrict_manage_posts', [ &$this, 'filter_ui' ], 5, 1 );
-			add_action( 'pre_get_posts', [ &$this, 'apply_filters' ], 5, 1 );
-			add_filter( 'manage_' . self::POST_TYPE . '_posts_columns', [ &$this, 'post_list_header' ], 10, 1 );
-			add_filter( 'manage_' . self::POST_TYPE . '_posts_custom_column', [ &$this, 'post_list_columns' ], 10, 2 );
-			add_filter( 'months_dropdown_results', [ &$this, 'months_dropdown_results' ], 10, 2 );
-			add_filter( 'bulk_actions-edit-' . self::POST_TYPE, [ &$this, 'bulk_actions' ] );
-			add_filter( 'post_row_actions', [ &$this, 'remove_quick_edit' ], 10, 1 );
+			add_action( 'restrict_manage_posts', array( &$this, 'filter_ui' ), 5, 1 );
+			add_action( 'pre_get_posts', array( &$this, 'apply_filters' ), 5, 1 );
+			add_filter( 'manage_' . self::POST_TYPE . '_posts_columns', array( &$this, 'post_list_header' ), 10, 1 );
+			add_filter( 'manage_' . self::POST_TYPE . '_posts_custom_column', array( &$this, 'post_list_columns' ), 10, 2 );
+			add_filter( 'months_dropdown_results', array( &$this, 'months_dropdown_results' ), 10, 2 );
+			add_filter( 'bulk_actions-edit-' . self::POST_TYPE, array( &$this, 'bulk_actions' ) );
+			add_filter( 'post_row_actions', array( &$this, 'remove_quick_edit' ), 10, 1 );
 		}
 	}
 
@@ -70,62 +78,62 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 */
 	public function create_post_type() {
-		$this->link_elements = [
-			'url'      => [
+		$this->link_elements = array(
+			'url'      => array(
 				'label'       => esc_html_x( 'Link URL', 'utm-dot-codes' ),
 				'short_label' => esc_html_x( 'URL', 'utm-dot-codes' ),
 				'type'        => 'url',
 				'required'    => true,
 				'batch_alt'   => true,
-			],
-			'source'   => [
+			),
+			'source'   => array(
 				'label'       => esc_html_x( 'Campaign Source', 'utm-dot-codes' ),
 				'short_label' => esc_html_x( 'Source', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => true,
 				'batch_alt'   => true,
-			],
-			'medium'   => [
+			),
+			'medium'   => array(
 				'label'       => esc_html_x( 'Campaign Medium', 'utm-dot-codes' ),
 				'short_label' => esc_html_x( 'Medium', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => true,
-			],
-			'campaign' => [
+			),
+			'campaign' => array(
 				'label'       => esc_html_x( 'Campaign Name', 'utm-dot-codes' ),
 				'short_label' => esc_html_x( 'Campaign', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => false,
-			],
-			'term'     => [
+			),
+			'term'     => array(
 				'label'       => esc_html_x( 'Campaign Term', 'utm-dot-codes' ),
 				'short_label' => esc_html_x( 'Term', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => false,
-			],
-			'content'  => [
+			),
+			'content'  => array(
 				'label'       => esc_html_x( 'Campaign Content', 'utm-dot-codes' ),
 				'short_label' => esc_html_x( 'Content', 'utm-dot-codes' ),
 				'type'        => 'text',
 				'required'    => false,
 				'batch_alt'   => false,
-			],
-			'shorturl' => [
+			),
+			'shorturl' => array(
 				'label'       => esc_html_x( 'Short URL', 'utm-dot-codes' ),
 				'short_label' => esc_html_x( 'Short URL', 'utm-dot-codes' ),
 				'type'        => 'url',
 				'required'    => false,
 				'batch_alt'   => false,
-			],
-		];
+			),
+		);
 
 		register_post_type(
 			self::POST_TYPE,
-			[
-				'labels'             => [
+			array(
+				'labels'             => array(
 					'menu_name'          => _x( 'utm.codes', 'admin menu', 'utm-dot-codes' ),
 					'name'               => _x( 'Marketing Links', 'post type general name', 'utm-dot-codes' ),
 					'singular_name'      => _x( 'Marketing Link', 'post type singular name', 'utm-dot-codes' ),
@@ -140,7 +148,8 @@ class UtmDotCodes {
 					'parent_item_colon'  => __( 'Parent Link:', 'utm-dot-codes' ),
 					'not_found'          => __( 'No marketing links found.', 'utm-dot-codes' ),
 					'not_found_in_trash' => __( 'No marketing links found in Trash.', 'utm-dot-codes' ),
-				],
+					'featured_image'     => __( 'Featured Image', 'utm-dot-codes' ),
+				),
 				'description'        => __( 'utm.codes Marketing Links', 'utm-dot-codes' ),
 				'public'             => false,
 				'publicly_queryable' => false,
@@ -150,17 +159,17 @@ class UtmDotCodes {
 				'capability_type'    => 'post',
 				'has_archive'        => false,
 				'hierarchical'       => false,
-				'supports'           => [ 'author' ],
-				'menu_icon'          => 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22.222222222222225 -22.222222222222225 144.44444444444446 155.55555555555557" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><g transform="translate(-16.666666666666664 -11.11111111111111) scale(5.555555555555555)"><g fill="#000000"><path d="M15 2c-1.6 0-3.1.7-4.2 1.7.8.2 1.5.5 2.1.9.6-.4 1.3-.6 2.1-.6 2.2 0 4 1.8 4 4v5c0 2.2-1.8 4-4 4s-4-1.8-4-4V9.5c-.5-.6-1.2-1-2-1V13c0 3.3 2.7 6 6 6s6-2.7 6-6V8c0-3.3-2.7-6-6-6z"></path><path d="M9 22c1.6 0 3.1-.7 4.2-1.7-.8-.2-1.5-.5-2.1-.9-.6.4-1.3.6-2.1.6-2.2 0-4-1.8-4-4v-5c0-2.2 1.8-4 4-4s4 1.8 4 4v3.5c.5.6 1.2 1 2 1V11c0-3.3-2.7-6-6-6s-6 2.7-6 6v5c0 3.3 2.7 6 6 6z"></path></g></g></svg>' ),
-			]
+				'supports'           => array( 'author' ),
+				'menu_icon'          => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0yMi4yMjIyMjIyMjIyMjIyMjUgLTIyLjIyMjIyMjIyMjIyMjIyNSAxNDQuNDQ0NDQ0NDQ0NDQ0NDYgMTU1LjU1NTU1NTU1NTU1NTU3IiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTYuNjY2NjY2NjY2NjY2NjY0IC0xMS4xMTExMTExMTExMTExMSkgc2NhbGUoNS41NTU1NTU1NTU1NTU1NTUpIj48ZyBmaWxsPSIjMDAwMDAwIj48cGF0aCBkPSJNMTUgMmMtMS42IDAtMy4xLjctNC4yIDEuNy44LjIgMS41LjUgMi4xLjkuNi0uNCAxLjMtLjYgMi4xLS42IDIuMiAwIDQgMS44IDQgNHY1YzAgMi4yLTEuOCA0LTQgNHMtNC0xLjgtNC00VjkuNWMtLjUtLjYtMS4yLTEtMi0xVjEzYzAgMy4zIDIuNyA2IDYgNnM2LTIuNyA2LTZWOGMwLTMuMy0yLjctNi02LTZ6Ij48L3BhdGg+PHBhdGggZD0iTTkgMjJjMS42IDAgMy4xLS43IDQuMi0xLjctLjgtLjItMS41LS41LTIuMS0uOS0uNi40LTEuMy42LTIuMS42LTIuMiAwLTQtMS44LTQtNHYtNWMwLTIuMiAxLjgtNCA0LTRzNCAxLjggNCA0djMuNWMuNS42IDEuMiAxIDIgMVYxMWMwLTMuMy0yLjctNi02LTZzLTYgMi43LTYgNnY1YzAgMy4zIDIuNyA2IDYgNnoiPjwvcGF0aD48L2c+PC9nPjwvc3ZnPg==',
+			)
 		);
 
 		if ( 'on' === get_option( self::POST_TYPE . '_labels' ) ) {
 			register_taxonomy(
 				self::POST_TYPE . '-label',
-				[ self::POST_TYPE ],
-				[
-					'labels'             => [
+				array( self::POST_TYPE ),
+				array(
+					'labels'             => array(
 						'name'                       => _x( 'Link Labels', 'Taxonomy General Name', 'utm-dot-codes' ),
 						'singular_name'              => _x( 'Link Label', 'Taxonomy Singular Name', 'utm-dot-codes' ),
 						'menu_name'                  => __( 'Link Labels', 'utm-dot-codes' ),
@@ -178,7 +187,7 @@ class UtmDotCodes {
 						'no_terms'                   => __( 'No labels', 'utm-dot-codes' ),
 						'items_list'                 => __( 'Labels list', 'utm-dot-codes' ),
 						'items_list_navigation'      => __( 'Labels list navigation', 'utm-dot-codes' ),
-					],
+					),
 					'hierarchical'       => false,
 					'public'             => false,
 					'publicly_queryable' => false,
@@ -187,7 +196,7 @@ class UtmDotCodes {
 					'show_in_nav_menus'  => false,
 					'show_in_rest'       => false,
 					'show_tagcloud'      => true,
-				]
+				)
 			);
 		}
 	}
@@ -201,7 +210,7 @@ class UtmDotCodes {
 		add_meta_box(
 			'utmdc_link_meta_box',
 			'utm.codes Editor',
-			[ &$this, 'meta_box_contents' ],
+			array( &$this, 'meta_box_contents' ),
 			self::POST_TYPE,
 			'normal',
 			'high'
@@ -225,9 +234,7 @@ class UtmDotCodes {
 	public function meta_box_contents() {
 		global $post;
 
-		require_once 'shorten/interface.php';
-
-		$contents = [];
+		$contents = array();
 
 		if ( isset( $_GET['utmdc-error'] ) ) {
 			$error = $this->get_error_message( intval( $_GET['utmdc-error'] ) );
@@ -309,7 +316,7 @@ class UtmDotCodes {
 			);
 
 			$contents[] = sprintf(
-				'<p><label for="%1$s_%2$s" class="%1$s_%2$s">%3$s<br><textarea type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%4$s</textarea></p>',
+				'<p><label for="%1$s_%2$s" class="%1$s_%2$s">%3$s<br><textarea name="%1$s_%2$s" id="%1$s_%2$s">%4$s</textarea></p>',
 				self::POST_TYPE,
 				'notes',
 				esc_html__( 'Notes', 'utm-dot-codes' ),
@@ -348,7 +355,7 @@ class UtmDotCodes {
 			esc_html__( 'utm.codes', 'utm-dot-codes' ),
 			'manage_options',
 			self::SETTINGS_PAGE,
-			[ &$this, 'render_settings_options' ]
+			array( &$this, 'render_settings_options' )
 		);
 	}
 
@@ -431,7 +438,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 						printf(
-							'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+							'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Link-Formats" target="_blank">%s</a>',
 							esc_html__( 'Adding your own custom link formatting is easy with an API filter.', 'utm-dot-codes' ),
 							esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 						);
@@ -522,7 +529,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 					printf(
-						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Social-Networks" target="_blank">%s</a>',
 						esc_html__( 'Adding your own custom network options is easy with an API filter.', 'utm-dot-codes' ),
 						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 					);
@@ -561,7 +568,7 @@ class UtmDotCodes {
 											esc_html( $value )
 										);
 									},
-									[ 'None', 'Bitly', 'Rebrandly' ]
+									array( 'None', 'Bitly', 'Rebrandly' )
 								);
 
 								print( '</select>' );
@@ -574,7 +581,7 @@ class UtmDotCodes {
 							?>
 						</td>
 					</tr>
-					<tr valign="top" id="utmdclink_shortener_api_row" class="<?php echo ( 'none' === $active_shortener ) ? 'hidden' : ''; ?>">
+					<tr valign="top" id="utmdclinks_shortener_api_row" class="<?php echo ( 'none' === $active_shortener ) ? 'hidden' : ''; ?>">
 						<th scope="row">
 							<?php esc_html_e( 'API Key:', 'utm-dot-codes' ); ?>
 						</th>
@@ -587,9 +594,60 @@ class UtmDotCodes {
 							);
 
 							printf(
-								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Shortener-Integration" target="_blank">%s</a> ]</sup>',
-								esc_html__( 'Questions?', 'utm-dot-codes' ),
+								'<br><sup>[ %s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Setup-&-Config" target="_blank">%s</a> ]</sup>',
+								esc_html__( 'API Questions?', 'utm-dot-codes' ),
 								esc_html__( 'Click here for more additional details.', 'utm-dot-codes' )
+							);
+							?>
+						</td>
+					</tr>
+					<tr valign="top" id="utmdclinks_shortener_custom_domain_row" class="<?php echo ( 'rebrandly' !== $active_shortener ) ? 'hidden' : ''; ?>">
+						<th scope="row">
+							<?php esc_html_e( 'Short Domain:', 'utm-dot-codes' ); ?>
+						</th>
+						<td>
+							<?php
+							$rebrandly_domain  = get_option( self::POST_TYPE . '_rebrandly_domains_active' );
+							$rebrandly_domains = json_decode( get_option( self::POST_TYPE . '_rebrandly_domains', true ) );
+							$domains           = array_merge(
+								array(
+									(object) array(
+										'id'        => '',
+										'full_name' => 'rebrand.ly',
+									),
+								),
+								is_array( $rebrandly_domains ) ? $rebrandly_domains : array()
+							);
+
+							printf(
+								'<input id="%1$s" name="%1$s" type="hidden" value="%2$s">',
+								esc_html( self::POST_TYPE . '_rebrandly_domains' ),
+								esc_html( wp_json_encode( $rebrandly_domains ) )
+							);
+
+							printf(
+								'<select id="%1$s" name="%1$s" class="utmdclinks-settings-select">',
+								esc_html( self::POST_TYPE . '_rebrandly_domains_active' )
+							);
+
+							foreach ( $domains as $domain ) {
+								$domain_id = ( ! empty( $domain->id ) ? ' (' . $domain->id . ')' : '' );
+
+								printf(
+									'<option value="%s"%s>%s%s</option>',
+									esc_html( $domain->id ),
+									( $domain->id === $rebrandly_domain ? ' selected="selected"' : '' ),
+									esc_html( $domain->full_name ),
+									esc_html( $domain_id )
+								);
+							}
+
+							print( '</select>' );
+
+							printf(
+								'<label for="%1$s"><input type="checkbox" name="%1$s" id="%1$s">%2$s</label>',
+								esc_html( self::POST_TYPE . '_rebrandly_domains_update' ),
+								esc_html__( 'Update Options from Rebrandly.', 'utm-dot-codes' )
 							);
 							?>
 						</td>
@@ -598,7 +656,7 @@ class UtmDotCodes {
 				<p>
 					<?php
 					printf(
-						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki" target="_blank">%s</a>',
+						'%s <a href="https://github.com/asdfdotdev/utm.codes/wiki/Shortener-Integration" target="_blank">%s</a>',
 						esc_html__( 'Adding your own custom link shortener is easy.', 'utm-dot-codes' ),
 						esc_html__( 'Visit our wiki for examples and to find out more.', 'utm-dot-codes' )
 					);
@@ -626,6 +684,9 @@ class UtmDotCodes {
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_show' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_notes_preview' );
 		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_shortener' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_rebrandly_domains' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_rebrandly_domains_active' );
+		register_setting( self::SETTINGS_GROUP, self::POST_TYPE . '_rebrandly_domains_update' );
 	}
 
 	/**
@@ -639,7 +700,7 @@ class UtmDotCodes {
 	 */
 	public function add_links( $links ) {
 		return array_merge(
-			[
+			array(
 				sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( admin_url( 'options-general.php?page=' . self::SETTINGS_PAGE ) ),
@@ -649,7 +710,7 @@ class UtmDotCodes {
 					'<a href="https://github.com/asdfdotdev/utm.codes" target="_blank">%s</a>',
 					esc_html__( 'Code', 'utm-dot-codes' )
 				),
-			],
+			),
 			$links
 		);
 	}
@@ -701,7 +762,7 @@ class UtmDotCodes {
 				$_POST[ self::POST_TYPE . '_medium' ] = esc_html__( 'social', 'utm-dot-codes' );
 				unset( $networks[0] );
 
-				$post_template = [];
+				$post_template = array();
 
 				array_map(
 					function( $key ) use ( &$post_template ) {
@@ -712,14 +773,14 @@ class UtmDotCodes {
 					array_keys( $this->link_elements )
 				);
 
-				remove_action( 'save_post', [ &$this, 'save_post' ] );
+				remove_action( 'save_post', array( &$this, 'save_post' ) );
 
 				array_map(
 					function( $network ) {
-						$meta_input = [
+						$meta_input = array(
 							self::POST_TYPE . '_source' => $network,
 							self::POST_TYPE . '_medium' => esc_html__( 'social', 'utm-dot-codes' ),
-						];
+						);
 
 						if ( isset( $_POST[ self::POST_TYPE . '_url' ] ) ) {
 							$meta_input[ self::POST_TYPE . '_url' ] = $this->sanitize_url(
@@ -748,13 +809,13 @@ class UtmDotCodes {
 							);
 						}
 
-						$new_post = [
+						$new_post = array(
 							'post_title'   => '',
 							'post_content' => '',
 							'post_type'    => self::POST_TYPE,
 							'post_status'  => 'publish',
 							'meta_input'   => $meta_input,
-						];
+						);
 
 						if ( isset( $_POST[ self::POST_TYPE . '_shorten' ] ) ) {
 							if ( 'on' === sanitize_text_field( wp_unslash( $_POST[ self::POST_TYPE . '_shorten' ] ) ) ) {
@@ -790,7 +851,7 @@ class UtmDotCodes {
 					$networks
 				);
 
-				add_action( 'save_post', [ &$this, 'save_post' ], 10, 1 );
+				add_action( 'save_post', array( &$this, 'save_post' ), 10, 1 );
 			}
 
 			if ( isset( $_POST[ self::POST_TYPE . '_shorten' ] ) && 'on' === $_POST[ self::POST_TYPE . '_shorten' ] ) {
@@ -803,11 +864,11 @@ class UtmDotCodes {
 					$post_id       = absint( $_POST['ID'] );
 					$current       = get_post_meta( $post_id, $field, true );
 					$updated       = '';
-					$do_not_filter = [
+					$do_not_filter = array(
 						self::POST_TYPE . '_url',
 						self::POST_TYPE . '_shorturl',
 						self::POST_TYPE . '_notes',
-					];
+					);
 
 					if ( isset( $_POST[ $field ] ) ) {
 						if ( self::POST_TYPE . '_notes' === $field ) {
@@ -829,7 +890,7 @@ class UtmDotCodes {
 				},
 				array_merge(
 					array_keys( $this->link_elements ),
-					[ 'notes' ]
+					array( 'notes' )
 				)
 			);
 
@@ -888,7 +949,7 @@ class UtmDotCodes {
 		}
 
 		$params_array = array_filter(
-			[
+			array(
 				'utm_source'   => $this->filter_link_element(
 					'utm_source',
 					$data[ self::POST_TYPE . '_source' ]
@@ -910,7 +971,7 @@ class UtmDotCodes {
 					$data[ self::POST_TYPE . '_content' ]
 				),
 				'utm_gen'      => 'utmdc',
-			]
+			)
 		);
 
 		return ( strpos( $url, '?' ) ? '&' : '?' ) . http_build_query( $params_array );
@@ -945,7 +1006,8 @@ class UtmDotCodes {
 			case 'rebrandly':
 				require_once 'shorten/class-rebrandly.php';
 				$shortener = new \UtmDotCodes\Rebrandly(
-					get_option( self::POST_TYPE . '_apikey' )
+					get_option( self::POST_TYPE . '_apikey' ),
+					get_option( self::POST_TYPE . '_rebrandly_domains_active' )
 				);
 				break;
 
@@ -1005,7 +1067,7 @@ class UtmDotCodes {
 		unset( $columns['author'] );
 
 		$columns = array_merge(
-			[
+			array(
 				'cb'              => '<input type="checkbox" />',
 				'utmdc_link'      => esc_html__( 'Link', 'utm-dot-codes' ),
 				'utmdc_source'    => esc_html__( 'Source', 'utm-dot-codes' ),
@@ -1015,7 +1077,7 @@ class UtmDotCodes {
 				'utmdc_content'   => esc_html__( 'Content', 'utm-dot-codes' ),
 				'utmdc_notes'     => esc_html__( 'Notes', 'utm-dot-codes' ),
 				'copy_utmdc_link' => esc_html__( 'Copy Links', 'utm-dot-codes' ),
-			],
+			),
 			$columns
 		);
 
@@ -1117,11 +1179,11 @@ class UtmDotCodes {
 						$sanitized_filter_value = sanitize_text_field( wp_unslash( $filter_value ) );
 
 						if ( ! empty( $sanitized_filter_value ) ) {
-							return [
+							return array(
 								'key'     => $filter_name,
 								'value'   => $sanitized_filter_value,
 								'compare' => '=',
-							];
+							);
 						}
 					},
 					$filters
@@ -1214,10 +1276,10 @@ class UtmDotCodes {
 			if ( 'on' === get_option( self::POST_TYPE . '_labels' ) ) {
 
 				$terms = get_terms(
-					[
+					array(
 						'taxonomy'   => self::POST_TYPE . '-label',
 						'hide_empty' => true,
-					]
+					)
 				);
 
 				$term_options = array_map(
@@ -1285,14 +1347,14 @@ class UtmDotCodes {
 		wp_enqueue_style(
 			'font-awesome',
 			'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
-			[],
+			array(),
 			UTMDC_VERSION,
 			'all'
 		);
 		wp_enqueue_style(
 			'utm-dot-codes',
 			UTMDC_PLUGIN_URL . 'css/utmdotcodes.min.css',
-			[ 'font-awesome' ],
+			array( 'font-awesome' ),
 			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'css/utmdotcodes.min.css' ),
 			'all'
 		);
@@ -1307,7 +1369,7 @@ class UtmDotCodes {
 		wp_enqueue_script(
 			'utm-dot-codes',
 			UTMDC_PLUGIN_URL . 'js/utmdotcodes.min.js',
-			[ 'jquery' ],
+			array( 'jquery' ),
 			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'js/utmdotcodes.min.js' ),
 			'all'
 		);
@@ -1315,9 +1377,9 @@ class UtmDotCodes {
 		wp_localize_script(
 			'utm-dot-codes',
 			'utmdcRestApi',
-			[
+			array(
 				'actionKey' => wp_create_nonce( self::REST_NONCE_LABEL ),
-			]
+			)
 		);
 	}
 
@@ -1487,10 +1549,10 @@ class UtmDotCodes {
 	 * @since 1.2.0
 	 */
 	public function check_url_response() {
-		$response = [
+		$response = array(
 			'message' => 'Could not process request.',
 			'status'  => 500,
-		];
+		);
 
 		if ( check_ajax_referer( self::REST_NONCE_LABEL, 'key', false ) ) {
 			if ( isset( $_REQUEST['action'] ) && 'utmdc_check_url_response' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) ) {
@@ -1504,9 +1566,9 @@ class UtmDotCodes {
 				$is_valid_url     = ( filter_var( $request_url, FILTER_VALIDATE_URL ) === $request_url );
 
 				if ( $is_valid_referer && $is_valid_url ) {
-					$args = [];
+					$args = array();
 					if ( $this->is_test() ) {
-						$args = [ 'sslverify' => false ];
+						$args = array( 'sslverify' => false );
 					}
 
 					$url_check = wp_remote_get( $request_url, $args );
@@ -1554,7 +1616,7 @@ class UtmDotCodes {
 	public function months_dropdown_results( $months, $post_type ) {
 
 		if ( self::POST_TYPE === $post_type ) {
-			$months = [];
+			$months = array();
 		}
 
 		return $months;
@@ -1570,32 +1632,37 @@ class UtmDotCodes {
 	public function get_social_networks() {
 		$networks = apply_filters(
 			'utmdc_social_sources',
-			[
-				'behance'        => [ 'Behance', 'fab fa-behance' ],
-				'blogger'        => [ 'Blogger', 'fab fa-blogger-b' ],
-				'digg'           => [ 'Digg', 'fab fa-digg' ],
-				'discourse'      => [ 'Discourse', 'fab fa-discourse' ],
-				'facebook'       => [ 'Facebook', 'fab fa-facebook-f' ],
-				'flickr'         => [ 'Flickr', 'fab fa-flickr' ],
-				'github'         => [ 'GitHub', 'fab fa-github' ],
-				'goodreads'      => [ 'Goodreads', 'fab fa-goodreads-g' ],
-				'hacker-news'    => [ 'Hacker News', 'fab fa-hacker-news' ],
-				'instagram'      => [ 'Instagram', 'fab fa-instagram' ],
-				'linkedin'       => [ 'LinkedIn', 'fab fa-linkedin-in' ],
-				'medium'         => [ 'Medium', 'fab fa-medium-m' ],
-				'meetup'         => [ 'Meetup', 'fab fa-meetup' ],
-				'mix'            => [ 'Mix', 'fab fa-mix' ],
-				'pinterest'      => [ 'Pinterest', 'fab fa-pinterest-p' ],
-				'reddit'         => [ 'Reddit', 'fab fa-reddit-alien' ],
-				'stack-exchange' => [ 'Stack Exchange', 'fab fa-stack-exchange' ],
-				'stack-overflow' => [ 'Stack Overflow', 'fab fa-stack-overflow' ],
-				'tumblr'         => [ 'Tumblr', 'fab fa-tumblr' ],
-				'twitter'        => [ 'Twitter', 'fab fa-twitter' ],
-				'vimeo'          => [ 'Vimeo', 'fab fa-vimeo-v' ],
-				'xing'           => [ 'Xing', 'fab fa-xing' ],
-				'yelp'           => [ 'Yelp', 'fab fa-yelp' ],
-				'youtube'        => [ 'YouTube', 'fab fa-youtube' ],
-			]
+			array(
+				'behance'        => array( 'Behance', 'fab fa-behance' ),
+				'blogger'        => array( 'Blogger', 'fab fa-blogger-b' ),
+				'digg'           => array( 'Digg', 'fab fa-digg' ),
+				'discourse'      => array( 'Discourse', 'fab fa-discourse' ),
+				'facebook'       => array( 'Facebook', 'fab fa-facebook-f' ),
+				'flickr'         => array( 'Flickr', 'fab fa-flickr' ),
+				'github'         => array( 'GitHub', 'fab fa-github' ),
+				'goodreads'      => array( 'Goodreads', 'fab fa-goodreads-g' ),
+				'hacker-news'    => array( 'Hacker News', 'fab fa-hacker-news' ),
+				'instagram'      => array( 'Instagram', 'fab fa-instagram' ),
+				'linkedin'       => array( 'LinkedIn', 'fab fa-linkedin-in' ),
+				'medium'         => array( 'Medium', 'fab fa-medium-m' ),
+				'meetup'         => array( 'Meetup', 'fab fa-meetup' ),
+				'mix'            => array( 'Mix', 'fab fa-mix' ),
+				'odnoklassniki'  => array( 'Odnoklassniki', 'fab fa-odnoklassniki' ),
+				'pinterest'      => array( 'Pinterest', 'fab fa-pinterest-p' ),
+				'reddit'         => array( 'Reddit', 'fab fa-reddit-alien' ),
+				'slack'          => array( 'Slack', 'fab fa-slack' ),
+				'stack-exchange' => array( 'Stack Exchange', 'fab fa-stack-exchange' ),
+				'stack-overflow' => array( 'Stack Overflow', 'fab fa-stack-overflow' ),
+				'tumblr'         => array( 'Tumblr', 'fab fa-tumblr' ),
+				'twitter'        => array( 'Twitter', 'fab fa-twitter' ),
+				'vimeo'          => array( 'Vimeo', 'fab fa-vimeo-v' ),
+				'vk'             => array( 'VK', 'fab fa-vk' ),
+				'weibo'          => array( 'Weibo', 'fab fa-weibo' ),
+				'whatsapp'       => array( 'WhatsApp', 'fab fa-whatsapp' ),
+				'xing'           => array( 'Xing', 'fab fa-xing' ),
+				'yelp'           => array( 'Yelp', 'fab fa-yelp' ),
+				'youtube'        => array( 'YouTube', 'fab fa-youtube' ),
+			)
 		);
 
 		ksort( $networks );
@@ -1667,15 +1734,17 @@ class UtmDotCodes {
 	/**
 	 * Retrieve error message for output based on provided error code.
 	 *
+	 * @since 1.6.0
+	 *
 	 * @param integer $error_code numeric value to convert to message.
 	 *
 	 * @return array error message elements: style & message text.
 	 */
 	public function get_error_message( $error_code ) {
-		$error_message = [
+		$error_message = array(
 			'style'   => '',
 			'message' => '',
-		];
+		);
 
 		switch ( $error_code ) {
 			/**
@@ -1684,67 +1753,102 @@ class UtmDotCodes {
 
 			// Invalid URL String.
 			case 1:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-warning',
 					'message' => esc_html__( 'Invalid URL format. Replaced with site URL. Please update as needed.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 
 			// Invalid Post ID.
 			case 2:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-error',
 					'message' => esc_html__( 'Unable to save link. Please try again, your changes were not saved.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 
 			// Shortener Object Error.
 			case 1000:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-error',
 					'message' => esc_html__( 'Invalid URL shortener config.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 
 			/**
 			 * Bitly
 			 */
 			case 100:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-error',
 					'message' => esc_html__( 'Unable to connect to Bitly API to shorten url. Please try again later.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 			case 4030:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-error',
 					'message' => esc_html__( 'Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 			case 500:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-error',
 					'message' => esc_html__( 'Bitly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 
 			/**
 			 * Rebrandly
 			 */
 			case 401:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-error',
 					'message' => esc_html__( 'Rebrandly API responded with unauthorized error. API Key is invalid or rate limit exceeded.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 			case 4031:
-				$error_message = [
+				$error_message = array(
 					'style'   => 'notice-error',
 					'message' => esc_html__( 'Rebrandly API experienced an error when shortening the link, please try again later.', 'utm-dot-codes' ),
-				];
+				);
 				break;
 		}
 
 		return apply_filters( 'utmdc_error_message', $error_message, $error_code );
+	}
+
+	/**
+	 * Retrieve updated list of domain options when requested by the user.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param mixed  $value The new value.
+	 * @param mixed  $old_value The old value.
+	 * @param string $option The option being updated.
+	 *
+	 * @return string Empty string to ensure the checkbox remains unchecked.
+	 */
+	public function pre_rebrandly_domains_update( $value, $old_value, $option ) {
+		$update_setting   = ( self::POST_TYPE . '_rebrandly_domains_update' === $option );
+		$update_requested = ( 'on' === $value );
+
+		if ( $update_setting && $update_requested ) {
+			if ( 'rebrandly' === get_option( self::POST_TYPE . '_shortener' ) ) {
+				require_once 'shorten/class-rebrandly.php';
+
+				$rebrandly = new \UtmDotCodes\Rebrandly( get_option( self::POST_TYPE . '_apikey' ) );
+				$options   = $rebrandly->get_domains();
+
+				if ( is_array( $options ) && 0 < count( $options ) ) {
+					update_option(
+						self::POST_TYPE . '_rebrandly_domains',
+						wp_json_encode( $options ),
+						false
+					);
+				}
+			}
+		}
+
+		return '';
 	}
 }

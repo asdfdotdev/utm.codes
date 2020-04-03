@@ -62,7 +62,7 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 
 		$this->assertTrue( $shortener instanceof \UtmDotCodes\Shorten );
 		$this->assertEquals( null, $shortener->get_error() );
-		$this->assertTrue( strpos( $shortener->get_response(), 'http://bit.ly/' ) !== false );
+		$this->assertTrue( strpos( $shortener->get_response(), 'https://bit.ly/' ) !== false );
 	}
 
 	/**

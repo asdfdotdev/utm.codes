@@ -1,6 +1,9 @@
-dist: trusty
+dist: xenial
 
 language: php
+
+services:
+  - mysql
 
 notifications:
   email:
@@ -18,7 +21,11 @@ cache:
 
 matrix:
   include:
-    - php: 7.4snapshot
+    - php: 7.4
+      env: WP_VERSION=nightly CODE_STYLES=phpcs
+    - php: 7.4
+      env: WP_VERSION=5.4 CODE_STYLES=phpcs
+    - php: 7.3
       env: WP_VERSION=nightly CODE_STYLES=phpcs
     - php: 7.3
       env: WP_VERSION=5.3 CODE_STYLES=phpcs
@@ -42,6 +49,8 @@ matrix:
       env: WP_VERSION=nightly PHP_UNIT=6
     - php: 5.6
       env: WP_VERSION=nightly PHP_UNIT=5
+    - php: 5.6
+      env: WP_VERSION=5.4 PHP_UNIT=5
     - php: 5.6
       env: WP_VERSION=5.3 PHP_UNIT=5
     - php: 5.6
