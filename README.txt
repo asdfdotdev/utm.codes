@@ -3,7 +3,7 @@ Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: analytics, utm codes, analytics, google analytics, campaign marketing, link generator
 Requires at least: 4.7.0
-Tested up to: 5.4
+Tested up to: 5.4.0
 Requires PHP: 5.6.0
 Stable tag: 1.7.0
 License: GPLv2
@@ -92,7 +92,7 @@ That isn't a question. But thank you.
 1. The links list provides easy access to search, filter, edit, and copy links
 2. Shorten links just by clicking the checkbox
 3. Create social links in batch just by clicking the checkbox
-4. Configure settings for link format, your favorite social networks, Bitly API key, and more
+4. Configure settings for link format, labels, link notes, your favorite social networks, and shortener
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
