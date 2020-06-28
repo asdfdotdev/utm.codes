@@ -1048,14 +1048,18 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 	 * @depends test_version_numbers_active
 	 */
 	function test_add_glance() {
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 		$glance_markup = apply_filters( 'dashboard_glance_items', array() );
-
 		$this->assertTrue(
 			in_array(
-				'<a href="javascript:;" class="utmdclink-count">0 Marketing Links</a>',
+				'<a href="http://example.org/wp-admin/edit.php?post_type=utmdclink" class="utmdclink-count">0 Marketing Links</a>',
 				$glance_markup
 			)
 		);
+
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'contributor' ) ) );
+		$glance_markup = apply_filters( 'dashboard_glance_items', array() );
+		$this->assertTrue(empty($glance_markup));
 	}
 
 	/**
