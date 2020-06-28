@@ -727,7 +727,7 @@ class UtmDotCodes {
 	public function save_post( $post_id ) {
 		$invalid_nonce  = ( isset( $_POST[ self::NONCE_LABEL ] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ self::NONCE_LABEL ] ) ), UTMDC_PLUGIN_FILE ) );
 		$doing_autosave = ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE );
-		$cannot_edit    = ( ! current_user_can( 'edit_page', $post_id ) );
+		$cannot_edit    = ( ! current_user_can( 'publish_posts', $post_id ) );
 
 		if ( $invalid_nonce || $doing_autosave || $cannot_edit ) {
 			return $post_id;
@@ -1453,16 +1453,18 @@ class UtmDotCodes {
 	 * @return array Updated array with additional widget items.
 	 */
 	public function add_glance( $glances ) {
-		$post_count  = number_format_i18n( wp_count_posts( self::POST_TYPE )->publish );
-		$post_object = get_post_type_object( self::POST_TYPE );
+		if ( current_user_can( 'publish_posts' ) ) {
+			$post_count  = number_format_i18n( wp_count_posts( self::POST_TYPE )->publish );
+			$post_object = get_post_type_object( self::POST_TYPE );
 
-		$glances[] = sprintf(
-			'<a href="%s" class="%s">%s %s</a>',
-			( current_user_can( 'edit_posts' ) ) ? admin_url( 'edit.php?post_type=' . $post_object->name ) : 'javascript:;',
-			'utmdclink-count',
-			$post_count,
-			_n( 'Marketing Link', 'Marketing Links', $post_count, 'utm-dot-codes' )
-		);
+			$glances[] = sprintf(
+				'<a href="%s" class="%s">%s %s</a>',
+				admin_url( 'edit.php?post_type=' . $post_object->name ),
+				'utmdclink-count',
+				$post_count,
+				_n( 'Marketing Link', 'Marketing Links', $post_count, 'utm-dot-codes' )
+			);
+		}
 
 		return $glances;
 	}
