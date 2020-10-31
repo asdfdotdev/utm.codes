@@ -1346,7 +1346,7 @@ class UtmDotCodes {
 	public function add_css() {
 		wp_enqueue_style(
 			'font-awesome',
-			'https://use.fontawesome.com/releases/v5.7.2/css/all.css',
+			'https://use.fontawesome.com/releases/v5.15.0/css/all.css',
 			array(),
 			UTMDC_VERSION,
 			'all'
