@@ -1,6 +1,6 @@
 <p align="center" style="padding-bottom:20px"><img src="img/utm-dot-codes-logo.png" width="400"></p><p>&nbsp;</p>
 
-[![Build Status](https://travis-ci.org/asdfdotdev/utm.codes.svg?branch=main)](https://travis-ci.org/asdfdotdev/utm.codes) [![codecov](https://codecov.io/gh/asdfdotdev/utm.codes/branch/main/graph/badge.svg)](https://codecov.io/gh/asdfdotdev/utm.codes) [![RIPS CodeRisk](https://coderisk.com/wp/plugin/utm-dot-codes/badge "RIPS CodeRisk")](https://coderisk.com/wp/plugin/utm-dot-codes)
+[![Build Status](https://travis-ci.org/asdfdotdev/utm.codes.svg?branch=main)](https://travis-ci.org/asdfdotdev/utm.codes) [![codecov](https://codecov.io/gh/asdfdotdev/utm.codes/branch/main/graph/badge.svg)](https://codecov.io/gh/asdfdotdev/utm.codes)
 
 Welcome to the developer repository for utm.codes, a WordPress plugin that makes creating analytics friendly marketing links quick and easy.
 

@@ -65,8 +65,8 @@
 				background: $white;
 				border: solid 2px $wp_blue;
 
-				&::before,
-				&::after {
+				&:before,
+				&:after {
 					right: 100%;
 					top: 50%;
 					border: solid transparent;
@@ -77,14 +77,14 @@
 					pointer-events: none;
 				}
 
-				&::before {
+				&:before {
 					border-color: transparent;
 					border-right-color: $wp_blue;
 					border-width: 13px;
 					margin-top: -13px;
 				}
 
-				&::after {
+				&:after {
 					border-color: transparent;
 					border-right-color: $white;
 					border-width: 10px;

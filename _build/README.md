@@ -4,7 +4,7 @@ utm.codes uses webpack to combine, compress, and optimize static resources.
 
 ## Install
 
-From the project root directory use npm to install the required node modules. 
+From the project root directory use npm to install the required node modules.
 
 ```
 $ npm install
@@ -26,10 +26,4 @@ $ npm run COMMAND_NAME
 
 **development** - alias for *dev*
 
-**dev-dashboard** - runs dev command within webpack dashboard for a cooler dev experience
-
-**development-dashboard** - alias for *dev-dashboard*
-
 **delete-maps** - deletes files ending in `.map`. Used by production build to remove js sourcemaps
-
-**version-check** - outputs utm.codes build version from package.json along with the output for `$ node -v` and `$ npm -v` for easy version checking.

@@ -1031,16 +1031,16 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 
 		$this->assertTrue( array_key_exists( 'utm-dot-codes', $wp_scripts->registered ) );
 		$this->assertEquals( $wp_scripts->registered['utm-dot-codes']->deps[0], 'jquery' );
-		$this->assertEquals( $wp_scripts->registered['utm-dot-codes']->src, UTMDC_PLUGIN_URL . 'js/utmdotcodes.min.js' );
+		$this->assertEquals( $wp_scripts->registered['utm-dot-codes']->src, UTMDC_PLUGIN_URL . 'js/utmdotcodes.js' );
 		$this->assertTrue( in_array( 'utm-dot-codes', $wp_scripts->queue ) );
 
 		$this->assertTrue( array_key_exists( 'font-awesome', $wp_styles->registered ) );
-		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://use.fontawesome.com/releases/v5.7.2/css/all.css' );
+		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://use.fontawesome.com/releases/v5.15.0/css/all.css' );
 		$this->assertTrue( in_array( 'font-awesome', $wp_styles->queue ) );
 
 		$this->assertTrue( array_key_exists( 'utm-dot-codes', $wp_styles->registered ) );
 		$this->assertEquals( $wp_styles->registered['utm-dot-codes']->deps[0], 'font-awesome' );
-		$this->assertEquals( $wp_styles->registered['utm-dot-codes']->src, UTMDC_PLUGIN_URL . 'css/utmdotcodes.min.css' );
+		$this->assertEquals( $wp_styles->registered['utm-dot-codes']->src, UTMDC_PLUGIN_URL . 'css/utmdotcodes.css' );
 		$this->assertTrue( in_array( 'utm-dot-codes', $wp_styles->queue ) );
 	}
 
