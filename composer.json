@@ -1,6 +1,6 @@
 {
     "name": "asdfdotdev/utm.codes",
-    "version": "1.7.3",
+    "version": "1.7.4",
     "description": "A plugin that makes building analytics friendly links quick and easy.",
     "type": "wordpress-plugin",
     "require-dev": {
