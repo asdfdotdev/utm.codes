@@ -23,7 +23,7 @@
   },
   "homepage": "https://utm.codes",
   "devDependencies": {
-    "@flickerbox/build": "^20.10.1"
+    "@flickerbox/build": "^20.11.1"
   },
   "dependencies": {},
   "browserslist": [
