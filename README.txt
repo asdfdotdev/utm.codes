@@ -3,9 +3,9 @@ Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: analytics, utm codes, analytics, google analytics, campaign marketing, link generator
 Requires at least: 4.7.0
-Tested up to: 5.5.3
+Tested up to: 5.6
 Requires PHP: 5.6.0
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,7 +55,7 @@ utm.codes is built using development code not included in the WordPress.org down
 
 All source code associated with utm.codes is open source, free to use for any purpose, and released under the GPL v2.0 license. Development code, including instructions for running both the build and tests, is available at the [utm.codes GitHub repository](https://github.com/asdfdotdev/utm.codes).
 
-You can also [browse our build history at travis-ci.org](https://travis-ci.org/asdfdotdev/utm.codes).
+You can also [browse our build history at GitHub](https://github.com/asdfdotdev/utm.codes/actions).
 
 == Frequently Asked Questions ==
 
@@ -96,6 +96,12 @@ That isn't a question. But thank you.
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.7.4 =
+
+- Supports WordPress v5.6
+- Migrate from Travis-CI to GitHub Actions
+- Update dependencies
 
 = 1.7.3 =
 

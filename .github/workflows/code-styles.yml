@@ -1,0 +1,60 @@
+name: Code Styles
+
+on:
+  push:
+    branches:
+      - main
+      - development
+  pull_request:
+    branches:
+    types: [closed]
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  code-styles:
+    name: WordPress ${{ matrix.wordpress-versions }} - PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        php-versions: [ '7.4' ]
+        wordpress-versions: [ '5.6' ]
+        operating-system: [ ubuntu-20.04 ]
+
+    steps:
+      - name: Setup PHP
+        # Commit hash for v2.9.0: https://github.com/shivammathur/setup-php/releases/tag/2.9.0
+        uses: shivammathur/setup-php@50980172517227701a2db688415a86573987b6df
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+
+      - name: Checkout utm.codes
+        uses: actions/checkout@v2
+
+      - name: Setup PHPCS
+        run: |
+          composer install
+          ./vendor/bin/phpcs --config-set ignore_warnings_on_exit 1
+          ./vendor/bin/phpcs --config-set ignore_errors_on_exit 1
+          ./vendor/bin/phpcs --config-set show_progress 1
+          ./vendor/bin/phpcs --config-set colors 1
+
+      - name: Log Debug Information
+        run: |
+          echo "$GITHUB_REF"
+          echo "$GITHUB_EVENT_NAME"
+          php --version
+          mysql --version
+          ./vendor/bin/phpcs --version
+          ./vendor/bin/phpcs -i
+
+      - name: PHP Compatibility
+        run: |
+          ./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.6- ./index.php ./utm-dot-codes.php ./classes
+
+      - name: WordPress Code Standards
+        run: |
+          ./vendor/bin/phpcs --standard=WordPress --report=summary ./index.php ./utm-dot-codes.php ./classes
