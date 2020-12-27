@@ -8,7 +8,6 @@ module.exports = require('@flickerbox/build/webpack.config')
   .plugin('notifier')
     .use(require('webpack-notifier'), [{
       title: 'utm.codes Build',
-      contentImage: null,
       alwaysNotify: true,
       skipFirstNotification: false,
       excludeWarnings: false,
