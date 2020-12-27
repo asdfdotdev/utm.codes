@@ -3,7 +3,7 @@
  * Utm.codes - A plugin that makes building analytics friendly links quick and easy.
  *
  * @package UtmDotCodes
- * @copyright 2018-2020 Chris Carlevato (https://asdf.dev)
+ * @copyright 2018-2021 Chris Carlevato (https://asdf.dev)
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  * @link https://utm.codes
  *
