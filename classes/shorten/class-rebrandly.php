@@ -169,8 +169,8 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 
 						if ( $is_active && $dns_verified ) {
 							return array(
-								'id'        => $domain->id,
-								'full_name' => $domain->fullName,
+								'id'        => sanitize_text_field( wp_unslash( $domain->id ) ),
+								'full_name' => sanitize_text_field( wp_unslash( $domain->fullName ) ),
 							);
 						}
 					},
