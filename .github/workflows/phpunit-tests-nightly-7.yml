@@ -1,4 +1,4 @@
-name: PHPUnit Tests (7.x)
+name: PHPUnit Tests Nightly (7.x)
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '7.4', '7.3' ]
-        wordpress-versions: [ '5.8', '5.7', '5.6', '5.5' ]
+        wordpress-versions: [ 'nightly' ]
         operating-system: [ ubuntu-18.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}

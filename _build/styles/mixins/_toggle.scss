@@ -1,7 +1,9 @@
+@use "sass:math";
+
 @mixin css-toggle($off-color: #444444, $on-color: #0073aa, $button-color: #ffffff, $text-color: #ffffff, $width: 140px, $height: 36px) {
 
 	$shadow: 0 3px 3px rgba(black, 0.4);
-	$switch-width: $width/2;
+	$switch-width: math.div($width, 2);
 	$offset: 2px;
 	$transition: cubic-bezier(0, 1, 0.5, 1);
 
@@ -75,9 +77,9 @@
 
 			&:before {
 				color: $text-color;
-				left: $width/2;
+				left: math.div($width, 2);
 				line-height: $height;
-				width: $width/2;
+				width: math.div($width, 2);
 				content: attr(data-on);
 				top: 0;
 			}
