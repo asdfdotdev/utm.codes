@@ -11,16 +11,6 @@
 class TestUtmDotCodesPermissions extends WP_UnitTestCase
 {
 
-	public function setUp()
-	{
-		parent::setUp();
-	}
-
-	public function tearDown()
-	{
-		parent::tearDown();
-	}
-
 	/**
 	 * Confirm our plugin knows we're testing
 	 */

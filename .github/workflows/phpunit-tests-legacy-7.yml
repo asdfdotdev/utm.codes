@@ -42,8 +42,8 @@ jobs:
         run: sudo /etc/init.d/mysql start
 
       - name: Setup PHP
-        # Commit hash for v2.9.0: https://github.com/shivammathur/setup-php/releases/tag/2.9.0
-        uses: shivammathur/setup-php@50980172517227701a2db688415a86573987b6df
+        # Commit hash for v2.17.0: https://github.com/shivammathur/setup-php/releases/tag/2.17.0
+        uses: shivammathur/setup-php@7854a0cae7fa7a5f3feac66d27bae2dc42d1067a
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, mysqli

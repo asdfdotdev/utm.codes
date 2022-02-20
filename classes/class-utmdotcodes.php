@@ -59,7 +59,7 @@ class UtmDotCodes {
 		);
 
 		$is_post_list  = ( 'edit.php' === $pagenow );
-		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_DEFAULT ) );
 
 		if ( ( is_admin() && $is_post_list && $is_utmdc_post ) || $this->is_test() ) {
 			add_action( 'restrict_manage_posts', array( &$this, 'filter_ui' ), 5, 1 );
@@ -974,7 +974,7 @@ class UtmDotCodes {
 			)
 		);
 
-		return ( strpos( $url, '?' ) ? '&' : '?' ) . http_build_query( $params_array );
+		return ( strpos( $this->null_string_check( $url ), '?' ) ? '&' : '?' ) . http_build_query( $params_array );
 	}
 
 	/**
@@ -1175,7 +1175,7 @@ class UtmDotCodes {
 				array_map(
 					function( $filter ) {
 						$filter_name            = self::POST_TYPE . '_' . $filter;
-						$filter_value           = rawurldecode( filter_input( INPUT_GET, $filter_name, FILTER_SANITIZE_STRING ) );
+						$filter_value           = rawurldecode( $this->null_string_check( filter_input( INPUT_GET, $filter_name, FILTER_DEFAULT ) ) );
 						$sanitized_filter_value = sanitize_text_field( wp_unslash( $filter_value ) );
 
 						if ( ! empty( $sanitized_filter_value ) ) {
@@ -1240,7 +1240,7 @@ class UtmDotCodes {
 					$options = array_map(
 						function ( $value ) use ( $key ) {
 							$key_value        = '';
-							$active_key_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $key, FILTER_SANITIZE_STRING );
+							$active_key_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $key, FILTER_DEFAULT );
 
 							if ( isset( $active_key_value ) ) {
 								$key_value = sanitize_text_field( wp_unslash( $active_key_value ) );
@@ -1285,7 +1285,7 @@ class UtmDotCodes {
 				$term_options = array_map(
 					function( $key, $value ) {
 						$label              = '';
-						$active_label_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $label, FILTER_SANITIZE_STRING );
+						$active_label_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $label, FILTER_DEFAULT );
 
 						if ( isset( $active_label_value ) ) {
 							$label = sanitize_text_field( wp_unslash( $active_label_value ) );
@@ -1722,7 +1722,7 @@ class UtmDotCodes {
 		global $pagenow;
 
 		$is_new_post_page = ( 'post-new.php' === $pagenow );
-		$is_utmdc_post    = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+		$is_utmdc_post    = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_DEFAULT ) );
 
 		if ( $is_new_post_page && $is_utmdc_post ) {
 			if ( 'Publish' === $text ) {
@@ -1852,5 +1852,19 @@ class UtmDotCodes {
 		}
 
 		return '';
+	}
+
+	/**
+	 * Prevents null values from being passed to methods typed for string.
+	 *
+	 * @param $string
+	 * @return mixed|string
+	 */
+	public function null_string_check($string) {
+		if ( !isset($string) ) {
+			return '';
+		}
+
+		return $string;
 	}
 }
