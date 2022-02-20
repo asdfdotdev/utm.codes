@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '7.4' ]
-        wordpress-versions: [ '5.7' ]
+        wordpress-versions: [ '5.9' ]
         operating-system: [ ubuntu-20.04 ]
 
     steps:
