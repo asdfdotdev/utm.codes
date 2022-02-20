@@ -34,7 +34,7 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - Supports adding additional custom parameters to links for improved versatility
 - Multi-user access within WordPress to share creation and management responsibilities
 - See your current link count in the admin dashboard "At a Glance"
-- Works with PHP 5.6, 7.0, 7.1, 7.2, 7.3, and 7.4
+- Works with PHP 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, and 8.1
 - 100% Free and Open Source
 
 = Installation =
