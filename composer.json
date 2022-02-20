@@ -8,7 +8,8 @@
         "wp-coding-standards/wpcs": "2.3",
         "phpcompatibility/php-compatibility": "^9.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "yoast/phpunit-polyfills": "^1.0"
     },
     "license": "GPL-2.0-only",
     "authors": [
@@ -18,5 +19,10 @@
         }
     ],
     "minimum-stability": "stable",
-    "keywords": ["WordPress", "plugin", "utm codes", "analytics", "link builder"]
+    "keywords": ["WordPress", "plugin", "utm codes", "analytics", "link builder"],
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
 }
