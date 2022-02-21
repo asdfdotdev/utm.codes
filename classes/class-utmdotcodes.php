@@ -331,7 +331,7 @@ class UtmDotCodes {
 						'<p><label for="%1$s_%2$s" class="selectit"><input type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%3$s</label></p>',
 						self::POST_TYPE,
 						'batch',
-						esc_html__( 'Create Social Links in Batch', 'utm-dot-codes' )
+						__( 'Create Social Links in Batch', 'utm-dot-codes' )
 					)
 				);
 			}
@@ -340,7 +340,7 @@ class UtmDotCodes {
 		if ( $this->is_test() ) {
 			return $contents;
 		} else {
-			echo implode( PHP_EOL, $contents );
+			echo esc_html( implode( PHP_EOL, $contents ) );
 		}
 	}
 
@@ -1310,7 +1310,7 @@ class UtmDotCodes {
 				$markup[] = sprintf(
 					'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
 					self::POST_TYPE . '-label',
-					esc_html__( 'Any Label', 'utm-dot-codes' ),
+					__( 'Any Label', 'utm-dot-codes' ),
 					implode( PHP_EOL, $term_options )
 				);
 			}
@@ -1318,7 +1318,7 @@ class UtmDotCodes {
 			if ( $this->is_test() ) {
 				return $markup;
 			} else {
-				echo implode( PHP_EOL, $markup );
+				echo esc_html( implode( PHP_EOL, $markup ) );
 			}
 		}
 
@@ -1855,13 +1855,13 @@ class UtmDotCodes {
 	}
 
 	/**
-	 * Prevents null values from being passed to methods typed for string.
+	 * Converts null values to empty string. Utility method for PHP 8.1+ compatibility.
 	 *
-	 * @param $string
-	 * @return mixed|string
+	 * @param string $string Value to check.
+	 * @return string The provided value or an empty string if value is not set.
 	 */
-	public function null_string_check($string) {
-		if ( !isset($string) ) {
+	public function null_string_check( $string ) {
+		if ( ! isset( $string ) ) {
 			return '';
 		}
 
