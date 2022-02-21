@@ -1,5 +1,6 @@
 <p align="center" style="padding-bottom:20px"><img src="img/utm-dot-codes-logo.png" width="400"></p><p>&nbsp;</p>
 
+![PHPUnit Tests (8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(8.x)/badge.svg)
 ![PHPUnit Tests (7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(7.x)/badge.svg)
 ![PHPUnit Tests (Legacy 7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%207.x)/badge.svg)
 ![PHPUnit Tests (Legacy 5.6)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%205.6)/badge.svg)
@@ -13,12 +14,12 @@ To download just the plugin (without the developer extras in this repo) check ou
 
 ### Compatibility
 
-[![WordPress Compatibility](https://img.shields.io/badge/WordPress-4.7_to_5.8-blue.svg?logo=wordpress)](https://wordpress.org/) [![PHP Compatibility](https://img.shields.io/badge/PHP-5.6_to_7.4-%238892BF.svg?logo=php)](https://php.net/)
+[![WordPress Compatibility](https://img.shields.io/badge/WordPress-4.7_to_5.9-blue.svg?logo=wordpress)](https://wordpress.org/) [![PHP Compatibility](https://img.shields.io/badge/PHP-5.6_to_8.1-%238892BF.svg?logo=php)](https://php.net/)
 
 utm.codes is developed for, and tested with, a variety of recent platform versions, including:
 
-- WordPress 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, and 5.8
-- PHP 5.6, 7.0, 7.1, 7.2, 7.3, and 7.4
+- WordPress 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, and 5.9
+- PHP 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, and 8.1
 
 ## Branches
 
@@ -43,7 +44,7 @@ utm.codes is developed for, and tested with, a variety of recent platform versio
 └── languages
 ```
 
-- **_build** - Static resource build files used to compile our javascript and stylesheet files
+- **_build** - Static resource build files used to compile our javascript and stylesheet
 - **_test** - PHPUnit unit, integration, and ajax test resources
 - **classes** - Core classes used by our plugin
 - **css** - Compiled admin stylesheet used by our plugin

@@ -3,5 +3,6 @@
 **/node_modules
 **/config.inc.local.php
 **/_test/build/**/*
+**/_test/.phpunit.result.cache
 **/*.map
 /vendor/

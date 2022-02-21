@@ -2,6 +2,10 @@
 
 utm.codes uses webpack to combine, compress, and optimize static resources.
 
+## Setup
+
+For best compatibility please use the version of node included in the .nvmrc file.
+
 ## Install
 
 From the project root directory use npm to install the required node modules.

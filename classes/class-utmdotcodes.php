@@ -59,7 +59,7 @@ class UtmDotCodes {
 		);
 
 		$is_post_list  = ( 'edit.php' === $pagenow );
-		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_DEFAULT ) );
 
 		if ( ( is_admin() && $is_post_list && $is_utmdc_post ) || $this->is_test() ) {
 			add_action( 'restrict_manage_posts', array( &$this, 'filter_ui' ), 5, 1 );
@@ -331,7 +331,7 @@ class UtmDotCodes {
 						'<p><label for="%1$s_%2$s" class="selectit"><input type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%3$s</label></p>',
 						self::POST_TYPE,
 						'batch',
-						esc_html__( 'Create Social Links in Batch', 'utm-dot-codes' )
+						__( 'Create Social Links in Batch', 'utm-dot-codes' )
 					)
 				);
 			}
@@ -340,7 +340,7 @@ class UtmDotCodes {
 		if ( $this->is_test() ) {
 			return $contents;
 		} else {
-			echo implode( PHP_EOL, $contents );
+			echo esc_html( implode( PHP_EOL, $contents ) );
 		}
 	}
 
@@ -974,7 +974,7 @@ class UtmDotCodes {
 			)
 		);
 
-		return ( strpos( $url, '?' ) ? '&' : '?' ) . http_build_query( $params_array );
+		return ( strpos( $this->null_string_check( $url ), '?' ) ? '&' : '?' ) . http_build_query( $params_array );
 	}
 
 	/**
@@ -1175,7 +1175,7 @@ class UtmDotCodes {
 				array_map(
 					function( $filter ) {
 						$filter_name            = self::POST_TYPE . '_' . $filter;
-						$filter_value           = rawurldecode( filter_input( INPUT_GET, $filter_name, FILTER_SANITIZE_STRING ) );
+						$filter_value           = rawurldecode( $this->null_string_check( filter_input( INPUT_GET, $filter_name, FILTER_DEFAULT ) ) );
 						$sanitized_filter_value = sanitize_text_field( wp_unslash( $filter_value ) );
 
 						if ( ! empty( $sanitized_filter_value ) ) {
@@ -1240,7 +1240,7 @@ class UtmDotCodes {
 					$options = array_map(
 						function ( $value ) use ( $key ) {
 							$key_value        = '';
-							$active_key_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $key, FILTER_SANITIZE_STRING );
+							$active_key_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $key, FILTER_DEFAULT );
 
 							if ( isset( $active_key_value ) ) {
 								$key_value = sanitize_text_field( wp_unslash( $active_key_value ) );
@@ -1285,7 +1285,7 @@ class UtmDotCodes {
 				$term_options = array_map(
 					function( $key, $value ) {
 						$label              = '';
-						$active_label_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $label, FILTER_SANITIZE_STRING );
+						$active_label_value = filter_input( INPUT_GET, self::POST_TYPE . '_' . $label, FILTER_DEFAULT );
 
 						if ( isset( $active_label_value ) ) {
 							$label = sanitize_text_field( wp_unslash( $active_label_value ) );
@@ -1310,7 +1310,7 @@ class UtmDotCodes {
 				$markup[] = sprintf(
 					'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
 					self::POST_TYPE . '-label',
-					esc_html__( 'Any Label', 'utm-dot-codes' ),
+					__( 'Any Label', 'utm-dot-codes' ),
 					implode( PHP_EOL, $term_options )
 				);
 			}
@@ -1318,7 +1318,7 @@ class UtmDotCodes {
 			if ( $this->is_test() ) {
 				return $markup;
 			} else {
-				echo implode( PHP_EOL, $markup );
+				echo esc_html( implode( PHP_EOL, $markup ) );
 			}
 		}
 
@@ -1722,7 +1722,7 @@ class UtmDotCodes {
 		global $pagenow;
 
 		$is_new_post_page = ( 'post-new.php' === $pagenow );
-		$is_utmdc_post    = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) );
+		$is_utmdc_post    = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_DEFAULT ) );
 
 		if ( $is_new_post_page && $is_utmdc_post ) {
 			if ( 'Publish' === $text ) {
@@ -1852,5 +1852,19 @@ class UtmDotCodes {
 		}
 
 		return '';
+	}
+
+	/**
+	 * Converts null values to empty string. Utility method for PHP 8.1+ compatibility.
+	 *
+	 * @param string $string Value to check.
+	 * @return string The provided value or an empty string if value is not set.
+	 */
+	public function null_string_check( $string ) {
+		if ( ! isset( $string ) ) {
+			return '';
+		}
+
+		return $string;
 	}
 }

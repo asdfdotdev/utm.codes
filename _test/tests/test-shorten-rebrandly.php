@@ -10,14 +10,6 @@
  */
 class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-	}
-
 	/**
 	 * Confirm our plugin knows we're testing
 	 */
@@ -51,6 +43,8 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-rebrandly.php';
 
+		$plugin = new UtmDotCodes();
+
 		$shortener = new \UtmDotCodes\Rebrandly(
 			getenv( 'UTMDC_REBRANDLY_API' )
 		);
@@ -62,7 +56,7 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 
 		$this->assertTrue( $shortener instanceof \UtmDotCodes\Shorten );
 		$this->assertEquals( null, $shortener->get_error() );
-		$this->assertTrue( strpos( $shortener->get_response(), 'https://rebrand.ly/' ) !== false );
+		$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'https://rebrand.ly/' ) !== false );
 	}
 
 	/**
@@ -73,6 +67,8 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 	function test_rebrandly_request_no_api_key() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-rebrandly.php';
+
+		$plugin = new UtmDotCodes();
 
 		$shortener = new \UtmDotCodes\Rebrandly(
 			'this_wont_work'
@@ -85,7 +81,7 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 
 		$this->assertTrue( $shortener instanceof \UtmDotCodes\Shorten );
 		$this->assertEquals( 401, $shortener->get_error() );
-		$this->assertTrue( strpos( $shortener->get_response(), 'https://rebrand.ly/' ) === false );
+		$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'https://rebrand.ly/' ) === false );
 	}
 
 	/**
@@ -96,6 +92,8 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 	function test_rebrandly_request_no_link() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-rebrandly.php';
+
+		$plugin = new UtmDotCodes();
 
 		$shortener = new \UtmDotCodes\Rebrandly(
 			getenv( 'UTMDC_REBRANDLY_API' )
@@ -108,7 +106,7 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 
 		$this->assertTrue( $shortener instanceof \UtmDotCodes\Shorten );
 		$this->assertEquals( 4031, $shortener->get_error() );
-		$this->assertTrue( strpos( $shortener->get_response(), 'https://rebrand.ly/' ) === false );
+		$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'https://rebrand.ly/' ) === false );
 	}
 
 	/**

@@ -17,11 +17,16 @@ The following will help get you up and running PHPUnit tests for the utm.codes p
 
 ### PHPUnit Tests
 
-PHPUnit tests support PHPUnit 5.7 (for PHP 5.6), PHPUnit 6.5 (for PHP 7.0, 7.1, and 7.2), and PHPUnit 7.5 (for PHP 7.3, and 7.4).
+PHPUnit tests support
+
+- PHPUnit 5 (for PHP 5.6)
+- PHPUnit 6 (for PHP 7.0, 7.1, 7.2)
+- PHPUnit 7 (for PHP 7.3, 7.4)
+- PHPUnit 9 (for PHP 8.0, 8.1)
 
 ### PHP Code Sniffer
 
-PHP Code Sniffer v3.5+, and WordPress coding standards v2.2 are recommended.
+PHP Code Sniffer v3.6+, and WordPress coding standards v2.3 are recommended.
 
 ## Initial Setup
 
@@ -67,7 +72,7 @@ PHPUnit 7.5.20 by Sebastian Bergmann and contributors.
 ................................................................. 65 / 66 ( 98%)
 .                                                                 66 / 66 (100%)
 
-Time: 23.5 seconds, Memory: 42.00 MB
+Time: 16.71 seconds, Memory: 48.00 MB
 
 OK (66 tests, 596 assertions)
 
@@ -104,6 +109,8 @@ From the project root running the following command will test utm.codes for comp
 ./vendor/bin/phpcs --standard=PHPCompatibility -p --runtime-set testVersion  5.6- --report=summary ./index.php ./utm-dot-codes.php ./classes
 ```
 
-## Travis Build
+## GitHub Actions
 
-All of these tests are [included in our Travis CI build](https://travis-ci.org/asdfdotdev/utm.codes) where you can browse the test history and results.
+All of these tests are [run from our GitHub repo](https://github.com/asdfdotdev/utm.codes/actions) where you can browse the test history and results.
+
+An even older history is [available at Travis CI](https://travis-ci.org/github/asdfdotdev/utm.codes/builds).

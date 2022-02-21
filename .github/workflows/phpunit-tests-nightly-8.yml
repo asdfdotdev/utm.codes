@@ -1,4 +1,4 @@
-name: PHPUnit Tests Nightly (Legacy 5.6)
+name: PHPUnit Tests Nightly (8.x)
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     services:
       mysql-service:
-        image: mysql:5.6
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -29,9 +29,9 @@ jobs:
           --health-retries=3
     strategy:
       matrix:
-        php-versions: [ '5.6' ]
+        php-versions: [ '8.1' ]
         wordpress-versions: [ 'nightly' ]
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-20.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
@@ -64,7 +64,7 @@ jobs:
 
       - name: Install PHPUnit
         run: |
-          composer require phpunit/phpunit:^5 --update-with-dependencies
+          composer require phpunit/phpunit:^9.5 --update-with-dependencies
 
       - name: Install WordPress
         run: |

@@ -10,18 +10,13 @@
  */
 class TestUtmDotCodesAjax extends WP_Ajax_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-	}
-
 	/**
 	 * Confirm request for a known valid url returns 200
 	 */
 	function test_check_url_response_valid() {
+		// Deprecation warnings break response processing.
+		error_reporting(0);
+
 		$this->_setRole( 'administrator' );
 
 		$_POST['url'] = 'https://utm.codes';

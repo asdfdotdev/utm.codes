@@ -10,14 +10,6 @@
  */
 class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-	}
-
 	/**
 	 * Confirm our plugin knows we're testing.
 	 */
@@ -51,6 +43,8 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-bitly.php';
 
+		$plugin = new UtmDotCodes();
+
 		$shortener = new \UtmDotCodes\Bitly(
 			getenv( 'UTMDC_BITLY_API' )
 		);
@@ -62,7 +56,7 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 
 		$this->assertTrue( $shortener instanceof \UtmDotCodes\Shorten );
 		$this->assertEquals( null, $shortener->get_error() );
-		$this->assertTrue( strpos( $shortener->get_response(), 'https://bit.ly/' ) !== false );
+		$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'https://bit.ly/' ) !== false );
 	}
 
 	/**
@@ -73,6 +67,8 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 	function test_bitly_request_no_api_key() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-bitly.php';
+
+		$plugin = new UtmDotCodes();
 
 		$shortener = new \UtmDotCodes\Bitly(
 			'this_wont_work'
@@ -85,7 +81,7 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 
 		$this->assertTrue( $shortener instanceof \UtmDotCodes\Shorten );
 		$this->assertEquals( 4030, $shortener->get_error() );
-		$this->assertTrue( strpos( $shortener->get_response(), 'http://bit.ly/' ) === false );
+		$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'http://bit.ly/' ) === false );
 	}
 
 	/**
@@ -96,6 +92,8 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 	function test_bitly_request_no_link() {
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/interface.php';
 		require_once getenv( 'UTMDC_PLUGIN_DIR' ) . '/classes/shorten/class-bitly.php';
+
+		$plugin = new UtmDotCodes();
 
 		$shortener = new \UtmDotCodes\Bitly(
 			getenv( 'UTMDC_BITLY_API' )
@@ -108,7 +106,7 @@ class TestUtmDotCodesShortenBitly extends WP_UnitTestCase {
 
 		$this->assertTrue( $shortener instanceof \UtmDotCodes\Shorten );
 		$this->assertEquals( 500, $shortener->get_error() );
-		$this->assertTrue( strpos( $shortener->get_response(), 'http://bit.ly/' ) === false );
+		$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'http://bit.ly/' ) === false );
 	}
 
 }
