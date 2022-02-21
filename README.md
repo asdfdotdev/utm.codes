@@ -44,7 +44,7 @@ utm.codes is developed for, and tested with, a variety of recent platform versio
 └── languages
 ```
 
-- **_build** - Static resource build files used to compile our javascript and stylesheet files
+- **_build** - Static resource build files used to compile our javascript and stylesheet
 - **_test** - PHPUnit unit, integration, and ajax test resources
 - **classes** - Core classes used by our plugin
 - **css** - Compiled admin stylesheet used by our plugin
