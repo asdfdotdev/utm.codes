@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2.
 msgid ""
 msgstr ""
-"Project-Id-Version: utm.codes 1.8.0\n"
+"Project-Id-Version: utm.codes 1.8.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/_utm-dot-codes\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-02-20T14:45:34+00:00\n"
+"POT-Creation-Date: 2022-02-23T20:31:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: utm-dot-codes\n"
@@ -191,8 +191,8 @@ msgid "Notes"
 msgstr ""
 
 #: classes/class-utmdotcodes.php:334
-#: _test/tests/test-integration.php:725
-#: _test/tests/test-integration.php:789
+#: _test/tests/test-integration.php:717
+#: _test/tests/test-integration.php:781
 msgid "Create Social Links in Batch"
 msgstr ""
 
@@ -315,14 +315,14 @@ msgid "Adding your own custom link shortener is easy."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:707
-#: _test/tests/test-unit.php:366
-#: _test/tests/test-unit.php:383
+#: _test/tests/test-unit.php:358
+#: _test/tests/test-unit.php:375
 msgid "Settings"
 msgstr ""
 
 #: classes/class-utmdotcodes.php:711
-#: _test/tests/test-unit.php:370
-#: _test/tests/test-unit.php:387
+#: _test/tests/test-unit.php:362
+#: _test/tests/test-unit.php:379
 msgid "Code"
 msgstr ""
 
@@ -404,42 +404,42 @@ msgid "Save"
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1760
-#: _test/tests/test-unit.php:262
+#: _test/tests/test-unit.php:254
 msgid "Invalid URL format. Replaced with site URL. Please update as needed."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1768
-#: _test/tests/test-unit.php:274
+#: _test/tests/test-unit.php:266
 msgid "Unable to save link. Please try again, your changes were not saved."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1776
-#: _test/tests/test-unit.php:286
+#: _test/tests/test-unit.php:278
 msgid "Invalid URL shortener config."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1786
-#: _test/tests/test-unit.php:298
+#: _test/tests/test-unit.php:290
 msgid "Unable to connect to Bitly API to shorten url. Please try again later."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1792
-#: _test/tests/test-unit.php:310
+#: _test/tests/test-unit.php:302
 msgid "Bitly API responded with unauthorized error. API Key is invalid or rate limit exceeded."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1798
-#: _test/tests/test-unit.php:322
+#: _test/tests/test-unit.php:314
 msgid "Bitly API experienced an error when shortening the link, please try again later."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1808
-#: _test/tests/test-unit.php:334
+#: _test/tests/test-unit.php:326
 msgid "Rebrandly API responded with unauthorized error. API Key is invalid or rate limit exceeded."
 msgstr ""
 
 #: classes/class-utmdotcodes.php:1814
-#: _test/tests/test-unit.php:346
+#: _test/tests/test-unit.php:338
 msgid "Rebrandly API experienced an error when shortening the link, please try again later."
 msgstr ""
 

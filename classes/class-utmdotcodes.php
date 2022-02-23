@@ -331,7 +331,7 @@ class UtmDotCodes {
 						'<p><label for="%1$s_%2$s" class="selectit"><input type="checkbox" name="%1$s_%2$s" id="%1$s_%2$s">%3$s</label></p>',
 						self::POST_TYPE,
 						'batch',
-						__( 'Create Social Links in Batch', 'utm-dot-codes' )
+						esc_html__( 'Create Social Links in Batch', 'utm-dot-codes' )
 					)
 				);
 			}
@@ -340,7 +340,7 @@ class UtmDotCodes {
 		if ( $this->is_test() ) {
 			return $contents;
 		} else {
-			echo esc_html( implode( PHP_EOL, $contents ) );
+			echo implode( PHP_EOL, $contents );
 		}
 	}
 
@@ -1310,7 +1310,7 @@ class UtmDotCodes {
 				$markup[] = sprintf(
 					'<select id="filter-by-%1$s" name="%1$s"><option value="">%2$s</option>%3$s</select>',
 					self::POST_TYPE . '-label',
-					__( 'Any Label', 'utm-dot-codes' ),
+					esc_html__( 'Any Label', 'utm-dot-codes' ),
 					implode( PHP_EOL, $term_options )
 				);
 			}
@@ -1318,7 +1318,7 @@ class UtmDotCodes {
 			if ( $this->is_test() ) {
 				return $markup;
 			} else {
-				echo esc_html( implode( PHP_EOL, $markup ) );
+				echo implode( PHP_EOL, $markup );
 			}
 		}
 
