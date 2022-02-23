@@ -11,7 +11,7 @@
  * Plugin Name: utm.codes
  * Plugin URI: https://utm.codes
  * Description: A plugin that makes building analytics friendly links quick and easy.
- * Version: 1.8.0
+ * Version: 1.8.1
  * Author: Chris Carlevato
  * Author URI: https://asdf.dev
  * License: GPL v2
@@ -26,7 +26,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	die( '-1' );
 }
 
-define( 'UTMDC_VERSION', '1.8.0' );
+define( 'UTMDC_VERSION', '1.8.1' );
 define( 'UTMDC_MINIMUM_WP_VERSION', '4.7' );
 define( 'UTMDC_MINIMUM_PHP_VERSION', '5.6' );
 define( 'UTMDC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );

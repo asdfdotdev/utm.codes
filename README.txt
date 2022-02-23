@@ -5,7 +5,7 @@ Tags: analytics, utm codes, analytics, google analytics, campaign marketing, lin
 Requires at least: 4.7.0
 Tested up to: 5.9
 Requires PHP: 5.6.0
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,10 @@ That isn't a question. But thank you.
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.8.1 =
+
+- Fix marketing links post list filters
 
 = 1.8.0 =
 
