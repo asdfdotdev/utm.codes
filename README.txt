@@ -3,7 +3,7 @@ Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
 Tags: analytics, utm codes, analytics, google analytics, campaign marketing, link generator
 Requires at least: 4.7.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6.0
 Stable tag: 1.8.1
 License: GPLv2
@@ -96,6 +96,11 @@ That isn't a question. But thank you.
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.8.1 =
+
+- Supports WordPress v6.0
+- Update dependencies
 
 = 1.8.1 =
 
