@@ -18,7 +18,7 @@ To download just the plugin (without the developer extras in this repo) check ou
 
 utm.codes is developed for, and tested with, a variety of recent platform versions, including:
 
-- WordPress 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, and 5.9
+- WordPress 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9 and 6.0
 - PHP 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, and 8.1
 
 ## Branches
