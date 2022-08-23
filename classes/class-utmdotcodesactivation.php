@@ -12,14 +12,35 @@
  */
 class UtmDotCodesActivation {
 
+
+	/**
+	 * Array of options "slugs" for storing plugin settings.
+	 *
+	 * @since TODO
+;	 */
+	protected $arr_options;
+
 	/**
 	 * UtmDotCodes_Activation constructor, adds (de)activation hooks for our plugin
 	 *
 	 * @since 1.0
 	 */
 	public function __construct() {
-		register_activation_hook( UTMDC_PLUGIN_FILE, array( &$this, 'activation' ) );
-		register_deactivation_hook( UTMDC_PLUGIN_FILE, array( &$this, 'deactivation' ) );
+
+		$this->arr_options = array(
+			'social',
+			'apikey',
+			'lowercase',
+			'alphanumeric',
+			'nospaces',
+			'labels',
+			'notes_show',
+			'notes_preview',
+			'shortener',
+			'rebrandly_domains',
+			'rebrandly_domains_active',
+			'rebrandly_domains_update',
+		);
 	}
 
 	/**
@@ -57,18 +78,12 @@ class UtmDotCodesActivation {
 		}
 
 		add_option( 'utmdc_version', UTMDC_VERSION, '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_social', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_apikey', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_lowercase', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_alphanumeric', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_nospaces', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_labels', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_notes_show', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_notes_preview', '0', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_shortener', 'none', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_active', '', '', 'no' );
-		add_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_update', '', '', 'no' );
+
+		foreach ( $this->arr_options as $option ) {
+			add_option( UtmDotCodes::POST_TYPE . '_' . $option, '', '', 'no' );
+		}
+		// The default value for _notes_preview is an exception so we update it here.
+		update_option( UtmDotCodes::POST_TYPE . '_' . 'notes_preview', '0', '', 'no' );
 	}
 
 	/**
@@ -82,18 +97,9 @@ class UtmDotCodesActivation {
 		}
 
 		delete_option( 'utmdc_version' );
-		delete_option( UtmDotCodes::POST_TYPE . '_social' );
-		delete_option( UtmDotCodes::POST_TYPE . '_apikey' );
-		delete_option( UtmDotCodes::POST_TYPE . '_lowercase' );
-		delete_option( UtmDotCodes::POST_TYPE . '_alphanumeric' );
-		delete_option( UtmDotCodes::POST_TYPE . '_nospaces' );
-		delete_option( UtmDotCodes::POST_TYPE . '_labels' );
-		delete_option( UtmDotCodes::POST_TYPE . '_notes_show' );
-		delete_option( UtmDotCodes::POST_TYPE . '_notes_preview' );
-		delete_option( UtmDotCodes::POST_TYPE . '_shortener' );
-		delete_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains' );
-		delete_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_active' );
-		delete_option( UtmDotCodes::POST_TYPE . '_rebrandly_domains_update' );
+		foreach ( $this->arr_options as $option ) {
+			delete_option( UtmDotCodes::POST_TYPE . '_' . $option );
+		}
 	}
 
 }

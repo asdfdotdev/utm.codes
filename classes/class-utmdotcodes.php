@@ -10,7 +10,7 @@
  */
 class UtmDotCodes {
 
-	const POST_TYPE        = 'utmdclink';
+	const POST_TYPE        = UTMDC_POST_TYPE;
 	const NONCE_LABEL      = 'UTMDC_nonce';
 	const REST_NONCE_LABEL = 'UTMDC_REST_nonce';
 	const SETTINGS_PAGE    = 'utm-dot-codes';
@@ -30,46 +30,9 @@ class UtmDotCodes {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		global $pagenow;
 
 		require_once 'shorten/interface.php';
-
 		remove_post_type_support( self::POST_TYPE, 'revisions' );
-
-		add_action( 'plugins_loaded', array( &$this, 'load_languages' ) );
-		add_action( 'init', array( &$this, 'create_post_type' ) );
-		add_action( 'admin_menu', array( &$this, 'add_settings_page' ) );
-		add_action( 'admin_init', array( &$this, 'register_plugin_settings' ) );
-		add_action( 'admin_head', array( &$this, 'add_css' ) );
-		add_action( 'admin_footer', array( &$this, 'add_js' ) );
-		add_action( 'add_meta_boxes', array( &$this, 'add_meta_box' ), 10, 2 );
-		add_action( 'add_meta_boxes', array( &$this, 'remove_meta_boxes' ) );
-		add_action( 'save_post', array( &$this, 'save_post' ), 10, 1 );
-		add_action( 'dashboard_glance_items', array( &$this, 'add_glance' ) );
-		add_action( 'wp_ajax_utmdc_check_url_response', array( &$this, 'check_url_response' ) );
-
-		add_filter( 'plugin_action_links_' . UTMDC_PLUGIN_FILE, array( &$this, 'add_links' ), 10, 1 );
-		add_filter( 'wp_insert_post_data', array( &$this, 'insert_post_data' ), 10, 2 );
-		add_filter( 'gettext', array( &$this, 'change_publish_button' ), 10, 2 );
-		add_filter(
-			sprintf( 'pre_update_option_%s', self::POST_TYPE . '_rebrandly_domains_update' ),
-			array( &$this, 'pre_rebrandly_domains_update' ),
-			10,
-			3
-		);
-
-		$is_post_list  = ( 'edit.php' === $pagenow );
-		$is_utmdc_post = ( self::POST_TYPE === filter_input( INPUT_GET, 'post_type', FILTER_DEFAULT ) );
-
-		if ( ( is_admin() && $is_post_list && $is_utmdc_post ) || $this->is_test() ) {
-			add_action( 'restrict_manage_posts', array( &$this, 'filter_ui' ), 5, 1 );
-			add_action( 'pre_get_posts', array( &$this, 'apply_filters' ), 5, 1 );
-			add_filter( 'manage_' . self::POST_TYPE . '_posts_columns', array( &$this, 'post_list_header' ), 10, 1 );
-			add_filter( 'manage_' . self::POST_TYPE . '_posts_custom_column', array( &$this, 'post_list_columns' ), 10, 2 );
-			add_filter( 'months_dropdown_results', array( &$this, 'months_dropdown_results' ), 10, 2 );
-			add_filter( 'bulk_actions-edit-' . self::POST_TYPE, array( &$this, 'bulk_actions' ) );
-			add_filter( 'post_row_actions', array( &$this, 'remove_quick_edit' ), 10, 1 );
-		}
 	}
 
 	/**
