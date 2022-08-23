@@ -522,6 +522,12 @@ class UtmDotCodes {
 									esc_html( self::POST_TYPE . '_shortener' )
 								);
 
+								$arr_services = array( 'None', 'Bitly', 'Rebrandly' );
+								$arr_services_filtered = apply_filters( 'utmdc_shorten_services', $arr_services );
+								if ( is_array( $arr_services_filtered ) && ! empty( $arr_services_filtered ) ) {
+									$arr_services = $arr_services_filtered;
+								}
+
 								array_map(
 									function ( $value ) use ( $active_shortener ) {
 										printf(
@@ -531,7 +537,7 @@ class UtmDotCodes {
 											esc_html( $value )
 										);
 									},
-									array( 'None', 'Bitly', 'Rebrandly' )
+									$arr_services
 								);
 
 								print( '</select>' );
