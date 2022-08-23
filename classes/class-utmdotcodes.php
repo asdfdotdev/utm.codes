@@ -513,7 +513,7 @@ class UtmDotCodes {
 							<?php
 							$active_shortener = 'none';
 
-							if ( false === apply_filters( 'utmdc_shorten_object', false ) ) {
+							// if ( false === apply_filters( 'utmdc_shorten_object', false ) ) {
 
 								$active_shortener = get_option( self::POST_TYPE . '_shortener' );
 
@@ -542,11 +542,11 @@ class UtmDotCodes {
 
 								print( '</select>' );
 
-							} else {
+							// } else {
 
-								echo esc_html__( 'Custom shortener in use via API filter. Remove to use default options.', 'utm-dot-codes' );
+							//	echo esc_html__( 'Custom shortener in use via API filter. Remove to use default options.', 'utm-dot-codes' );
 
-							}
+							// }
 							?>
 						</td>
 					</tr>
