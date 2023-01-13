@@ -1,6 +1,6 @@
 {
     "name": "asdfdotdev/utm.codes",
-    "version": "1.8.2",
+    "version": "1.8.3",
     "description": "A plugin that makes building analytics friendly links quick and easy.",
     "type": "wordpress-plugin",
     "require-dev": {
@@ -8,7 +8,7 @@
         "wp-coding-standards/wpcs": "2.3",
         "phpcompatibility/php-compatibility": "^9.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^9.5",
         "yoast/phpunit-polyfills": "^1.0"
     },
     "license": "GPL-2.0-only",

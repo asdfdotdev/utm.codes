@@ -29,7 +29,7 @@ jobs:
           --health-retries=3
     strategy:
       matrix:
-        php-versions: [ '7.2', '7.1', '7.0' ]
+        php-versions: [ '7.3', '7.2', '7.1', '7.0' ]
         wordpress-versions: [ '5.4', '5.3', '5.2', '5.1', '5.0' ]
         operating-system: [ ubuntu-18.04 ]
     env:
@@ -42,8 +42,8 @@ jobs:
         run: sudo /etc/init.d/mysql start
 
       - name: Setup PHP
-        # Commit hash for v2.17.0: https://github.com/shivammathur/setup-php/releases/tag/2.17.0
-        uses: shivammathur/setup-php@7854a0cae7fa7a5f3feac66d27bae2dc42d1067a
+        # Commit hash for v2.23.0: https://github.com/shivammathur/setup-php/releases/tag/2.23.0
+        uses: shivammathur/setup-php@8e2ac35f639d3e794c1da1f28999385ab6fdf0fc
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, mysqli
@@ -57,6 +57,7 @@ jobs:
           echo "WordPress $WORDPRESS_VERSION"
           php --version
           mysql --version
+          lsb_release -a
 
       - name: Checkout utm.codes
         uses: actions/checkout@v2

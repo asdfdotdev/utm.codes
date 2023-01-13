@@ -29,8 +29,8 @@ jobs:
           --health-retries=3
     strategy:
       matrix:
-        php-versions: [ '7.4', '7.3' ]
-        wordpress-versions: [ '5.9', '5.8', '5.7', '5.6', '5.5' ]
+        php-versions: [ '7.4' ]
+        wordpress-versions: [ '6.0', '5.9', '5.8', '5.7' ]
         operating-system: [ ubuntu-18.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
@@ -42,8 +42,8 @@ jobs:
         run: sudo /etc/init.d/mysql start
 
       - name: Setup PHP
-        # Commit hash for v2.17.0: https://github.com/shivammathur/setup-php/releases/tag/2.17.0
-        uses: shivammathur/setup-php@7854a0cae7fa7a5f3feac66d27bae2dc42d1067a
+        # Commit hash for v2.23.0: https://github.com/shivammathur/setup-php/releases/tag/2.23.0
+        uses: shivammathur/setup-php@8e2ac35f639d3e794c1da1f28999385ab6fdf0fc
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
@@ -56,6 +56,7 @@ jobs:
           echo "$GITHUB_EVENT_NAME"
           php --version
           mysql --version
+          lsb_release -a
 
       - name: Checkout utm.codes
         uses: actions/checkout@v2

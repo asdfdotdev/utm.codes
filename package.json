@@ -1,6 +1,6 @@
 {
   "name": "utm-dot-codes",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "A plugin that makes building analytics friendly links quick and easy.",
   "main": "index.js",
   "scripts": {
