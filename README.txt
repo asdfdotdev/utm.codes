@@ -5,7 +5,7 @@ Tags: analytics, utm codes, analytics, google analytics, campaign marketing, lin
 Requires at least: 4.7.0
 Tested up to: 6.0
 Requires PHP: 5.6.0
-Stable tag: 1.8.1
+Stable tag: 1.8.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -97,7 +97,13 @@ That isn't a question. But thank you.
 
 == Changelog ==
 
-= 1.8.1 =
+= 1.8.3 =
+
+- Supports WordPress v6.1
+- Supports PHP 8.2
+- Update dependencies
+
+= 1.8.2 =
 
 - Supports WordPress v6.0
 - Update dependencies

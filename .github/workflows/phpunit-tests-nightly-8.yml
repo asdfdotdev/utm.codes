@@ -29,9 +29,9 @@ jobs:
           --health-retries=3
     strategy:
       matrix:
-        php-versions: [ '8.1' ]
+        php-versions: [ '8.2', '8.1', '8.0' ]
         wordpress-versions: [ 'nightly' ]
-        operating-system: [ ubuntu-20.04 ]
+        operating-system: [ ubuntu-22.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
@@ -42,8 +42,8 @@ jobs:
         run: sudo /etc/init.d/mysql start
 
       - name: Setup PHP
-        # Commit hash for v2.17.0: https://github.com/shivammathur/setup-php/releases/tag/2.17.0
-        uses: shivammathur/setup-php@7854a0cae7fa7a5f3feac66d27bae2dc42d1067a
+        # Commit hash for v2.23.0: https://github.com/shivammathur/setup-php/releases/tag/2.23.0
+        uses: shivammathur/setup-php@8e2ac35f639d3e794c1da1f28999385ab6fdf0fc
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
