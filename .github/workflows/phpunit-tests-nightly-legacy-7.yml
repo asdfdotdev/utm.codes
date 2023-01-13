@@ -57,6 +57,7 @@ jobs:
           echo "WordPress $WORDPRESS_VERSION"
           php --version
           mysql --version
+          lsb_release -a
 
       - name: Checkout utm.codes
         uses: actions/checkout@v2

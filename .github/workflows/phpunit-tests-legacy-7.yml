@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     services:
       mysql-service:
-        image: mysql:5.7
+        image: mysql:5.6
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -31,7 +31,7 @@ jobs:
       matrix:
         php-versions: [ '7.3', '7.2', '7.1', '7.0' ]
         wordpress-versions: [ '5.4', '5.3', '5.2', '5.1', '5.0' ]
-        operating-system: [ ubuntu-20.04 ]
+        operating-system: [ ubuntu-18.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
@@ -57,6 +57,7 @@ jobs:
           echo "WordPress $WORDPRESS_VERSION"
           php --version
           mysql --version
+          lsb_release -a
 
       - name: Checkout utm.codes
         uses: actions/checkout@v2
