@@ -1,9 +1,9 @@
 <p align="center" style="padding-bottom:20px"><img src="img/utm-dot-codes-logo.png" width="400"></p><p>&nbsp;</p>
 
-![PHPUnit Tests (8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(8.x)/badge.svg)
-![PHPUnit Tests (7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(7.x)/badge.svg)
-![PHPUnit Tests (Legacy 7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%207.x)/badge.svg)
-![PHPUnit Tests (Legacy 5.6)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%205.6)/badge.svg)
+[![PHPUnit Tests (8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(8.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
+[![PHPUnit Tests (7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(7.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
+[![PHPUnit Tests (Legacy 7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%207.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
+[![PHPUnit Tests (Legacy 5.6)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%205.6)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
 [![codecov](https://codecov.io/gh/asdfdotdev/utm.codes/branch/main/graph/badge.svg)](https://codecov.io/gh/asdfdotdev/utm.codes)
 
 Welcome to the developer repository for utm.codes, a WordPress plugin that makes creating analytics friendly marketing links quick and easy.
