@@ -15,7 +15,6 @@ jobs:
   test-php:
     name: WordPress ${{ matrix.wordpress-versions }} - PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     runs-on: ${{ matrix.operating-system }}
-    services:
     strategy:
       matrix:
         php-versions: [ '7.4' ]
