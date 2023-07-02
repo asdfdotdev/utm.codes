@@ -42,7 +42,6 @@ jobs:
           extensions: mbstring
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
-          tools: phpunit-polyfills
 
       - name: Log Debug Information
         run: |
@@ -61,6 +60,7 @@ jobs:
       - name: Install PHPUnit
         run: |
           composer require phpunit/phpunit:^7 --update-with-dependencies
+          composer require yoast/phpunit-polyfills:^1 --update-with-dependencies
 
       - name: Install WordPress
         run: |
