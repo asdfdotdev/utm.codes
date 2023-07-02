@@ -42,6 +42,7 @@ jobs:
           extensions: mbstring
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
+          tools: phpunit-polyfills
 
       - name: Log Debug Information
         run: |
