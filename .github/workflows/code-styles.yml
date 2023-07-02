@@ -18,13 +18,13 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '8.2' ]
-        wordpress-versions: [ '6.1' ]
+        wordpress-versions: [ '6.2' ]
         operating-system: [ ubuntu-22.04 ]
 
     steps:
       - name: Setup PHP
-        # Commit hash for v2.23.0: https://github.com/shivammathur/setup-php/releases/tag/2.23.0
-        uses: shivammathur/setup-php@8e2ac35f639d3e794c1da1f28999385ab6fdf0fc
+        # Commit hash for v2.25.4: https://github.com/shivammathur/setup-php/releases/tag/2.25.4
+        uses: shivammathur/setup-php@4bd44f22a98a19e0950cbad5f31095157cc9621b
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring

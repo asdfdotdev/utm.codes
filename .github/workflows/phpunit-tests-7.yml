@@ -31,7 +31,7 @@ jobs:
       matrix:
         php-versions: [ '7.4' ]
         wordpress-versions: [ '6.0', '5.9', '5.8', '5.7' ]
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-20.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
@@ -42,8 +42,8 @@ jobs:
         run: sudo /etc/init.d/mysql start
 
       - name: Setup PHP
-        # Commit hash for v2.23.0: https://github.com/shivammathur/setup-php/releases/tag/2.23.0
-        uses: shivammathur/setup-php@8e2ac35f639d3e794c1da1f28999385ab6fdf0fc
+        # Commit hash for v2.25.4: https://github.com/shivammathur/setup-php/releases/tag/2.25.4
+        uses: shivammathur/setup-php@4bd44f22a98a19e0950cbad5f31095157cc9621b
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
