@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '7.3', '7.2', '7.1' ]
-        wordpress-versions: [ '5.7', '5.6', '5.5', '5.4', '5.3', '5.2', '5.1' ]
+        wordpress-versions: [ '5.5', '5.4', '5.3', '5.2', '5.1' ]
         operating-system: [ ubuntu-20.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
