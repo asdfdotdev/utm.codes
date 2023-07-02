@@ -59,7 +59,8 @@ jobs:
           lsb_release -a
 
       - name: Checkout utm.codes
-        uses: actions/checkout@v2
+        # Commit hash for v3.5.3: https://github.com/actions/checkout/releases/tag/v3.5.3
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           fetch-depth: 0
 
