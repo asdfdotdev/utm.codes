@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '8.2', '8.1', '8.0' ]
-        wordpress-versions: [ '6.2', '6.1', '6.0' ]
+        wordpress-versions: [ '6.2', '6.1', '6.0', '5.9' ]
         operating-system: [ ubuntu-20.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
