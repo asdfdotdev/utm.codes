@@ -15,18 +15,6 @@ jobs:
   test-php:
     name: WordPress ${{ matrix.wordpress-versions }} - PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     runs-on: ${{ matrix.operating-system }}
-    services:
-      mysql-service:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
     strategy:
       matrix:
         php-versions: [ '7.2', '7.1', '7.0' ]
@@ -38,8 +26,13 @@ jobs:
       UTMDC_PLUGIN_DIR: ${{secrets.UTMDC_PLUGIN_DIR}}
 
     steps:
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
+      - name: Setup MySQL
+        # Commit hash for v1.20.0: https://github.com/shogo82148/actions-setup-mysql/releases/tag/v1.20.0
+        uses: shogo82148/actions-setup-mysql@f60d1f2880595e1415617654137a272880b1d918
+        with:
+          mysql-version: '5.7'
+          auto-start: true
+          root-password: root
 
       - name: Setup PHP
         # Commit hash for v2.25.4: https://github.com/shivammathur/setup-php/releases/tag/2.25.4
