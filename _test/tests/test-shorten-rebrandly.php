@@ -38,7 +38,11 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 
 			$this->assertTrue( is_plugin_active( 'utm-dot-codes/utm-dot-codes.php' ) );
 		} else {
-			$this->expectNotToPerformAssertions();
+			if (method_exists( $this, 'expectNotToPerformAssertions' )) {
+				$this->expectNotToPerformAssertions();
+			} else {
+				$this->assertTrue( true );
+			}
 		}
 	}
 
@@ -67,7 +71,11 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 			$this->assertEquals( null, $shortener->get_error() );
 			$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'https://rebrand.ly/' ) !== false );
 		} else {
-			$this->expectNotToPerformAssertions();
+			if (method_exists( $this, 'expectNotToPerformAssertions' )) {
+				$this->expectNotToPerformAssertions();
+			} else {
+				$this->assertTrue( true );
+			}
 		}
 	}
 
@@ -96,7 +104,11 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 			$this->assertEquals( 401, $shortener->get_error() );
 			$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'https://rebrand.ly/' ) === false );
 		} else {
-			$this->expectNotToPerformAssertions();
+			if (method_exists( $this, 'expectNotToPerformAssertions' )) {
+				$this->expectNotToPerformAssertions();
+			} else {
+				$this->assertTrue( true );
+			}
 		}
 	}
 
@@ -125,7 +137,11 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 			$this->assertEquals( 4031, $shortener->get_error() );
 			$this->assertTrue( strpos( $plugin->null_string_check( $shortener->get_response() ), 'https://rebrand.ly/' ) === false );
 		} else {
-			$this->expectNotToPerformAssertions();
+			if (method_exists( $this, 'expectNotToPerformAssertions' )) {
+				$this->expectNotToPerformAssertions();
+			} else {
+				$this->assertTrue( true );
+			}
 		}
 	}
 
@@ -141,7 +157,11 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 
 			$this->assertEquals( '', $value );
 		} else {
-			$this->expectNotToPerformAssertions();
+			if (method_exists( $this, 'expectNotToPerformAssertions' )) {
+				$this->expectNotToPerformAssertions();
+			} else {
+				$this->assertTrue( true );
+			}
 		}
 	}
 
@@ -162,7 +182,11 @@ class TestUtmDotCodesShortenRebrandly extends WP_UnitTestCase {
 			$this->assertGreaterThan( 0, count($domains) );
 			$this->assertEquals( '', $value );
 		} else {
-			$this->expectNotToPerformAssertions();
+			if (method_exists( $this, 'expectNotToPerformAssertions' )) {
+				$this->expectNotToPerformAssertions();
+			} else {
+				$this->assertTrue( true );
+			}
 		}
 	}
 }
