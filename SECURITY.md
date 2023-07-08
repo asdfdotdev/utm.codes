@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The [latests release of utm.codes](https://github.com/asdfdotdev/utm.codes/releases) is supported and also available for [download from WordPress.org](https://wordpress.org/plugins/utm-dot-codes/).
+The [latest release of utm.codes](https://github.com/asdfdotdev/utm.codes/releases) is supported and also available for [download from WordPress.org](https://wordpress.org/plugins/utm-dot-codes/).
 
 ## Reporting a Vulnerability
 
