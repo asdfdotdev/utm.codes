@@ -15,35 +15,28 @@ jobs:
   test-php:
     name: WordPress ${{ matrix.wordpress-versions }} - PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     runs-on: ${{ matrix.operating-system }}
-    services:
-      mysql-service:
-        image: mysql:5.6
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
     strategy:
       matrix:
-        php-versions: [ '7.3', '7.2', '7.1', '7.0' ]
-        wordpress-versions: [ '5.4', '5.3', '5.2', '5.1', '5.0' ]
-        operating-system: [ ubuntu-18.04 ]
+        php-versions: [ '7.3', '7.2', '7.1' ]
+        wordpress-versions: [ '5.5', '5.4', '5.3', '5.2', '5.1' ]
+        operating-system: [ ubuntu-20.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
       UTMDC_PLUGIN_DIR: ${{secrets.UTMDC_PLUGIN_DIR}}
 
     steps:
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
+      - name: Setup MySQL
+        # Commit hash for v1.20.0: https://github.com/shogo82148/actions-setup-mysql/releases/tag/v1.20.0
+        uses: shogo82148/actions-setup-mysql@f60d1f2880595e1415617654137a272880b1d918
+        with:
+          mysql-version: '5.6'
+          auto-start: true
+          root-password: root
 
       - name: Setup PHP
-        # Commit hash for v2.23.0: https://github.com/shivammathur/setup-php/releases/tag/2.23.0
-        uses: shivammathur/setup-php@8e2ac35f639d3e794c1da1f28999385ab6fdf0fc
+        # Commit hash for v2.25.4: https://github.com/shivammathur/setup-php/releases/tag/2.25.4
+        uses: shivammathur/setup-php@4bd44f22a98a19e0950cbad5f31095157cc9621b
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, mysqli
@@ -60,17 +53,19 @@ jobs:
           lsb_release -a
 
       - name: Checkout utm.codes
-        uses: actions/checkout@v2
+        # Commit hash for v3.5.3: https://github.com/actions/checkout/releases/tag/v3.5.3
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           fetch-depth: 0
 
       - name: Install PHPUnit
         run: |
           composer require phpunit/phpunit:^6 --update-with-dependencies
+          composer require yoast/phpunit-polyfills:^1 --update-with-dependencies
 
       - name: Install WordPress
         run: |
-          bash _test/bin/install-wp-tests.sh wordpress_test root root localhost:3306 ${{ matrix.wordpress-versions }}
+          bash _test/bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wordpress-versions }}
 
       - name: Run PHPUnit Tests
         run: |

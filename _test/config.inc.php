@@ -19,3 +19,6 @@ putenv( 'UTMDC_BITLY_API=' );
 
 // A valid Rebrandly API Key.
 putenv( 'UTMDC_REBRANDLY_API=' );
+
+// Optionally disable Rebrandly tests if your account is limited.
+putenv( 'UTMDC_REBRANDLY_DO_TESTS=false');
