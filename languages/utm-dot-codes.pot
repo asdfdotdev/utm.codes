@@ -1,37 +1,42 @@
-# Copyright (C) 2023 Chris Carlevato
+# Copyright (C) 2024 Chris Carlevato
 # This file is distributed under the GPL v2.
 msgid ""
 msgstr ""
-"Project-Id-Version: utm.codes 1.8.4\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/_utm-dot-codes\n"
+"Project-Id-Version: utm.codes 1.8.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/utm.codes\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-02T16:24:52+00:00\n"
+"POT-Creation-Date: 2024-06-08T15:30:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.8.1\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: utm-dot-codes\n"
 
 #. Plugin Name of the plugin
+#: utm-dot-codes.php
 #: classes/class-utmdotcodes.php:355
 msgid "utm.codes"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: utm-dot-codes.php
 msgid "https://utm.codes"
 msgstr ""
 
 #. Description of the plugin
+#: utm-dot-codes.php
 msgid "A plugin that makes building analytics friendly links quick and easy."
 msgstr ""
 
 #. Author of the plugin
+#: utm-dot-codes.php
 msgid "Chris Carlevato"
 msgstr ""
 
 #. Author URI of the plugin
+#: utm-dot-codes.php
 msgid "https://asdf.dev"
 msgstr ""
 
