@@ -1346,7 +1346,7 @@ class UtmDotCodes {
 	public function add_css() {
 		wp_enqueue_style(
 			'font-awesome',
-			'https://use.fontawesome.com/releases/v5.15.0/css/all.css',
+			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
 			array(),
 			UTMDC_VERSION,
 			'all'
@@ -1656,7 +1656,7 @@ class UtmDotCodes {
 				'stack-exchange' => array( 'Stack Exchange', 'fab fa-stack-exchange' ),
 				'stack-overflow' => array( 'Stack Overflow', 'fab fa-stack-overflow' ),
 				'tumblr'         => array( 'Tumblr', 'fab fa-tumblr' ),
-				'twitter'        => array( 'Twitter', 'fab fa-twitter' ),
+				'twitter'        => array( 'X (Twitter)', 'fab fa-x-twitter' ),
 				'vimeo'          => array( 'Vimeo', 'fab fa-vimeo-v' ),
 				'vk'             => array( 'VK', 'fab fa-vk' ),
 				'weibo'          => array( 'Weibo', 'fab fa-weibo' ),
