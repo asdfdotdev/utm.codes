@@ -1027,7 +1027,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 		$this->assertTrue( in_array( 'utm-dot-codes', $wp_scripts->queue ) );
 
 		$this->assertTrue( array_key_exists( 'font-awesome', $wp_styles->registered ) );
-		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://use.fontawesome.com/releases/v5.15.0/css/all.css' );
+		$this->assertEquals( $wp_styles->registered['font-awesome']->src, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css' );
 		$this->assertTrue( in_array( 'font-awesome', $wp_styles->queue ) );
 
 		$this->assertTrue( array_key_exists( 'utm-dot-codes', $wp_styles->registered ) );
@@ -1237,7 +1237,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 				'stack-exchange' => array( 'Stack Exchange', 'fab fa-stack-exchange' ),
 				'stack-overflow' => array( 'Stack Overflow', 'fab fa-stack-overflow' ),
 				'tumblr'         => array( 'Tumblr', 'fab fa-tumblr' ),
-				'twitter'        => array( 'Twitter', 'fab fa-twitter' ),
+				'twitter'        => array( 'X (Twitter)', 'fab fa-x-twitter' ),
 				'vimeo'          => array( 'Vimeo', 'fab fa-vimeo-v' ),
 				'vk'             => array( 'VK', 'fab fa-vk'),
 				'weibo'          => array( 'Weibo', 'fab fa-weibo'),
@@ -1282,7 +1282,7 @@ class TestUtmDotCodesIntegration extends WP_UnitTestCase {
 				'stack-exchange' => array( 'Stack Exchange', 'fab fa-stack-exchange' ),
 				'stack-overflow' => array( 'Stack Overflow', 'fab fa-stack-overflow' ),
 				'tumblr'         => array( 'Tumblr', 'fab fa-tumblr' ),
-				'twitter'        => array( 'Twitter', 'fab fa-twitter' ),
+				'twitter'        => array( 'X (Twitter)', 'fab fa-x-twitter' ),
 				'vimeo'          => array( 'Vimeo', 'fab fa-vimeo-v' ),
 				'vk'             => array( 'VK', 'fab fa-vk'),
 				'weibo'          => array( 'Weibo', 'fab fa-weibo'),
