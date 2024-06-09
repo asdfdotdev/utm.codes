@@ -13,8 +13,8 @@ To download just the plugin (without the developer extras in this repo) check ou
 
 ### Compatibility
 
-[![WordPress Compatibility](https://img.shields.io/badge/WordPress-5.1_to_6.4-blue.svg?logo=wordpress)](https://wordpress.org/)
-[![PHP Compatibility](https://img.shields.io/badge/PHP-7.1_to_8.2-%238892BF.svg?logo=php)](https://php.net/)
+[![WordPress Compatibility](https://img.shields.io/badge/WordPress-5.1_to_6.5-blue.svg?logo=wordpress)](https://wordpress.org/)
+[![PHP Compatibility](https://img.shields.io/badge/PHP-7.1_to_8.3-%238892BF.svg?logo=php)](https://php.net/)
 
 utm.codes is developed for, and tested with, platform versions covering [the vast majority of WordPress users](https://wordpress.org/about/stats/), including:
 
