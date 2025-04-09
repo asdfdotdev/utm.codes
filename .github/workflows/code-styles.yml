@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Install Packages
-        run: sudo apt install -y svn
+        run: sudo apt install -y subversion
 
       - name: Setup PHP
         # Commit hash for v2.32.0: https://github.com/shivammathur/setup-php/releases/tag/2.32.0

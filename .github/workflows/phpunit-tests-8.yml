@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Install Packages
-        run: sudo apt install -y svn
+        run: sudo apt install -y subversion
 
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
