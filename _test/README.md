@@ -22,7 +22,7 @@ PHPUnit tests support
 - PHPUnit 5 (for PHP 5.6)
 - PHPUnit 6 (for PHP 7.0, 7.1, 7.2)
 - PHPUnit 7 (for PHP 7.3, 7.4)
-- PHPUnit 9 (for PHP 8.0, 8.1)
+- PHPUnit 9 (for PHP 8.0, 8.1, 8.2, 8.3)
 
 ### PHP Code Sniffer
 
