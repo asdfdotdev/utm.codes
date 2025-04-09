@@ -38,6 +38,9 @@ jobs:
       UTMDC_PLUGIN_DIR: ${{secrets.UTMDC_PLUGIN_DIR}}
 
     steps:
+      - name: Install Packages
+        run: sudo apt install -y svn
+
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
 
