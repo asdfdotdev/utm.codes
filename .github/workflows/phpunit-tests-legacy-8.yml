@@ -1,4 +1,4 @@
-name: PHPUnit Tests (8.x)
+name: PHPUnit Tests (Legacy 8.x)
 
 on:
   push:
