@@ -36,7 +36,7 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - See your current link count in the admin dashboard "At a Glance"
 - Tested with WordPress 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.0, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8
 - Tested with PHP 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3
-- Tested with MySQL 5.6, 5.7, 8.0
+- Tested with MySQL 5.6, 5.7, 8.0, 8.4
 - 100% Free and Open Source
 
 = Installation =
