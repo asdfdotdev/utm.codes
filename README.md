@@ -30,6 +30,8 @@ utm.codes is developed for, and tested with, platform versions covering [the vas
 
 ```
 .
+├── .github
+├── .wordpress
 ├── _build
 │   ├── javascript
 │   └── styles
@@ -46,6 +48,8 @@ utm.codes is developed for, and tested with, platform versions covering [the vas
     └── js
 ```
 
+- **.github** - GitHub.com development resources including workflows and various documentation
+- **.wordpress** - WordPress.org resources including live preview blueprint and screenshots
 - **_build** - Static resource build files used to compile our javascript and stylesheet
 - **_test** - PHPUnit unit, integration, and ajax test resources
 - **assets** - Compiled admin stylesheet and javascript used by our plugin
