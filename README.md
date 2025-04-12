@@ -4,9 +4,9 @@
 [![PHPUnit Tests (8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(8.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
 [![PHPUnit Tests (Legacy 8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%208.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
 
-![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/rating/utm-dot-codes)
-![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/installs/utm-dot-codes)
-![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dm/utm-dot-codes)
+[![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/rating/utm-dot-codes)](https://wordpress.org/plugins/utm-dot-codes/)
+[![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/installs/utm-dot-codes)](https://wordpress.org/plugins/utm-dot-codes/)
+[![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dm/utm-dot-codes)](https://wordpress.org/plugins/utm-dot-codes/)
 
 
 
