@@ -1,9 +1,16 @@
-// WordPress Colors
-$wp_gray_dark: #23282d;
-$wp_gray: #f1f1f1;
-$wp_green: #46b450;
-$wp_red: #dc3232;
-$wp_blue: #0084c4;
-
-// Base Colors
+// Colors
+$gray_dark: #23282d;
+$gray: #f1f1f1;
+$green: #46b450;
+$red: #dc3232;
+$blue: #2271b1;
 $white: #ffffff;
+
+:root {
+	--utmdc-gray-dark: #{$gray_dark};
+	--utmdc-gray: #{$gray};
+	--utmdc-green: #{$green};
+	--utmdc-red: #{$red};
+	--utmdc-blue: #{$blue};
+	--utmdc-white: #{$white};
+}

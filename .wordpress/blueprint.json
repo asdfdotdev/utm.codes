@@ -1,0 +1,43 @@
+{
+  "landingPage": "/wp-admin/edit.php?post_type=utmdclink",
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "6.7"
+  },
+  "phpExtensionBundles": [
+    "kitchen-sink"
+  ],
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    },
+    {
+      "step": "installPlugin",
+      "pluginZipFile": {
+        "resource": "wordpress.org\/plugins",
+        "slug": "utm-dot-codes"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "utmdclink_social": {
+          "facebook": "on",
+          "github": "on"
+        },
+        "utmdclink_lowercase": "on",
+        "utmdclink_alphanumeric": "on",
+        "utmdclink_nospaces": "on",
+        "utmdclink_labels": "on",
+        "utmdclink_notes_show": "on",
+        "utmdclink_notes_preview": "20",
+        "utmdclink_shortener": "none"
+      }
+    }
+  ]
+}

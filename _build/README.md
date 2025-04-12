@@ -11,7 +11,7 @@ For best compatibility please use the version of node included in the .nvmrc fil
 From the project root directory use npm to install the required node modules.
 
 ```
-$ npm install
+$ npm ci
 ```
 
 Once installation is complete you can run any build scripts to rebuild static resources.
@@ -29,5 +29,3 @@ $ npm run COMMAND_NAME
 **dev** - development build, adds sourcemaps, js is uncompressed, and watches for source file changes for continuous rebuild
 
 **development** - alias for *dev*
-
-**delete-maps** - deletes files ending in `.map`. Used by production build to remove js sourcemaps

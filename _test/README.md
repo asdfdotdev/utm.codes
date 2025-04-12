@@ -22,7 +22,7 @@ PHPUnit tests support
 - PHPUnit 5 (for PHP 5.6)
 - PHPUnit 6 (for PHP 7.0, 7.1, 7.2)
 - PHPUnit 7 (for PHP 7.3, 7.4)
-- PHPUnit 9 (for PHP 8.0, 8.1)
+- PHPUnit 9 (for PHP 8.0, 8.1, 8.2, 8.3)
 
 ### PHP Code Sniffer
 
@@ -67,16 +67,18 @@ Running as single site... To run multisite, use -c tests/phpunit/multisite.xml
 Not running ajax tests. To execute these, use --group ajax.
 Not running ms-files tests. To execute these, use --group ms-files.
 Not running external-http tests. To execute these, use --group external-http.
-PHPUnit 7.5.20 by Sebastian Bergmann and contributors.
+PHPUnit 9.6.22 by Sebastian Bergmann and contributors.
+
+Warning:       XDEBUG_MODE=coverage (environment variable) or xdebug.mode=coverage (PHP configuration setting) has to be set
+Warning:       Your XML configuration validates against a deprecated schema.
+Suggestion:    Migrate your XML configuration using "--migrate-configuration"!
 
 ................................................................. 65 / 66 ( 98%)
 .                                                                 66 / 66 (100%)
 
-Time: 16.71 seconds, Memory: 48.00 MB
+Time: 00:03.543, Memory: 42.50 MB
 
-OK (66 tests, 596 assertions)
-
-Generating code coverage report in Clover XML format ... done
+OK (66 tests, 569 assertions)
 ```
 
 #### Gotchas

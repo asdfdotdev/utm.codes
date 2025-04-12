@@ -1,3 +1,6 @@
+@use '../mixins/toggle' as *;
+@use '../mixins/slider' as *;
+
 #utm_dot_codes_logo {
 	width: 250px;
 	margin: auto;
@@ -62,8 +65,8 @@
 				margin-top:-5px;
 				width: 20px;
 				text-align: center;
-				background: $white;
-				border: solid 2px $wp_blue;
+				background: var(--utmdc-white);
+				border: solid 2px var(--utmdc-blue);
 
 				&:before,
 				&:after {
@@ -79,14 +82,14 @@
 
 				&:before {
 					border-color: transparent;
-					border-right-color: $wp_blue;
+					border-right-color: var(--utmdc-blue);
 					border-width: 13px;
 					margin-top: -13px;
 				}
 
 				&:after {
 					border-color: transparent;
-					border-right-color: $white;
+					border-right-color: var(--utmdc-white);
 					border-width: 10px;
 					margin-top: -10px;
 				}
@@ -102,18 +105,18 @@
 			font-family: sans-serif;
 			font-weight: 500;
 			line-height: 28px !important;
-			color: $wp_gray_dark;
+			color: var(--utmdc-gray-dark);
 			padding: 0 32px 0 4px !important;
 			width: auto;
 			max-width: 100%;
-			border: 2px solid $wp_blue;
+			border: 2px solid var(--utmdc-blue);
 			box-shadow: 0 1px 0 1px rgba(0, 0, 0, .04);
 			border-radius: 0;
 			appearance: none;
-			background-color: $white;
+			background-color: var(--utmdc-white);
 			background-image:
 				url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230084c4%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E),
-				linear-gradient(to bottom, $white 0%, $wp_gray 100%);
+				linear-gradient(to bottom, var(--utmdc-white) 0%, var(--utmdc-gray) 100%);
 			background-repeat: no-repeat, repeat;
 			background-position: right 8px top 50%, 0 0;
 			background-size: 12px auto, 100%;

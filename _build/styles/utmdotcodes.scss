@@ -1,8 +1,11 @@
-// Mixins
-@import 'mixins/*';
-
 // Settings & Globals
-@import '_/settings';
+@forward '_/settings';
 
 // Partials
-@import 'partials/*';
+@forward 'partials/dashboard';
+@forward 'partials/meta-box';
+@forward 'partials/post-list';
+
+@forward 'partials/settings-page';
+@forward 'partials/taxonomy';
+@forward 'partials/url-checker';

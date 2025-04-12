@@ -1,6 +1,7 @@
 @use "sass:math";
+@use "sass:color";
 
-@mixin css-toggle($off-color: #444444, $on-color: #0073aa, $button-color: #ffffff, $text-color: #ffffff, $width: 140px, $height: 36px) {
+@mixin css-toggle($off-color: #444444, $on-color: #2271b1, $button-color: #ffffff, $text-color: #ffffff, $width: 140px, $height: 36px) {
 
 	$shadow: 0 3px 3px rgba(black, 0.4);
 	$switch-width: math.div($width, 2);
@@ -37,7 +38,7 @@
 			~ label {
 
 				div {
-					background-color: lighten($on-color, 5%);
+					background-color: $on-color;
 
 					&:before {
 						content: attr(data-off);
@@ -46,7 +47,7 @@
 
 					&:after {
 						content: attr(data-on);
-						color: darken($on-color, 5%);
+						color: $on-color;
 						transform: translate3d($width - ($switch-width + $offset),0,0);
 					}
 				}
@@ -64,7 +65,7 @@
 		div {
 			position: relative;
 			transition: background-color 0.3s $transition;
-			background: lighten($off-color, 5%);
+			background: $off-color;
 			height: $height;
 			flex: 0 0 $width;
 

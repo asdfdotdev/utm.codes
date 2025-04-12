@@ -1346,16 +1346,16 @@ class UtmDotCodes {
 	public function add_css() {
 		wp_enqueue_style(
 			'font-awesome',
-			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
+			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css',
 			array(),
 			UTMDC_VERSION,
 			'all'
 		);
 		wp_enqueue_style(
 			'utm-dot-codes',
-			UTMDC_PLUGIN_URL . 'css/utmdotcodes.css',
+			UTMDC_PLUGIN_URL . 'assets/css/utmdotcodes.css',
 			array( 'font-awesome' ),
-			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'css/utmdotcodes.css' ),
+			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'assets/css/utmdotcodes.css' ),
 			'all'
 		);
 	}
@@ -1368,9 +1368,9 @@ class UtmDotCodes {
 	public function add_js() {
 		wp_enqueue_script(
 			'utm-dot-codes',
-			UTMDC_PLUGIN_URL . 'js/utmdotcodes.js',
+			UTMDC_PLUGIN_URL . 'assets/js/utmdotcodes.js',
 			array( 'jquery' ),
-			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'js/utmdotcodes.js' ),
+			hash_file( 'sha1', UTMDC_PLUGIN_DIR . 'assets/js/utmdotcodes.js' ),
 			'all'
 		);
 

@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     services:
       mysql-service:
-        image: mysql:8.0
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -29,21 +29,24 @@ jobs:
           --health-retries=3
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.1', '8.0' ]
+        php-versions: [ '8.3', '8.2' ]
         wordpress-versions: [ 'nightly' ]
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
       UTMDC_PLUGIN_DIR: ${{secrets.UTMDC_PLUGIN_DIR}}
 
     steps:
+      - name: Install Packages
+        run: sudo apt install -y subversion
+
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
 
       - name: Setup PHP
-        # Commit hash for v2.25.4: https://github.com/shivammathur/setup-php/releases/tag/2.25.4
-        uses: shivammathur/setup-php@4bd44f22a98a19e0950cbad5f31095157cc9621b
+        # Commit hash for v2.32.0: https://github.com/shivammathur/setup-php/releases/tag/2.32.0
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
@@ -59,8 +62,8 @@ jobs:
           lsb_release -a
 
       - name: Checkout utm.codes
-        # Commit hash for v3.5.3: https://github.com/actions/checkout/releases/tag/v3.5.3
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+        # Commit hash for v3.5.3: https://github.com/actions/checkout/releases/tag/v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
 

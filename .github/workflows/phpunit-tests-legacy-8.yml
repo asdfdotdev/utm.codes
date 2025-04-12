@@ -1,4 +1,4 @@
-name: PHPUnit Tests (8.x)
+name: PHPUnit Tests (Legacy 8.x)
 
 on:
   push:
@@ -30,8 +30,8 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '8.1', '8.0' ]
-        wordpress-versions: [ '6.3', '6.2', '6.1', '6.0' ]
-        operating-system: [ ubuntu-20.04 ]
+        wordpress-versions: [ '6.4', '6.3', '6.2', '6.1', '6.0' ]
+        operating-system: [ ubuntu-22.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
@@ -42,8 +42,8 @@ jobs:
         run: sudo /etc/init.d/mysql start
 
       - name: Setup PHP
-        # Commit hash for v2.25.4: https://github.com/shivammathur/setup-php/releases/tag/2.25.4
-        uses: shivammathur/setup-php@4bd44f22a98a19e0950cbad5f31095157cc9621b
+        # Commit hash for v2.32.0: https://github.com/shivammathur/setup-php/releases/tag/2.32.0
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
@@ -59,8 +59,8 @@ jobs:
           lsb_release -a
 
       - name: Checkout utm.codes
-        # Commit hash for v3.5.3: https://github.com/actions/checkout/releases/tag/v3.5.3
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+        # Commit hash for v3.5.3: https://github.com/actions/checkout/releases/tag/v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
 

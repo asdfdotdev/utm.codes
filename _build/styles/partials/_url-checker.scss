@@ -5,7 +5,7 @@
 
 		i {
 			font-size: 20px;
-			border: solid 1px darken($wp_gray, 10%);
+			border: solid 1px var(--utmdc-gray);
 			border-radius: 100%;
 			margin-left: 5px;
 			opacity: 0;
@@ -15,20 +15,20 @@
 		}
 
 		.fa-circle {
-			color: $wp_gray;
+			color: var(--utmdc-gray);
 			z-index: 10;
 		}
 
 		.fa-question-circle {
-			color: darken($wp_gray, 20%);
+			color: var(--utmdc-gray);
 		}
 
 		.fa-check-circle {
-			color: $wp_green;
+			color: var(--utmdc-green);
 		}
 
 		.fa-times-circle {
-			color: $wp_red;
+			color: var(--utmdc-red);
 		}
 
 		.fa-circle {
