@@ -1,14 +1,22 @@
 <p align="center" style="padding-bottom:20px"><img src="img/utm-dot-codes-logo.png" width="400"></p><p>&nbsp;</p>
 
+[![PHPUnit Tests Nightly (8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20Nightly%20(8.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
 [![PHPUnit Tests (8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(8.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
-[![PHPUnit Tests (7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(7.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
-[![PHPUnit Tests (Legacy 7.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%207.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
+[![PHPUnit Tests (Legacy 8.x)](https://github.com/asdfdotdev/utm.codes/workflows/PHPUnit%20Tests%20(Legacy%208.x)/badge.svg)](https://github.com/asdfdotdev/utm.codes/actions)
+
+[![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/rating/utm-dot-codes)](https://wordpress.org/plugins/utm-dot-codes/)
+[![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/installs/utm-dot-codes)](https://wordpress.org/plugins/utm-dot-codes/)
+[![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dm/utm-dot-codes)](https://wordpress.org/plugins/utm-dot-codes/)
+
+
 
 Welcome to the developer repository for utm.codes, a WordPress plugin that makes creating analytics friendly marketing links quick and easy.
 
 For more information about this plugin [visit utm.codes](https://utm.codes).
 
 To download just the plugin (without the developer extras in this repo) check out [utm.codes on WordPress.org](https://wordpress.org/plugins/utm-dot-codes/).
+
+**Try utm.codes Now!** Use the new "Live Preview" available at WordPress.org to try utm.codes directly in your browser. [Click here to visit WordPress.org](https://wordpress.org/plugins/utm-dot-codes/)
 
 ### Compatibility
 
