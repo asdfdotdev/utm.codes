@@ -19,7 +19,7 @@ jobs:
       matrix:
         php-versions: [ '7.4' ]
         wordpress-versions: [ '5.9', '5.8', '5.7', '5.6' ]
-        operating-system: [ ubuntu-20.04 ]
+        operating-system: [ ubuntu-22.04 ]
     env:
       UTMDC_BITLY_API: ${{secrets.UTMDC_BITLY_API}}
       UTMDC_REBRANDLY_API: ${{secrets.UTMDC_REBRANDLY_API}}
