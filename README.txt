@@ -5,7 +5,7 @@ Tags: analytics, utm codes, analytics, google analytics, campaign marketing, lin
 Requires at least: 5.1.0
 Tested up to: 6.8
 Requires PHP: 7.1.0
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,11 @@ That isn't a question. But thank you.
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.9.1 =
+- Change usage of wp_remote_get() to wp_safe_remote_get()
+- Change usage of wp_remote_post() to wp_safe_remote_post()
+- Update dependencies
 
 = 1.9.0 =
 - Supports WordPress v6.6, 6.7, 6.8

@@ -173,7 +173,7 @@ class TestUtmDotCodesActivation extends WP_Ajax_UnitTestCase {
 	public function test_wordpress_version_failure() {
 		global $wp_version;
 		$wp_version_actual = $wp_version;
-		$wp_version = 4.6;
+		$wp_version = 5.0;
 
 		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
@@ -184,7 +184,7 @@ class TestUtmDotCodesActivation extends WP_Ajax_UnitTestCase {
 			$output = ob_get_flush();
 			ob_end_clean();
 		} catch ( Exception $exception ) {
-			$this->assertEquals( $exception->getMessage(), 'utm.codes plugin requires WordPress 4.7 or newer.' );
+			$this->assertEquals( $exception->getMessage(), 'utm.codes plugin requires WordPress 5.1.0 or newer.' );
 		}
 
 		$this->assertFalse( get_option( 'utmdc_version' ) );
