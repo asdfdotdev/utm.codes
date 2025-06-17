@@ -78,7 +78,7 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 				);
 			}
 
-			$response = wp_remote_post(
+			$response = wp_safe_remote_post(
 				self::API_URL . '/links',
 				// Selective overrides of WP_Http() defaults.
 				array(
@@ -138,7 +138,7 @@ class Rebrandly implements \UtmDotCodes\Shorten {
 
 		if ( '' !== $this->api_key ) {
 
-			$response = wp_remote_get(
+			$response = wp_safe_remote_get(
 				self::API_URL . '/domains?' . http_build_query(
 					array(
 						'orderBy'  => 'fullName',

@@ -1573,7 +1573,7 @@ class UtmDotCodes {
 						$args = array( 'sslverify' => false );
 					}
 
-					$url_check = wp_remote_get( $request_url, $args );
+					$url_check = wp_safe_remote_get( $request_url, $args );
 
 					if ( is_wp_error( $url_check ) ) {
 						$response['message'] = $url_check->get_error_messages();
