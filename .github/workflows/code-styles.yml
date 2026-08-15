@@ -17,8 +17,8 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        php-versions: [ '8.3' ]
-        wordpress-versions: [ '6.7' ]
+        php-versions: [ '8.4' ]
+        wordpress-versions: [ '7.0' ]
         operating-system: [ ubuntu-24.04 ]
 
     steps:
@@ -26,8 +26,8 @@ jobs:
         run: sudo apt install -y subversion
 
       - name: Setup PHP
-        # Commit hash for v2.32.0: https://github.com/shivammathur/setup-php/releases/tag/2.32.0
-        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
+        # Commit hash for v2.37.2: https://github.com/shivammathur/setup-php/releases/tag/2.37.2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
@@ -35,8 +35,8 @@ jobs:
           coverage: xdebug
 
       - name: Checkout utm.codes
-        # Commit hash for v3.5.3: https://github.com/actions/checkout/releases/tag/v4.2.2
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        # Commit hash for v7.0.1: https://github.com/actions/checkout/releases/tag/v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Setup PHPCS
         run: |
