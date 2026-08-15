@@ -29,7 +29,7 @@ jobs:
           --health-retries=3
     strategy:
       matrix:
-        php-versions: [ '8.4', '8.3,' ]
+        php-versions: [ '8.4', '8.3' ]
         wordpress-versions: [ '7.0', '6.9', '6.8'  ]
         operating-system: [ ubuntu-24.04 ]
     env:
