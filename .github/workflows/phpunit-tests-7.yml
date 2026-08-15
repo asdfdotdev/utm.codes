@@ -59,7 +59,7 @@ jobs:
 
       - name: Install PHPUnit
         run: |
-          composer require phpunit/phpunit:^7 --update-with-dependencies
+          composer require phpunit/phpunit:^8 --update-with-dependencies
           composer require yoast/phpunit-polyfills:^1 --update-with-dependencies
 
       - name: Install WordPress
