@@ -103,7 +103,7 @@ That isn't a question. But thank you.
 - Supports WordPress versions 6.9, 7.0, 7.1
 - Increased stated minimum requirements for WordPress, PHP, and MySQL
 
-Note: While there haven't been compatibility breaking chagnes introduced in this release minimum versions have been updated to reflect the versions that are being actively tested. See the utm.codes GitHub repo actions for complete active test details.
+Note: While there haven't been compatibility breaking changes introduced in this release minimum versions have been updated to reflect the versions that are being actively tested. See the utm.codes GitHub repo actions for complete active test details.
 
 = 1.9.1 =
 - Change usage of wp_remote_get() to wp_safe_remote_get()
