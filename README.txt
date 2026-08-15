@@ -1,11 +1,11 @@
 === utm.codes ===
 Contributors: chrislarrycarl
 Donate link: https://utm.codes/pricing/
-Tags: analytics, utm codes, analytics, google analytics, campaign marketing, link generator
-Requires at least: 5.1.0
-Tested up to: 6.8
-Requires PHP: 7.1.0
-Stable tag: 1.9.1
+Tags: analytics, utm codes, analytics, google analytics, campaign marketing
+Requires at least: 6.4.0
+Tested up to: 7.1
+Requires PHP: 7.4.0
+Stable tag: 1.9.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,9 +34,9 @@ For more information, videos, and helpful tips [visit the utm.codes website](htt
 - Supports adding additional custom parameters to links for improved versatility
 - Multi-user access within WordPress to share creation and management responsibilities
 - See your current link count in the admin dashboard "At a Glance"
-- Tested with WordPress 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.0, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8
-- Tested with PHP 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3
-- Tested with MySQL 5.6, 5.7, 8.0, 8.4
+- Actively tested with WordPress 6.4, 6.5, 6.6, 6.7, 6.8, 6.9, 7.0, and 7.1
+- Actively tested with PHP 7.4, 8.0, 8.1, 8.2, 8.3, and 8.4
+- Actively tested with MySQL 8.0, 8.4
 - 100% Free and Open Source
 
 = Installation =
@@ -98,6 +98,12 @@ That isn't a question. But thank you.
 5. See your link count in the WordPress dashboard "At a Glance"
 
 == Changelog ==
+
+= 1.9.2 =
+- Supports WordPress versions 6.9, 7.0, 7.1
+- Increased stated minimum requirements for WordPress, PHP, and MySQL
+
+Note: While there haven't been compatibility breaking chagnes introduced in this release minimum versions have been updated to reflect the versions that are being actively tested. See the utm.codes GitHub repo actions for complete active test details.
 
 = 1.9.1 =
 - Change usage of wp_remote_get() to wp_safe_remote_get()

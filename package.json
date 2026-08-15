@@ -1,6 +1,6 @@
 {
   "name": "utm-dot-codes",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "A plugin that makes building analytics friendly links quick and easy.",
   "main": "index.js",
   "scripts": {
@@ -27,10 +27,10 @@
     "@wordpress/dependency-extraction-webpack-plugin": "^6.21.0",
     "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^13.0.0",
+    "copy-webpack-plugin": "^14.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
-    "css-minimizer-webpack-plugin": "^7.0.2",
+    "css-minimizer-webpack-plugin": "^8.0.0",
     "mini-css-extract-plugin": "^2.9.2",
     "sass": "^1.86.3",
     "sass-loader": "^16.0.5",
